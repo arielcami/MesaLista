@@ -1,0 +1,45 @@
+@font-face {
+    font-family: 'Yeseva One';
+    src: url('../fonts/yeseva-one.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #d4a500; /* Dorado */
+    color: white;
+    padding: 13px;
+    font-family: 'Yeseva One';
+    font-weight: normal;
+    font-size: 30px;
+}
+
+.nav-link {
+    color: white;
+    margin-right: 15px;
+    text-decoration: none;
+    margin-right: 30px;
+}
+
+.nav-inicio {
+    margin-right: 120px; /* Deja más espacio a la derecha para este enlace */
+    margin-left: 20px;
+}
+
+
+.nav-link:hover {
+    color: #333; /* Color al pasar el ratón */
+}
+
+
+body {
+    font-family: 'Yeseva One';
+    margin: 0;
+    padding-top: 60px;
+}
+
+

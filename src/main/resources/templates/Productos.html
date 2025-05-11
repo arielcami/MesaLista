@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+
+<link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
+
+<title>Listado de Productos</title>
+
+<!-- CSS general -->
+<!-- Link al archivo CSS de la barra de navegación -->
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
+<link rel="stylesheet" th:href="@{/css/Productos.css}" />
+</head>
+<body>
+
+	<!-- Incluir barra de navegación -->
+	<div th:replace="components/BarraNavegacion :: barra-nav"></div>
+	
+	<!-- Popup de Creación -->
+	<div id="create-popup-overlay" class="popup-overlay">
+	    <div class="popup-content">
+	        <h3>Nuevo Producto</h3>
+	        <span id="create-close-btn" class="popup-close">❌</span>
+	
+	        <form id="create-product-form">
+	            <label for="create-nombre">Nombre:</label>
+	            <input class="entradadetexto" type="text" id="create-nombre" required />
+	
+	            <label for="create-precio">Precio S/:</label>
+	            <input class="entradadetexto" type="number" id="create-precio" name="precio" step="0.01" required />
+	
+	            <label for="create-tipo">Tipo de Producto:</label>
+	            <select class="entradadetexto" id="create-tipo" required>
+	                <option value="1">Entrada</option>
+	                <option value="2">Segundo</option>
+	                <option value="3">Bebida</option>
+	                <option value="4">Postre</option>
+	            </select>
+	
+	            <button type="submit">Crear Producto</button>
+	        </form>
+	    </div>
+	</div>
+	
+
+	<!-- Popup de Edición -->
+	<div id="edit-popup-overlay" class="popup-overlay">
+		<div class="popup-content">
+
+			<h3>Editar Producto</h3>
+			<span id="edit-close-btn" class="popup-close">❌</span>
+			
+			<form id="edit-product-form">
+				
+				<label for="edit-nombre">Nombre:</label> 
+				<input class="entradadetexto" type="text" id="edit-nombre" required /> 
+				
+				<label for="edit-precio">Precio	S/:</label> 
+				<input class="entradadetexto" type="number" id="edit-precio" name="precio" step="0.01"	required> 
+				
+				<label for="edit-tipo">Tipo de Producto:</label>
+				<select class="entradadetexto" id="edit-tipo" required>
+					<option value="1">Entrada</option>
+					<option value="2">Segundo</option>
+					<option value="3">Bebida</option>
+					<option value="4">Postre</option>
+				</select>
+				
+				<label for="edit-estado">Estado:</label>
+				<input type="text" id="edit-estado" class="estado-texto" disabled />
+
+				<button type="submit">Guardar cambios</button>
+			</form>
+		</div>
+	</div>
+
+	<main>
+		<h2>Listado de Productos</h2>
+
+
+		<div class="filtro-botones">
+		    <button id="btn-todos">Mostrar Todos</button>
+			<button id="btn-activos">Mostrar Activos</button>
+			<button id="btn-inactivos">Mostrar Inactivos</button>
+		    <button id="btn-nuevo-producto" class="btn-filtro">Agregar Producto Nuevo</button>
+		</div>
+
+
+		<div class="tabla-productos-container">
+			<table class="tabla-productos">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Nombre</th>
+						<th>Tipo</th>
+						<th>Precio S/</th>
+						<th>Estado</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="producto : ${productos}">
+
+						<td><input type="text" th:value="${producto.id}" disabled
+							class="input-id" /></td>
+
+						<td class="nombre" th:text="${producto.nombre}">Nombre</td>
+
+						<td class="tipo"
+							th:text="${producto.tipoProducto == 1 ? 'Entrada' : producto.tipoProducto == 2 ? 'Segundo' :
+						    	producto.tipoProducto == 3 ? 'Bebida' : producto.tipoProducto == 4 ? 'Postre' : 'Desconocido'}">
+						</td>
+
+						<td class="precio" th:text="${producto.precio}">Precio</td>
+
+						<td class="estado-td"
+							th:classappend="${producto.estado ? 'estado-activo' : 'estado-inactivo'}">
+							<span class="estado-texto" th:data-estado="${producto.estado}"
+							th:text="${producto.estado ? 'Activo' : 'Inactivo'}"></span> <img
+							th:src="@{/img/Up.png}" alt="Habilitar" title="Habilitar"
+							class="estado-btn estado-habilitar" th:if="${!producto.estado}"
+							th:data-id="${producto.id}" /> <img th:src="@{/img/Down.png}"
+							alt="Deshabilitar" title="Deshabilitar"
+							class="estado-btn estado-deshabilitar" th:if="${producto.estado}"
+							th:data-id="${producto.id}" />
+						</td>
+
+						<td>
+							<button class="btn-editar" th:attr="data-id=${producto.id}">Editar</button>
+						</td>
+										
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</main>
+
+<!-- 
+	<script>
+    // Elemento global del formulario
+    const form = document.getElementById('edit-product-form');
+
+    // Manejador reutilizable que se puede quitar
+    let submitHandler;
+
+    function asignarEventoEdicion(btn) {
+        btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-id");
+
+            fetch(`/mesalista/producto/${id}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Producto no encontrado');
+                    return response.json();
+                })
+                .then(producto => {
+                    document.getElementById('edit-nombre').value = producto.nombre;
+                    document.getElementById('edit-precio').value = producto.precio;
+                    document.getElementById('edit-tipo').value = producto.tipoProducto;
+                    document.getElementById('edit-estado').value = producto.estado ? 'Activo' : 'Inactivo';
+                    
+                    const estadoInput = document.getElementById('edit-estado');
+                    estadoInput.value = producto.estado ? 'Activo' : 'Inactivo';
+                    estadoInput.classList.remove('estado-activo', 'estado-inactivo');
+                    estadoInput.classList.add(producto.estado ? 'estado-activo' : 'estado-inactivo');                    
+
+                    const popupOverlay = document.getElementById('edit-popup-overlay');
+                    popupOverlay.style.display = 'flex';
+
+                    document.getElementById('edit-close-btn').addEventListener("click", () => {
+                        popupOverlay.style.display = 'none';
+                    });
+
+                    // Quitar cualquier manejador anterior
+                    if (submitHandler) {
+                        form.removeEventListener("submit", submitHandler);
+                    }
+
+                    // Definir el nuevo manejador
+                    submitHandler = function (e) {
+                        e.preventDefault();
+
+                        const nombre = document.getElementById('edit-nombre').value;
+                        const precio = parseFloat(document.getElementById('edit-precio').value);
+                        const tipo = parseInt(document.getElementById('edit-tipo').value);
+
+                        const productoActualizado = {
+                            nombre: nombre,
+                            precio: precio,
+                            tipoProducto: tipo,
+                            estado: true // Puedes ajustar según tu lógica real
+                        };
+
+                        fetch(`/mesalista/producto/${id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(productoActualizado)
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error("Error al actualizar producto");
+                                }
+                                return response.json();
+                            })
+                            .then(updatedProduct => {
+                                const fila = btn.closest('tr');
+                                if (!fila) throw new Error("No se encontró la fila para actualizar");
+
+                                fila.querySelector('.nombre').textContent = updatedProduct.nombre;
+                                fila.querySelector('.precio').textContent = updatedProduct.precio.toFixed(2);
+                                fila.querySelector('.tipo').textContent =
+                                    updatedProduct.tipoProducto === 1 ? 'Entrada' :
+                                    updatedProduct.tipoProducto === 2 ? 'Segundo' :
+                                    updatedProduct.tipoProducto === 3 ? 'Bebida' :
+                                    updatedProduct.tipoProducto === 4 ? 'Postre' : 'Desconocido';
+
+                                popupOverlay.style.display = 'none';
+                            })
+                            .catch(err => {
+                                console.error(err);
+                                alert("No se pudo actualizar el producto.");
+                            });
+                    };
+
+                    form.addEventListener("submit", submitHandler);
+                })
+                .catch(() => {
+                    alert("No se pudo obtener el producto.");
+                });
+        });
+    }
+
+    // Espera a que el DOM esté completamente cargado
+    document.addEventListener('DOMContentLoaded', () => {
+        const botonesEditar = document.querySelectorAll('.btn-editar');
+        botonesEditar.forEach(btn => {
+            asignarEventoEdicion(btn);
+        });
+    });
+</script>
+ -->
+ 
+<script th:src="@{/js/productos.js}" defer></script>
+<script th:src="@{/js/CrearProducto.js}" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Inicio - MesaLista v1.0</title>
+
+<link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
+
+<!-- Link al archivo CSS de la barra de navegación -->
+<link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
+
+<!-- Link al archivo CSS para la página de inicio -->
+<link rel="stylesheet" type="text/css" th:href="@{/css/Inicio.css}" />
+
+<!-- Link al archivo CSS para el popup -->
+<link rel="stylesheet" type="text/css" th:href="@{/css/Popup.css}" />
+
+</head>
+
+<body>
+
+	<!-- Incluir barra de navegación -->
+	<div th:replace="components/BarraNavegacion :: barra-nav"></div>
+
+	<main>
+		<h2>Buscar Cliente</h2>
+
+		<div class="contenido-flex">
+			<!-- Formulario -->
+			<form th:action="@{/cliente/buscar}" method="get" onsubmit="return validarFormulario()" class="buscar-cliente-form">
+											
+					<div class="form-group">
+					    <div class="grupo-flex">
+					        <label for="nombre">Por Nombre:</label>
+					        <div class="cajon-dorado">
+					            <input type="text" id="nombre" name="nombre" class="input-text" />
+					        </div>
+					    </div>
+					</div>
+				
+					<div class="form-group">
+					    <div class="grupo-flex">
+					        <label for="documento">Por Documento:</label>
+					        <div class="cajon-dorado">
+					            <input type="text" id="documento" name="documento" class="input-text" />
+					        </div>
+					    </div>
+					</div>
+					
+					
+				<div class="form-group">
+					<button type="submit" class="btn-submit">Buscar</button>
+				</div>
+			</form>
+
+
+			<!-- Tabla de resultados -->
+			<div class="tabla-container" th:if="${clientes}">
+				<table border="1" class="tabla-clientes">
+					<tr>
+						<th>Seleccionar</th>
+						<th>Nombre</th>
+						<th>Documento</th>
+						<th>Dirección</th>
+					</tr>
+					<tr th:each="cliente, stat : ${clientes}" th:if="${stat.index < 8}"	class="tabla-clientes-rows">
+						<td><input type="radio" name="clienteSeleccionado" th:value="${cliente.id}" /></td>
+						<td th:text="${cliente.nombre}">Nombre</td>
+						<td th:text="${cliente.documento}">Documento</td>
+						<td th:text="${cliente.direccion}">Dirección</td>
+					</tr>
+				</table>
+
+				<div class="button-container">
+					<button class="btn-submit" onclick="return validarSeleccion()">Tomar
+						Pedido</button>
+				</div>
+
+			</div>
+		</div>
+
+	</main>
+
+	<!-- Popup de alerta -->
+	<div id="popup-overlay" class="popup-overlay">
+		<div id="popup" class="popup-content">
+			<span id="popup-close" class="popup-close">×</span>
+			<p id="popup-message" class="popup-message"></p>
+		</div>
+	</div>
+
+
+</body>
+<script type="text/javascript" th:src="@{/js/Inicio.js}"></script>
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	var sinResultados = /*[[${sinResultados} ?: false]]*/false;
+	if (sinResultados) {
+		mostrarPopup("No se encontraron resultados con los criterios de búsqueda.");
+	}
+	/*]]>*/
+</script>
+
+
+</html>
+

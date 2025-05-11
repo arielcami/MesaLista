@@ -1,0 +1,194 @@
+body {
+    background-color: #ffffff;
+    font-family: 'Yeseva One';
+    margin: 0;
+    padding: 0;
+    padding-top: 50px;
+}
+
+h2 {
+    font-size: 40px;
+    text-align: left;
+    margin-top: 100px;
+    margin-left: 100px;
+    color:  #8d8c8e;
+    font-weight: normal;
+}
+
+p {
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 20px;
+    color: #555;
+}
+
+main {
+    padding: 20px;
+}
+
+@font-face {
+    font-family: 'Yeseva One';
+    src: url('../fonts/yeseva-one.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Estilo general para el formulario */
+.buscar-cliente-form {
+    max-width:400px;
+    margin: 0 auto;
+    margin-left: 80px; /* <-- Lo mueve a la izquierda */
+    padding: 30px;
+    font-size: 22px;
+    color: #8d8c8e;
+}
+
+/* Espaciado entre los campos de formulario */
+.form-group {
+    margin-bottom: 30px;
+}
+
+
+/* Asegura que el contenedor del botón lo centre */
+.form-group:last-child {
+    display: block;
+    justify-content: center; /* <-- Centra horizontalmente */
+}
+
+
+/* Estilo de los campos de texto */
+.input-text {
+    width: 305px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #6e6e6e;
+    font-size: 23px;
+    font-family: 'Consolas';
+}
+
+/* Estilo del botón */	
+.btn-submit {
+	width: 280px;
+    background-color: #d4a500;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 33px;
+    cursor: pointer;
+    font-size: 33px;
+    font-family: 'Yeseva One';
+    margin-left: 260px;
+}
+
+.btn-submit:hover {
+    background-color: #886000;
+}
+
+
+/* Tabla de resultados */
+/* Contenedor que pone el formulario y la tabla uno al lado del otro */
+.contenido-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 200px; /* Espacio entre el form y la tabla */
+}
+
+/* Contenedor de la tabla */
+.tabla-container {
+    flex: 1;
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+/* Tabla de resultados */
+.tabla-clientes {
+    width: 1000px;
+    border-collapse: collapse;
+    font-size: 16px;
+    color: #333;
+}
+
+.tabla-clientes-rows {
+    width: 50px;
+    border-collapse: collapse;
+    font-size: 19px;
+    color: #333;
+    font-family: 'Consolas';
+}
+
+/* Agrandar y centrar el radio button */
+.tabla-clientes input[type="radio"] {
+    width: 32px;
+    height: 32px;
+    accent-color: #d4a500; /* Cambia el color si tu navegador lo permite */
+    display: block;
+    margin: 0 auto; /* Centra horizontalmente */
+}
+
+.tabla-clientes th, .tabla-clientes td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ccc;
+}
+
+.tabla-clientes th {
+    background-color: #d4a500;
+    font-weight: bold;
+    color: white;
+    font-family: 'Arial';
+    font-size: 20px;
+}
+
+.button-container {
+	margin-top: 40px;
+	
+}
+
+
+.cajon-dorado {
+
+	background-color: #d4a500;
+	width: 330px;
+	padding: 12px;
+	border-radius: 60px;
+	margin-bottom: 10px;
+}
+
+
+.grupo-flex {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.grupo-flex label {
+    width: 160px; /* Aumentado para que quepa "Por Documento:" */
+    margin-right: 50px;
+    font-size: 26px;
+    color: #8d8c8e;
+    white-space: nowrap;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
