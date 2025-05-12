@@ -33,8 +33,9 @@ public class ClienteViewController {
     public String registrarCliente(@ModelAttribute ClienteEntity cliente) {
         // Lógica para guardar el cliente en la base de datos
         clienteService.save(cliente);  // Guarda el cliente usando el servicio adecuado
-
         return "redirect:/cliente";  // Redirige a la lista de clientes después de registrar
     }
+    
+    
 
 }

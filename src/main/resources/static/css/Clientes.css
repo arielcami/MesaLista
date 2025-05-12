@@ -17,7 +17,7 @@ main h2 {
 
 .tabla-clientes-container {
     margin-left: 200px;
-    width: 1000px;
+    width: 80%;
 }
 
 .tabla-clientes {
@@ -181,3 +181,78 @@ main h2 {
     outline: 3px solid white;
     box-shadow: 0 0 0 2px #d4a500;
 }
+
+
+/* Estilo general del overlay */
+.popup-overlay {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Contenido del popup */
+.popup-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 400px; /* Ancho del popup */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.popup-content h3 {
+    font-size: 24px;
+    color: #4CAF50; /* Verde de éxito */
+    margin-bottom: 10px;
+}
+
+.popup-content p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Estilo de los botones */
+.popup-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.btn-action {
+    background-color: #4CAF50; /* Verde de éxito */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 180px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-action:hover {
+    background-color: #45a049;
+    color: #fff;
+}
+
+.btn-tomar-pedido {
+    text-decoration: none;
+}
+
+.btn-registrar-otro {
+    text-decoration: none;
+}
+
+/* Animación para mostrar el popup */
+.popup-overlay.show {
+    display: flex; /* Mostrar cuando tenga la clase .show */
+}
+

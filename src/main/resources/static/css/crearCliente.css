@@ -1,0 +1,103 @@
+body {
+    background-color: #ffffff;
+    font-family: 'Yeseva One';
+    margin: 0;
+    padding: 0;
+    padding-top: 50px;
+}
+
+h2 {
+    font-size: 40px;
+    text-align: left;
+    margin-top: 100px;
+    margin-left: 100px;
+    color:  #8d8c8e;
+    font-weight: normal;
+}
+
+main {
+    padding: 20px;
+    margin-left: 150px; /* Mover todo el formulario un poco a la derecha */
+}
+
+/* Estilo general para el formulario */
+.buscar-cliente-form {
+    max-width: 400px;
+    margin: 0 auto;
+    margin-left: 100px; /* Mover formulario a la derecha */
+    padding: 30px;
+    font-size: 22px;
+    color: #8d8c8e;
+}
+
+/* Espaciado entre los campos de formulario */
+.form-group {
+    margin-bottom: 10px; /* Reducido el espacio entre campos */
+}
+
+/* Asegura que el contenedor del botón lo centre */
+.form-group:last-child {
+    display: block;
+    justify-content: center; /* Centra horizontalmente el botón */
+    text-align: center;
+}
+
+/* Estilo de los campos de texto */
+.input-text {
+    width: 305px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #6e6e6e;
+    font-size: 23px;
+    font-family: 'Consolas';
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Estilo del botón */
+.btn-submit {
+    width: 280px;
+    background-color: #d4a500;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 33px;
+    cursor: pointer;
+    font-size: 33px;
+    font-family: 'Yeseva One';
+    margin-left: 0; /* Centrado del botón */
+    display: block;
+    margin-top: 20px;
+    margin-left: 80px;
+    transition: color 0.3s ease;
+}
+
+.btn-submit:hover {
+    color: black; /* Cambia el color de la letra a negro */
+}
+
+
+/* Estilo para las cajas de los campos (cajon-dorado) */
+.cajon-dorado {
+    background-color: #d4a500;
+    width: 330px;
+    padding: 12px;
+    border-radius: 60px;
+    margin-bottom: 10px;
+}
+
+/* Estilo para el grupo de etiquetas y campos */
+.grupo-flex {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-end; /* Alinea las etiquetas y los campos hacia la derecha */
+}
+
+.grupo-flex label {
+    width: 160px; /* Ajuste para que se vea bien el texto de las etiquetas */
+    margin-right: 50px;
+    font-size: 26px;
+    color: #8d8c8e;
+    white-space: nowrap;
+}

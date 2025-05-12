@@ -11,6 +11,27 @@
 </head>
 <body>
 
+	<!-- Popup de Éxito al Crear Cliente -->
+	<div id="success-popup-overlay" class="popup-overlay">
+	    <div class="popup-content">
+	        <h3>¡Cliente Creado Exitosamente!</h3>
+	        <p>El cliente ha sido registrado correctamente.</p>
+	        
+	        <!-- Botones de acción -->
+	        <div class="popup-buttons">
+	            <a href=# class="btn-tomar-pedido">
+	                <button type="button" class="btn-action">Tomar Pedido</button>
+	            </a>
+	            <a th:href="@{/cliente/registrar}" class="btn-registrar-otro">
+	                <button type="button" class="btn-action">Registrar Otro Cliente</button>
+	            </a>
+	        </div>
+	    </div>
+	</div>
+	
+
+
+
     <!-- Incluir barra de navegación -->
     <div th:replace="components/BarraNavegacion :: barra-nav"></div>
     
@@ -23,9 +44,15 @@
             <form id="edit-client-form">
                 <label for="edit-nombre">Nombre:</label>
                 <input class="entradadetexto" type="text" id="edit-nombre" required />
-
+                
                 <label for="edit-telefono">Teléfono:</label>
                 <input class="entradadetexto" type="text" id="edit-telefono" required />
+                
+                <label for="edit-documento">Documento:</label>
+                <input class="entradadetexto" type="text" id="edit-documento" required />
+                
+                <label for="edit-direccion">Dirección:</label>
+                <input class="entradadetexto" type="text" id="edit-direccion" required />
 
                 <button type="submit">Guardar cambios</button>
             </form>
@@ -37,7 +64,7 @@
 
         <div class="filtro-botones">
             <!-- Botón para ir a la página de creación de cliente -->
-            <a href="/cliente/registrar">
+            <a href="/mesalista/cliente/registrar">
                 <button id="btn-nuevo-cliente" class="btn-filtro">Agregar Nuevo Cliente</button>
             </a>
         </div>
@@ -49,6 +76,8 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Teléfono</th>
+                        <th>Documento</th>
+                        <th>Dirección</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -59,6 +88,10 @@
                         <td class="nombre" th:text="${cliente.nombre}">Nombre</td>
                         
                         <td class="telefono" th:text="${cliente.telefono}"></td>
+                        
+                        <td class="documento" th:text="${cliente.documento}"></td>
+                        
+                        <td class="direccion" th:text="${cliente.direccion}"></td>
            
                         <td>
                             <button class="btn-editar" th:attr="data-id=${cliente.id}">Editar</button>

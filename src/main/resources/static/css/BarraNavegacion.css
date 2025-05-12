@@ -23,6 +23,7 @@ nav {
     margin-right: 15px;
     text-decoration: none;
     margin-right: 30px;
+    transition: color 0.3s ease;
 }
 
 .nav-inicio {

@@ -37,9 +37,6 @@ public class ClienteEntity implements Serializable {
 	@Column(name = "direccion", length = 200, nullable = false)
 	private String direccion;
 
-	@Column(name = "estado", nullable = false)
-	private boolean estado;
-
 	@CreationTimestamp
 	@Column(name = "creado_en", updatable = false)
 	private LocalDateTime creadoEn;

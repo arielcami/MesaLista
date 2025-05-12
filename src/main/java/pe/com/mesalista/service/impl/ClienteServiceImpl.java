@@ -20,16 +20,6 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public List<ClienteEntity> findAllCustom() {
-        return clienteRepository.findByEstadoTrue();
-    }
-
-    @Override
-    public List<ClienteEntity> findAllInactive() {
-        return clienteRepository.findByEstadoFalse();
-    }
-
-    @Override
     public List<ClienteEntity> findByNombreContainingIgnoreCase(String nombre) {
         return clienteRepository.findByNombreContainingIgnoreCase(nombre);
     }
@@ -55,34 +45,8 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public ClienteEntity delete(Long id) {
-        clienteRepository.findById(id).ifPresent(cliente -> {
-            cliente.setEstado(false);
-            clienteRepository.save(cliente);
-        });
-        return null;
-    }
-
-    @Override
-    public ClienteEntity enable(Long id) {
-        clienteRepository.findById(id).ifPresent(cliente -> {
-            cliente.setEstado(true);
-            clienteRepository.save(cliente);
-        });
-        return null;
-    }
-
-    @Override
     public List<ClienteEntity> findByDocumentoContainingIgnoreCase(String documento) {
         return clienteRepository.findByDocumentoContainingIgnoreCase(documento);
     }
     
-    @Override
-	public Optional<ClienteEntity> actualizarEstado(Long id, boolean nuevoEstado) {
-	    return clienteRepository.findById(id).map(cliente -> {
-	    	cliente.setEstado(nuevoEstado);
-	        return clienteRepository.save(cliente);
-	    });
-	}
-       
 }

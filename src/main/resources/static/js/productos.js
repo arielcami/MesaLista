@@ -153,8 +153,18 @@ document.addEventListener("DOMContentLoaded", function() {
 					const popupOverlay = document.getElementById('edit-popup-overlay');
 					popupOverlay.style.display = 'flex';
 
-					document.getElementById('edit-close-btn').addEventListener("click", () => {
-						popupOverlay.style.display = 'none';
+					
+					// Cerrar el Modal
+					document.addEventListener("click", function(e) {
+						if (e.target.id === 'edit-close-btn' || e.target === popupOverlay) {
+							popupOverlay.style.display = 'none';
+						}
+					});
+
+					document.addEventListener("keydown", function(e) {
+						if (e.key === 'Escape') {
+							popupOverlay.style.display = 'none';
+						}
 					});
 
 					if (submitHandler) {

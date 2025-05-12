@@ -6,8 +6,6 @@ import pe.com.mesalista.entity.ClienteEntity;
 
 public interface ClienteRepository extends JpaRepository<ClienteEntity, Long>{
 	
-	List <ClienteEntity> findByEstadoTrue();
-	List <ClienteEntity> findByEstadoFalse();
 	List <ClienteEntity> findByNombreContainingIgnoreCase(String nombre);
 	List<ClienteEntity> findByDocumentoContainingIgnoreCase(String documento);
 

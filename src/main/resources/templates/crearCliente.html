@@ -4,34 +4,62 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
     <title>Crear Cliente</title>
-    <link rel="stylesheet" th:href="@{/css/Productos.css}" />
+    <link rel="stylesheet" th:href="@{/css/crearCliente.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
 </head>
 <body>
 
     <div th:replace="components/BarraNavegacion :: barra-nav"></div>
 
     <main>
-        <h2>Crear Nuevo Cliente</h2>
+    <h2>Crear Nuevo Cliente</h2>
 
-        <form th:action="@{/cliente/nuevo}" method="post">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" required />
+    <div class="contenido-flex">
+        <form th:action="@{/cliente/registrar}" method="POST" class="buscar-cliente-form">
+            
+            <div class="form-group">
+                <div class="grupo-flex">
+                    <label for="nombre">Nombre:</label>
+                    <div class="cajon-dorado">
+                        <input type="text" id="nombre" name="nombre" class="input-text" required />
+                    </div>
+                </div>
+            </div>
 
-            <label for="telefono">Teléfono:</label>
-            <input type="text" id="telefono" name="telefono" required />
+            <div class="form-group">
+                <div class="grupo-flex">
+                    <label for="telefono">Teléfono:</label>
+                    <div class="cajon-dorado">
+                        <input type="text" id="telefono" name="telefono" class="input-text" required />
+                    </div>
+                </div>
+            </div>
 
-            <label for="documento">Documento (DNI, RUC...):</label>
-            <input type="text" id="documento" name="documento" required />
+            <div class="form-group">
+                <div class="grupo-flex">
+                    <label for="documento">Documento:</label>
+                    <div class="cajon-dorado">
+                        <input type="text" id="documento" name="documento" class="input-text" required />
+                    </div>
+                </div>
+            </div>
 
-            <label for="direccion">Dirección:</label>
-            <input type="text" id="direccion" name="direccion" required />
+            <div class="form-group">
+                <div class="grupo-flex">
+                    <label for="direccion">Dirección:</label>
+                    <div class="cajon-dorado">
+                        <input type="text" id="direccion" name="direccion" class="input-text" required />
+                    </div>
+                </div>
+            </div>
 
-            <label for="estado">Estado:</label>
-            <input type="checkbox" id="estado" name="estado" checked /> Activo
-
-            <button type="submit">Crear Cliente</button>
+            <div class="form-group">
+                <button type="submit" class="btn-submit">Crear Cliente</button>
+            </div>
         </form>
-    </main>
+    </div>
+</main>
+
 
 </body>
 </html>
