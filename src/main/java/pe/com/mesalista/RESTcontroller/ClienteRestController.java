@@ -1,14 +1,17 @@
 package pe.com.mesalista.RESTcontroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.com.mesalista.entity.ClienteEntity;
 import pe.com.mesalista.service.ClienteService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/cliente")
+@RequestMapping("/api/cliente")
 public class ClienteRestController {
 
     @Autowired
@@ -79,4 +82,16 @@ public class ClienteRestController {
     public ClienteEntity enable(@PathVariable Long id) {
         return servicio.enable(id);
     }
+    
+    @PutMapping("/{id}/estado")
+	public ResponseEntity<?> actualizarEstado(@PathVariable Long id, @RequestParam boolean estado) {
+	    Optional<ClienteEntity> resultado = servicio.actualizarEstado(id, estado);
+
+	    if (resultado.isPresent()) {
+	        return ResponseEntity.ok(resultado.get());
+	    } else {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado");
+	    }
+	}
+    
 }

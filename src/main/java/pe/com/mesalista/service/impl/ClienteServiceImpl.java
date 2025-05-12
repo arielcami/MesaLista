@@ -76,4 +76,13 @@ public class ClienteServiceImpl implements ClienteService {
     public List<ClienteEntity> findByDocumentoContainingIgnoreCase(String documento) {
         return clienteRepository.findByDocumentoContainingIgnoreCase(documento);
     }
+    
+    @Override
+	public Optional<ClienteEntity> actualizarEstado(Long id, boolean nuevoEstado) {
+	    return clienteRepository.findById(id).map(cliente -> {
+	    	cliente.setEstado(nuevoEstado);
+	        return clienteRepository.save(cliente);
+	    });
+	}
+       
 }

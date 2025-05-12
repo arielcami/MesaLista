@@ -118,13 +118,11 @@
 						<td class="estado-td"
 							th:classappend="${producto.estado ? 'estado-activo' : 'estado-inactivo'}">
 							<span class="estado-texto" th:data-estado="${producto.estado}"
-							th:text="${producto.estado ? 'Activo' : 'Inactivo'}"></span> <img
-							th:src="@{/img/Up.png}" alt="Habilitar" title="Habilitar"
-							class="estado-btn estado-habilitar" th:if="${!producto.estado}"
-							th:data-id="${producto.id}" /> <img th:src="@{/img/Down.png}"
-							alt="Deshabilitar" title="Deshabilitar"
-							class="estado-btn estado-deshabilitar" th:if="${producto.estado}"
-							th:data-id="${producto.id}" />
+							th:text="${producto.estado ? 'Activo' : 'Inactivo'}"></span> 
+							<img th:src="@{/img/Up.png}" alt="Habilitar" title="Habilitar" class="estado-btn estado-habilitar" th:if="${!producto.estado}"
+								th:data-id="${producto.id}" /> 
+							<img th:src="@{/img/Down.png}" alt="Deshabilitar" title="Deshabilitar" class="estado-btn estado-deshabilitar" th:if="${producto.estado}"
+								th:data-id="${producto.id}" />
 						</td>
 
 						<td>

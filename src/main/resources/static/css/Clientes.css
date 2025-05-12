@@ -1,36 +1,41 @@
 body {
+	
 	margin-bottom: 100px;
+	
 }
+
+
+
 main h2 {
     font-size: 40px;
     text-align: left;
     margin-top: 100px;
     margin-left: 100px;
-    color:  #8d8c8e;
+    color: #8d8c8e;
     font-weight: normal;
 }
 
-.tabla-productos-container {
-    margin: 40px auto;
-    width: 90%;
+.tabla-clientes-container {
+    margin-left: 200px;
+    width: 1000px;
 }
 
-.tabla-productos {
+.tabla-clientes {
     width: 100%;
     border-collapse: collapse;
     font-family: 'Consolas', monospace;
     font-size: 20px;
 }
 
-.tabla-productos th {
+.tabla-clientes th {
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
     background-color: #d4a500;
 }
 
-.tabla-productos td {
-	border: 1px solid #ccc;
+.tabla-clientes td {
+    border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
 }
@@ -61,9 +66,7 @@ main h2 {
     color: white;
 }
 
-
 /* POPUP */
-/* Estilos para el popup de edición */
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -74,16 +77,16 @@ main h2 {
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Asegura que el popup esté por encima de otros elementos */
+    z-index: 1000;
 }
 
 .popup-content {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
-    width: 350px; /* Ajusta el tamaño del popup según el contenido */
+    width: 350px;
     text-align: center;
-    box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+    box-sizing: border-box;
     position: relative;
 }
 
@@ -94,9 +97,9 @@ main h2 {
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-sizing: border-box; /* Esto es clave para evitar que los campos se salgan del contenedor */
+    box-sizing: border-box;
     font-family: 'Consolas';
-    font-size: 16px; /* Ajusta el tamaño de la fuente según tus necesidades */
+    font-size: 16px;
 }
 
 .popup-content button {
@@ -107,7 +110,7 @@ main h2 {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    width: 100%; /* Hacer que el botón ocupe todo el ancho */
+    width: 100%;
     margin-top: 10px;
 }
 
@@ -125,11 +128,9 @@ main h2 {
     right: 10px;
 }
 
-/* Cambiar el color de la X cuando se pasa el ratón */
 .popup-close:hover {
-    color: darkred; /* Color más oscuro cuando se hace hover */
+    color: darkred;
 }
-
 
 .entradadetexto {
     font-family: 'Consolas';
@@ -139,81 +140,20 @@ main h2 {
 /* Asegúrate de que el popup sea responsivo */
 @media (max-width: 500px) {
     .popup-content {
-        width: 90%; /* El popup ocupa un 90% del ancho en pantallas pequeñas */
+        width: 90%;
     }
 
     .popup-content input,
     .popup-content select {
-        font-size: 14px; /* Ajustar tamaño de fuente en pantallas pequeñas */
+        font-size: 14px;
     }
 }
 
-/* ESTADOS */
-.estado-td {
-    text-align: center;
-    display: flex;
-    align-items: center; /* Alinea los elementos verticalmente */
-    justify-content: center;
-}
-
-.estado-activo {
-    background-color: #abffcd;
-}
-
-.estado-inactivo {
-    background-color: #ffabab;
-}
-
-.estado-btn {
-    width: 23px;
-    height: 23px;
-    margin-left: 10px; /* Espacio entre el texto y la imagen */
-    cursor: pointer;
-}
-
-.estado-btn:hover {
-    opacity: 0.7;
-}
-
-.estado-td span {
-    font-size: 18px;
-    font-weight: bold;
-    margin-right: 8px; /* Espacio entre el texto y la imagen */
-}
-
-
+/* Filtros */
 .filtro-botones {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-}
-
-.btn-filtro {
-    background-color: #007BFF;
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.btn-filtro:hover {
-    background-color: #0056b3;
-}
-
-
-
-/* FILTRO BOTONES */
-.filtro-botones {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 10px;
-    margin-left: 93px;
+    margin-bottom: 40px;
+    margin-left: 200px;
 }
 
 .filtro-botones button {
@@ -227,14 +167,7 @@ main h2 {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.filtro-botones button#btn-todos,
-.filtro-botones button#btn-activos,
-.filtro-botones button#btn-inactivos {
-    background-color: #d4a500;
-    color: white;
-}
-
-.filtro-botones button#btn-nuevo-producto {
+.filtro-botones button#btn-nuevo-cliente {
     background-color: #007dd6;
     color: white;
 }

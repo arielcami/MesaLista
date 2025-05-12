@@ -1,7 +1,9 @@
 package pe.com.mesalista.service;
 
 import java.util.List;
+import java.util.Optional;
 import pe.com.mesalista.entity.ClienteEntity;
+
 
 public interface ClienteService {
 	
@@ -24,5 +26,7 @@ public interface ClienteService {
 	ClienteEntity delete(Long id);
 	
 	ClienteEntity enable(Long id);
+	
+	Optional<ClienteEntity> actualizarEstado(Long id, boolean estado);
 
 }

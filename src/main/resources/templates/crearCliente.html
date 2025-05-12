@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
+    <title>Crear Cliente</title>
+    <link rel="stylesheet" th:href="@{/css/Productos.css}" />
+</head>
+<body>
+
+    <div th:replace="components/BarraNavegacion :: barra-nav"></div>
+
+    <main>
+        <h2>Crear Nuevo Cliente</h2>
+
+        <form th:action="@{/cliente/nuevo}" method="post">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required />
+
+            <label for="telefono">Teléfono:</label>
+            <input type="text" id="telefono" name="telefono" required />
+
+            <label for="documento">Documento (DNI, RUC...):</label>
+            <input type="text" id="documento" name="documento" required />
+
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" name="direccion" required />
+
+            <label for="estado">Estado:</label>
+            <input type="checkbox" id="estado" name="estado" checked /> Activo
+
+            <button type="submit">Crear Cliente</button>
+        </form>
+    </main>
+
+</body>
+</html>

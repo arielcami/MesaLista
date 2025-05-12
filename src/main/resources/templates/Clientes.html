@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
+    <title>Listado de Clientes</title>
+
+    <!-- CSS general -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
+    <link rel="stylesheet" th:href="@{/css/Clientes.css}" />
+</head>
+<body>
+
+    <!-- Incluir barra de navegación -->
+    <div th:replace="components/BarraNavegacion :: barra-nav"></div>
+    
+    <!-- Popup de Edición -->
+    <div id="edit-popup-overlay" class="popup-overlay">
+        <div class="popup-content">
+            <h3>Editar Cliente</h3>
+            <span id="edit-close-btn" class="popup-close">❌</span>
+            
+            <form id="edit-client-form">
+                <label for="edit-nombre">Nombre:</label>
+                <input class="entradadetexto" type="text" id="edit-nombre" required />
+
+                <label for="edit-telefono">Teléfono:</label>
+                <input class="entradadetexto" type="text" id="edit-telefono" required />
+
+                <button type="submit">Guardar cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <main>
+        <h2>Listado de Clientes</h2>
+
+        <div class="filtro-botones">
+            <!-- Botón para ir a la página de creación de cliente -->
+            <a href="/cliente/registrar">
+                <button id="btn-nuevo-cliente" class="btn-filtro">Agregar Nuevo Cliente</button>
+            </a>
+        </div>
+
+        <div class="tabla-clientes-container">
+            <table class="tabla-clientes">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cliente : ${clientes}">
+                        <td><input type="text" th:value="${cliente.id}" disabled class="input-id" /></td>
+                
+                        <td class="nombre" th:text="${cliente.nombre}">Nombre</td>
+                        
+                        <td class="telefono" th:text="${cliente.telefono}"></td>
+           
+                        <td>
+                            <button class="btn-editar" th:attr="data-id=${cliente.id}">Editar</button>
+                        </td>
+                        
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script th:src="@{/js/clientes.js}" defer></script>
+    
+
+</body>
+</html>
