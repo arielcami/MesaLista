@@ -1,0 +1,16 @@
+h2 {
+    font-size: 20px;
+    text-align: left;
+    margin-left: 100px;
+    color: #494949;
+    font-weight: normal;
+}
+
+
+.nombre-cliente {
+	margin-left: 10px;
+	margin-right: 30px;
+    font-family: 'Consolas', monospace;
+    font-weight: normal;
+    color: #8d8c8e;
+}

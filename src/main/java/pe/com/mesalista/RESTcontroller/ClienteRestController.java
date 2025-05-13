@@ -25,7 +25,7 @@ public class ClienteRestController {
     }
     
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}") // el request mapping del @RestController es: @RequestMapping("/api/cliente")
     public ClienteEntity findById(@PathVariable Long id) {
         return servicio.findById(id);
     }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tomar pedido - MesaLista v1.0</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/TomarPedido.css}" />
+</head>
+
+<body>
+    <input type="hidden" id="clienteId" th:value="${cliente.id}" />
+
+    <!-- Incluir barra de navegación -->
+    <div th:replace="components/BarraNavegacion :: barra-nav"></div>
+	
+    <!-- Datos del cliente en el DOM pero ocultos -->
+	<input type="hidden" id="cliente-id" th:value="${cliente.id}" />
+	<input type="hidden" id="cliente-nombre" th:value="${cliente.nombre}" />
+	<input type="hidden" id="cliente-telefono" th:value="${cliente.telefono}" />
+	<input type="hidden" id="cliente-documento" th:value="${cliente.documento}" />
+	<input type="hidden" id="cliente-direccion" th:value="${cliente.direccion}" />
+	
+	
+	<h2>Cliente:
+	    <span class="nombre-cliente" th:text="${cliente.nombre}"></span>
+	    Documento: <span class="nombre-cliente" th:text="${cliente.documento}"></span>
+	    Teléfono: <span id="telefono-formateado" class="nombre-cliente"></span>
+	    Dirección: <span class="nombre-cliente" th:text="${cliente.direccion}"></span>
+	</h2>
+
+
+
+    <script type="text/javascript" th:src="@{/js/TomarPedido.js}"></script>
+</body>
+</html>
