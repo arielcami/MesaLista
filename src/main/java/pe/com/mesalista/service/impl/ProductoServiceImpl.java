@@ -75,7 +75,10 @@ public class ProductoServiceImpl implements ProductoService {
 	        return productoRepository.save(producto);
 	    });
 	}
-
-
 	
+	@Override
+	public List<ProductoEntity> findByTipoProductoAndEstadoTrue(byte tipoProducto) {
+	    return productoRepository.findByTipoProductoAndEstadoTrue(tipoProducto);
+	}
+
 }

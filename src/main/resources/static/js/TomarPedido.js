@@ -9,22 +9,18 @@ function formatearTelefono(telefono) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const clienteId = document.getElementById("clienteId").value;
+    // Obtener datos desde inputs ocultos
+    const nombre = document.getElementById("cliente-nombre-hidden").value;
+    const documento = document.getElementById("cliente-documento-hidden").value;
+    const telefono = document.getElementById("cliente-telefono-hidden").value;
+    const direccion = document.getElementById("cliente-direccion-hidden").value;
 
-    fetch(`/mesalista/api/cliente/${clienteId}`)
-        .then(response => response.json())
-        .then(cliente => {
+    const telefonoFormateado = formatearTelefono(telefono);
 
-            const telefonoFormateado = formatearTelefono(cliente.telefono);
-
-            // Insertar los datos en el DOM sin duplicar contenido
-			document.getElementById("cliente-id").textContent = cliente.id;
-            document.getElementById("cliente-nombre").textContent = cliente.nombre;
-			document.getElementById("telefono-formateado").textContent = telefonoFormateado;
-			document.getElementById("cliente-documento").textContent = cliente.documento;
-            document.getElementById("cliente-direccion").textContent = cliente.direccion;
-        })
-        .catch(error => {
-            console.error("Error al obtener los datos del cliente:", error);
-        });
+    // Insertar datos visibles en los spans
+    document.getElementById("cliente-nombre").textContent = nombre;
+    document.getElementById("cliente-documento").textContent = documento;
+    document.getElementById("telefono-formateado").textContent = telefonoFormateado;
+    document.getElementById("cliente-direccion").textContent = direccion;
 });
+

@@ -1,0 +1,112 @@
+/* Contenedor general del modal */
+#modal-productos {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Activar modal como flex */
+#modal-productos.activo {
+    display: flex;
+}
+
+/* Contenido del modal */
+.modal-contenido {
+    background-color: #fff;
+    width: 90vw;
+    max-width: 1000px;
+    height: 80vh;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Importante: evita scroll horizontal */
+}
+
+/* Cabecera tipo Windows */
+.modal-cabecera {
+    background-color: #d4a500;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    color: #000;
+    flex-shrink: 0;
+    font-weight: bold;
+}
+
+.modal-cabecera span {
+	margin-left: 20px;
+}
+
+
+/* Botón de cerrar estilo Windows */
+.cerrar-modal {
+    font-size: 30px;
+    cursor: pointer;
+    color: #ff0000;
+    user-select: none;
+}
+
+/* Grilla de productos con scroll vertical si es necesario */
+.grid-productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    flex-grow: 1;
+    align-content: start; /* Alinea el contenido arriba sin estirarlo */
+}
+
+
+.producto-item {
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    font-family: 'Consolas', monospace;
+    box-sizing: border-box;
+    margin: 0;
+    border-radius: 0;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 6px;
+}
+
+
+.producto-item h4 {
+    margin-left: 0px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.producto-item span {
+    margin: 0;
+    font-size: 15px;
+    color: gray;
+}
+
+.producto-item:hover {
+    border-color: #d4a500; 
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
+}
+
+.producto-item:focus {
+    outline: none;
+}

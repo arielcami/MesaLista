@@ -6,31 +6,75 @@
     <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/TomarPedido.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/ModalCargarProductoTipo.css}" />
 </head>
 
 <body>
-    <input type="hidden" id="clienteId" th:value="${cliente.id}" />
-
     <!-- Incluir barra de navegación -->
     <div th:replace="components/BarraNavegacion :: barra-nav"></div>
-	
-    <!-- Datos del cliente en el DOM pero ocultos -->
-	<input type="hidden" id="cliente-id" th:value="${cliente.id}" />
-	<input type="hidden" id="cliente-nombre" th:value="${cliente.nombre}" />
-	<input type="hidden" id="cliente-telefono" th:value="${cliente.telefono}" />
-	<input type="hidden" id="cliente-documento" th:value="${cliente.documento}" />
-	<input type="hidden" id="cliente-direccion" th:value="${cliente.direccion}" />
-	
-	
-	<h2>Cliente:
-	    <span class="nombre-cliente" th:text="${cliente.nombre}"></span>
-	    Documento: <span class="nombre-cliente" th:text="${cliente.documento}"></span>
-	    Teléfono: <span id="telefono-formateado" class="nombre-cliente"></span>
-	    Dirección: <span class="nombre-cliente" th:text="${cliente.direccion}"></span>
-	</h2>
 
 
+
+	<!-- Modal oculto al inicio -->
+	<div id="modal-productos" class="oculto">
+	
+	    <div class="modal-contenido">
+	        <!-- Cabecera del modal -->
+	        <div class="modal-cabecera">
+	            <span id="modal-titulo">Productos</span>
+	            <span class="cerrar-modal" id="cerrar-modal">&times;</span>
+	        </div>
+	        <!-- Contenido del modal -->
+	        <div class="grid-productos" id="contenedor-productos">
+	            <!-- Los productos se cargarán aquí -->
+	        </div>
+	    </div>
+	    
+	</div>
+
+
+
+	<!-- Datos del cliente en el DOM (ocultos para JS) -->
+    <input type="hidden" id="cliente-id-hidden" th:value="${cliente.id}" />
+    <input type="hidden" id="cliente-nombre-hidden" th:value="${cliente.nombre}" />
+    <input type="hidden" id="cliente-telefono-hidden" th:value="${cliente.telefono}" />
+    <input type="hidden" id="cliente-documento-hidden" th:value="${cliente.documento}" />
+    <input type="hidden" id="cliente-direccion-hidden" th:value="${cliente.direccion}" />
+
+    <!-- Datos del cliente visibles (rellenados por JS) -->
+    <h2>Cliente:
+        <span id="cliente-nombre" class="nombre-cliente"></span>
+        Documento: <span id="cliente-documento" class="nombre-cliente"></span>
+        Teléfono: <span id="telefono-formateado" class="nombre-cliente"></span>
+        Dirección: <span id="cliente-direccion" class="nombre-cliente"></span>
+    </h2>
+
+	<main>
+		<!-- Sección para elegir categoría de productos -->
+		<section class="seccion-categorias">
+		    <h3>Selecciona una categoría de productos</h3>
+		    <div class="contenedor-categorias">
+		        <div class="categoria" id="categoria-entrada">
+		            <img th:src="@{/img/huancainavector.png}" alt="Entradas" />
+		            <p>Entradas</p>
+		        </div>
+		        <div class="categoria" id="categoria-segundo">
+		            <img th:src="@{/img/lomosaltadovector.png}" alt="Segundos" />
+		            <p>Segundos</p>
+		        </div>
+		        <div class="categoria" id="categoria-bebida">
+		            <img th:src="@{/img/chichavector.png}" alt="Bebidas" />
+		            <p>Bebidas</p>
+		        </div>
+		        <div class="categoria" id="categoria-postre">
+		            <img th:src="@{/img/heladovector.png}" alt="Postres" />
+		            <p>Postres</p>
+		        </div>
+		    </div>
+		</section>	
+	</main>
 
     <script type="text/javascript" th:src="@{/js/TomarPedido.js}"></script>
+    <script type="text/javascript" th:src="@{/js/cargarProductosTipo.js}"></script>
 </body>
 </html>

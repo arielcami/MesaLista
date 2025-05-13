@@ -6,11 +6,73 @@ h2 {
     font-weight: normal;
 }
 
-
 .nombre-cliente {
 	margin-left: 10px;
 	margin-right: 30px;
     font-family: 'Consolas', monospace;
+    font-weight: normal;
+    color: #8d8c8e;
+}
+
+
+
+
+
+/* TARJETAS DE PRODUCTOS */
+/* Estilo general del contenedor */
+.seccion-categorias {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.seccion-categorias h3 {
+    font-size: 30px;
+    margin-bottom: 5px;
+    font-weight: normal;
+    color: #8d8c8e;
+}
+
+/* Contenedor flexible para las categorías */
+.contenedor-categorias {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 50px;
+    padding: 20px;
+}
+
+/* Estilo para cada imagen como icono clickeable */
+.categoria {
+    width: 210px; 
+    height: 210px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    padding: 0px;
+    border-radius: 30px;
+}
+
+/* Efecto de hover con sombra más oscura */
+.categoria:hover {
+    transform: translateY(-8px); /* Mueve la imagen 8px hacia arriba */
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.7); /* Sombra más oscura */
+}
+
+/* Imagen con border-radius y borde de 1px */
+.categoria img {
+    width: 100%;
+    height: auto;
+    border-radius: 30px; /* Bordes más suaves */
+    border: 1px solid #753b00; /* Borde sólido de 1px con el color solicitado */
+    pointer-events: none;
+}
+
+/* Texto debajo de la imagen */
+.categoria p {
+    margin-top: 10px;
+    font-size: 26px;
     font-weight: normal;
     color: #8d8c8e;
 }

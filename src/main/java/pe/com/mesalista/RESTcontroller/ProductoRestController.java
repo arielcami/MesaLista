@@ -74,7 +74,9 @@ public class ProductoRestController {
 	    }
 	}
 
-
-
+	@GetMapping("/tipo/activo/{tipo}")
+	public List<ProductoEntity> findActivosByTipo(@PathVariable byte tipo) {
+	    return productoService.findByTipoProductoAndEstadoTrue(tipo);
+	}
 
 }
