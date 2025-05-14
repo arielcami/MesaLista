@@ -7,7 +7,7 @@ import pe.com.mesalista.service.DetallePedidoService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/detallepedido")
+@RequestMapping("/api/detallepedido")
 public class DetallePedidoRestController {
 
 	@Autowired

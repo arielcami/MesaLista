@@ -13,68 +13,61 @@ import java.util.Optional;
 @Service
 public class PedidoServiceImpl implements PedidoService {
 
-	@Autowired
-	private PedidoRepository pedidoRepository;
-	
-	@Autowired
-	private DeliveryRepository deliveryRepository;
-	
-	// Implementación para el SP
-	@Override
-	public void agregarProductoAlPedido(Long clienteId, Long empleadoId, Long productoId, Integer cantidad, String direccionEntrega) {
-	    pedidoRepository.agregarProductoAlPedido(clienteId, empleadoId, productoId, cantidad, direccionEntrega);
-	}
-	
+    @Autowired
+    private PedidoRepository pedidoRepository;
 
-	@Override
-	public List<PedidoEntity> findAll() {
-		return pedidoRepository.findAll();
-	}
+    @Autowired
+    private DeliveryRepository deliveryRepository;
 
-	@Override
-	public List<PedidoEntity> findByEstadoPedido(Byte estadoPedido) {
-		return pedidoRepository.findByEstadoPedido(estadoPedido);
-	}
+    @Override
+    public List<PedidoEntity> findAll() {
+        return pedidoRepository.findAll();
+    }
 
-	@Override
-	public List<PedidoEntity> findByClienteId(Long clienteId) {
-		return pedidoRepository.findByCliente_Id(clienteId);
-	}
+    @Override
+    public List<PedidoEntity> findByEstadoPedido(Byte estadoPedido) {
+        return pedidoRepository.findByEstadoPedido(estadoPedido);
+    }
 
-	@Override
-	public PedidoEntity findById(Long id) {
-		Optional<PedidoEntity> pedidoOpt = pedidoRepository.findById(id);
-		return pedidoOpt.orElse(null);
-	}
+    @Override
+    public List<PedidoEntity> findByClienteId(Long clienteId) {
+        return pedidoRepository.findByCliente_Id(clienteId);
+    }
 
-	@Override
-	public PedidoEntity save(PedidoEntity pedido) {
-		return pedidoRepository.save(pedido);
-	}
-	
-	@Override
-	public PedidoEntity update(PedidoEntity pedido, Long id) {
-		if (pedidoRepository.existsById(id)) {
-			pedido.setId(id);
-			return pedidoRepository.save(pedido);
-		}
-		return null;
-	}
+    @Override
+    public PedidoEntity findById(Long id) {
+        Optional<PedidoEntity> pedidoOpt = pedidoRepository.findById(id);
+        return pedidoOpt.orElse(null);
+    }
 
-	@Override
-	public PedidoEntity delete(Long id) {
-		return pedidoRepository.findById(id).map(pedido -> {
-			pedido.setEstadoPedido((byte) 0);
-			return pedidoRepository.save(pedido);
-		}).orElse(null);
-	}
-	
-	@Override
-    public PedidoEntity asignarDelivery(Long pedidoId, Long deliveryId) {
-        PedidoEntity pedido = pedidoRepository.findById(pedidoId).orElseThrow();
-        DeliveryEntity del = deliveryRepository.findById(deliveryId).orElseThrow();
-        pedido.setDelivery(del);
+    @Override
+    public PedidoEntity save(PedidoEntity pedido) {
         return pedidoRepository.save(pedido);
     }
-	
+
+    @Override
+    public PedidoEntity update(PedidoEntity pedido, Long id) {
+        if (pedidoRepository.existsById(id)) {
+            pedido.setId(id);
+            return pedidoRepository.save(pedido);
+        }
+        return null;
+    }
+
+    @Override
+    public PedidoEntity delete(Long id) {
+        return pedidoRepository.findById(id).map(pedido -> {
+            pedido.setEstadoPedido((byte) 0);
+            return pedidoRepository.save(pedido);
+        }).orElse(null);
+    }
+
+    @Override
+    public PedidoEntity asignarDelivery(Long pedidoId, Long deliveryId) {
+        PedidoEntity pedido = pedidoRepository.findById(pedidoId).orElseThrow();
+        DeliveryEntity delivery = deliveryRepository.findById(deliveryId).orElseThrow();
+        pedido.setDelivery(delivery);
+        return pedidoRepository.save(pedido);
+    }
+
 }

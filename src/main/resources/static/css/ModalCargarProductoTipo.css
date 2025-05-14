@@ -110,3 +110,38 @@
 .producto-item:focus {
     outline: none;
 }
+
+.cantidad-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.cantidad-container button {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.cantidad-container .cantidad {
+    font-size: 16px;
+    font-weight: bold;
+    width: 30px;
+    text-align: center;
+}
+
+.agregar-al-pedido {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.agregar-al-pedido:hover {
+    background-color: #218838;
+}
+

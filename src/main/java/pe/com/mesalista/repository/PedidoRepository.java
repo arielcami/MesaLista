@@ -9,20 +9,19 @@ import pe.com.mesalista.entity.PedidoEntity;
 
 public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
 
-	List<PedidoEntity> findByEstadoPedido(byte estadoPedido);
+    List<PedidoEntity> findByEstadoPedido(byte estadoPedido);
 
-	List<PedidoEntity> findByCliente_Id(Long clienteId);
-	
-	List<PedidoEntity> findByDelivery_Id(Long deliveryId);
-	
-	@Procedure(procedureName = "addProducto")
-    void agregarProductoAlPedido(
+    List<PedidoEntity> findByCliente_Id(Long clienteId);
+
+    List<PedidoEntity> findByDelivery_Id(Long deliveryId);
+    
+    // Método para ejecutar el SP 'addProducto'
+    @Procedure(procedureName = "addProducto")
+    Long agregarProducto(
         @Param("p_cliente_id") Long clienteId,
-        @Param("p_empleado_id") Long empleadoId,
         @Param("p_producto_id") Long productoId,
         @Param("p_cantidad") Integer cantidad,
-        @Param("p_direccion_entrega") String direccionEntrega
+        @Param("p_precio_unitario") double precioUnitario
     );
-	
-	
+
 }

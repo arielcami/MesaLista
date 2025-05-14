@@ -7,11 +7,11 @@ body {
 }
 
 h2 {
-    font-size: 40px;
+    font-size: 34px;
     text-align: left;
-    margin-top: 100px;
-    margin-left: 100px;
-    color:  #8d8c8e;
+    margin-top: 10px; /* <--- Levantado */
+    margin-left: 60px;
+    color: #8d8c8e;
     font-weight: normal;
 }
 
@@ -35,99 +35,113 @@ main {
 
 /* Estilo general para el formulario */
 .buscar-cliente-form {
-    max-width:400px;
+    max-width: 360px;
     margin: 0 auto;
-    margin-left: 80px; /* <-- Lo mueve a la izquierda */
-    padding: 30px;
-    font-size: 22px;
+    margin-left: 50px;
+    padding: 20px;
+    font-size: 20px;
     color: #8d8c8e;
 }
 
 /* Espaciado entre los campos de formulario */
 .form-group {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
-
-/* Asegura que el contenedor del botón lo centre */
 .form-group:last-child {
     display: block;
-    justify-content: center; /* <-- Centra horizontalmente */
+    justify-content: center;
 }
 
-
-/* Estilo de los campos de texto */
+/* Campos de texto */
 .input-text {
-    width: 305px;
-    padding: 10px;
+    width: 270px;
+    padding: 8px;
     border-radius: 8px;
     border: 1px solid #6e6e6e;
-    font-size: 23px;
+    font-size: 20px;
     font-family: 'Consolas';
 }
 
-/* Estilo del botón */	
+/* Botón general */
 .btn-submit {
-	width: 280px;
+    width: 240px;
     background-color: #d4a500;
     color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 33px;
     cursor: pointer;
-    font-size: 33px;
+    font-size: 28px;
     font-family: 'Yeseva One';
-    margin-left: 260px;
+    margin-left: 235px;
 }
 
-.btn-submit:hover {
+.btn-submit-2 {
+    width: 240px;
+    background-color: #d4a500;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 33px;
+    cursor: pointer;
+    font-size: 28px;
+    font-family: 'Yeseva One';
+    margin-left: 0px;
+    margin-top: -50px;
+}
+
+.btn-submit:hover .btn-submit-2:hover  {
     background-color: #886000;
 }
 
-
-/* Tabla de resultados */
-/* Contenedor que pone el formulario y la tabla uno al lado del otro */
+/* Flex para formulario y tabla */
 .contenido-flex {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 200px; /* Espacio entre el form y la tabla */
+    gap: 150px;
+    flex-wrap: wrap;
+    margin-top: -10px;
 }
 
-/* Contenedor de la tabla */
+/* Contenedor de tabla */
 .tabla-container {
     flex: 1;
     overflow-x: auto;
     margin-top: 20px;
+    max-width: 920px;
 }
 
-/* Tabla de resultados */
+/* Tabla */
 .tabla-clientes {
-    width: 1000px;
+    width: 860px;
     border-collapse: collapse;
-    font-size: 16px;
+    font-size: 14px;
     color: #333;
+    transform: scale(0.95);
+    transform-origin: top left;
 }
 
 .tabla-clientes-rows {
     width: 50px;
     border-collapse: collapse;
-    font-size: 19px;
+    font-size: 16px;
     color: #333;
     font-family: 'Consolas';
 }
 
-/* Agrandar y centrar el radio button */
+/* Radio buttons */
 .tabla-clientes input[type="radio"] {
-    width: 32px;
-    height: 32px;
-    accent-color: #d4a500; /* Cambia el color si tu navegador lo permite */
+    width: 26px;
+    height: 26px;
+    accent-color: #d4a500;
     display: block;
-    margin: 0 auto; /* Centra horizontalmente */
+    margin: 0 auto;
 }
 
 .tabla-clientes th, .tabla-clientes td {
-    padding: 12px;
+    padding: 10px;
     text-align: left;
     border: 1px solid #ccc;
 }
@@ -137,25 +151,25 @@ main {
     font-weight: bold;
     color: white;
     font-family: 'Arial';
-    font-size: 20px;
+    font-size: 18px;
 }
 
+/* Botón debajo de tabla alineado a la izquierda */
 .button-container {
-	margin-top: 40px;
-	
+    margin-top: 30px;
+    text-align: left; /* <--- Cambiado a la izquierda */
 }
 
-
+/* Cajón dorado de input */
 .cajon-dorado {
-
-	background-color: #d4a500;
-	width: 330px;
-	padding: 12px;
-	border-radius: 60px;
-	margin-bottom: 10px;
+    background-color: #d4a500;
+    width: 290px;
+    padding: 10px;
+    border-radius: 60px;
+    margin-bottom: 10px;
 }
 
-
+/* Label e input alineados */
 .grupo-flex {
     display: flex;
     align-items: center;
@@ -163,32 +177,9 @@ main {
 }
 
 .grupo-flex label {
-    width: 160px; /* Aumentado para que quepa "Por Documento:" */
+    width: 140px;
     margin-right: 50px;
-    font-size: 26px;
+    font-size: 24px;
     color: #8d8c8e;
     white-space: nowrap;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

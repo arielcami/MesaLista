@@ -6,9 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.com.mesalista.entity.PedidoEntity;
 import pe.com.mesalista.service.PedidoService;
-
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/pedido")
@@ -22,21 +20,6 @@ public class PedidoRestController {
 		return servicio.findAll();
 	}
 	
-	// Endpoint para el SP
-	@PostMapping("/agregar-producto")
-	public ResponseEntity<Void> agregarProductoAlPedido(@RequestBody Map<String, Object> requestBody) {
-	    // Obtener los valores del Map y asegurarse de convertirlos al tipo correcto
-	    Long clienteId = Long.parseLong(requestBody.get("clienteId").toString());
-	    Long empleadoId = Long.parseLong(requestBody.get("empleadoId").toString());
-	    Long productoId = Long.parseLong(requestBody.get("productoId").toString());
-	    Integer cantidad = Integer.parseInt(requestBody.get("cantidad").toString());
-	    String direccionEntrega = (String) requestBody.get("direccionEntrega");
-	    
-	    // Llamamos al servicio para agregar el producto al pedido
-	    servicio.agregarProductoAlPedido(clienteId, empleadoId, productoId, cantidad, direccionEntrega);
-	    
-	    return ResponseEntity.status(HttpStatus.OK).build();
-	}
 	
 	@GetMapping("/estado/{estado}")
 	public List<PedidoEntity> findByEstadoPedido(@PathVariable byte estado) {

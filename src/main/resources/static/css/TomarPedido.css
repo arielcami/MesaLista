@@ -76,3 +76,23 @@ h2 {
     font-weight: normal;
     color: #8d8c8e;
 }
+
+
+.btn-siguiente {
+    width: 240px;
+    background-color: #d4a500;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 33px;
+    cursor: pointer;
+    font-size: 28px;
+    font-family: 'Yeseva One';
+    transition: color 0.3s ease;
+    margin-top: 100px;
+}
+
+.btn-siguiente:hover {
+    color: #333;
+}
+

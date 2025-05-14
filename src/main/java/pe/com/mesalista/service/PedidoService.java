@@ -5,21 +5,20 @@ import pe.com.mesalista.entity.PedidoEntity;
 
 public interface PedidoService {
 
-	List<PedidoEntity> findAll();
+    List<PedidoEntity> findAll();
 
-	List<PedidoEntity> findByEstadoPedido(Byte estadoPedido);
+    List<PedidoEntity> findByEstadoPedido(Byte estadoPedido);
 
-	List<PedidoEntity> findByClienteId(Long clienteId);
+    List<PedidoEntity> findByClienteId(Long clienteId);
 
-	PedidoEntity findById(Long id);
+    PedidoEntity findById(Long id);
 
-	PedidoEntity save(PedidoEntity pedido);
+    PedidoEntity save(PedidoEntity pedido);
 
-	PedidoEntity update(PedidoEntity pedido, Long id);
+    PedidoEntity update(PedidoEntity pedido, Long id);
 
-	PedidoEntity delete(Long id);
-	
-	PedidoEntity asignarDelivery(Long pedidoId, Long deliveryId);
-	
-	void agregarProductoAlPedido(Long clienteId, Long empleadoId, Long productoId, Integer cantidad, String direccionEntrega);
+    PedidoEntity delete(Long id);
+
+    PedidoEntity asignarDelivery(Long pedidoId, Long deliveryId);
+    
 }
