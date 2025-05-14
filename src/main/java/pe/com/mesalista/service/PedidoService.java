@@ -21,4 +21,6 @@ public interface PedidoService {
 
     PedidoEntity asignarDelivery(Long pedidoId, Long deliveryId);
     
+    void confirmarPedido(Long pedidoId, Long empleadoId, String direccionEntrega);
+    
 }

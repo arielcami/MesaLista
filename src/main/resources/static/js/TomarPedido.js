@@ -14,9 +14,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const documento = document.getElementById("cliente-documento-hidden").value;
     const telefono = document.getElementById("cliente-telefono-hidden").value;
     const direccion = document.getElementById("cliente-direccion-hidden").value;
-
     const telefonoFormateado = formatearTelefono(telefono);
-
+	
     // Insertar datos visibles en los spans
     document.getElementById("cliente-nombre").textContent = nombre;
     document.getElementById("cliente-documento").textContent = documento;

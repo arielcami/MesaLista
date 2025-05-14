@@ -23,5 +23,14 @@ public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
         @Param("p_cantidad") Integer cantidad,
         @Param("p_precio_unitario") double precioUnitario
     );
+    
+    
+    // Método para ejecutar el SP 'confirmarPedido'
+    @Procedure(procedureName = "confirmarPedido")
+    void confirmarPedido(
+        @Param("p_pedido_id") Long pedidoId,
+        @Param("p_empleado_id") Long empleadoId,
+        @Param("p_direccion_entrega") String direccionEntrega
+    );
 
 }

@@ -1,3 +1,4 @@
+
 h2 {
     font-size: 34px;
     text-align: left;
@@ -7,11 +8,179 @@ h2 {
     font-weight: normal;
 }
 
-h2 {
+h3 {
     font-size: 22px;
     text-align: left;
     margin-top: 10px;
     margin-left: 60px;
     color: #8d8c8e;
     font-weight: normal;
+}
+
+/* Contenedor de tabla */
+.tabla-container {
+    flex: 1;
+    overflow-x: auto;
+    margin-top: 20px;
+    max-width: 920px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Tabla general */
+.tabla-detallepedido {
+    width: 860px;
+    border-collapse: collapse;
+    font-size: 19px;
+    color: #333;
+    transform: scale(0.95);
+    transform-origin: top left;
+    margin: 0 auto;
+}
+
+/* Filas de tabla */
+.tabla-detallepedido-rows {
+    font-size: 18px;
+    color: black;
+
+}
+
+/* Celdas */
+.tabla-detallepedido th,
+.tabla-detallepedido td {
+    padding: 10px;
+    text-align: center; /* CAMBIO AQUÍ */
+    border: 1px solid #ccc;
+    font-family: 'Consolas';
+    font-size: 22px;
+}
+
+
+/* Cabecera */
+.tabla-detallepedido th {
+    background-color: #d4a500;
+    font-weight: bold;
+    color: white;
+    font-family: 'Arial';
+    font-size: 20px;
+}
+
+
+
+.button-container {
+    margin-top: 30px;
+    text-align: center;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Botón Confirmar (azul) */
+.btn-confirmar {
+    background-color: #006aff;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Yeseva One';
+    transition: background-color 0.3s ease;
+}
+.btn-confirmar:hover {
+    background-color: #b89300;
+}
+
+/* Botón Cancelar (rojo) */
+.btn-cancelar {
+    background-color: #d9534f;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Yeseva One';
+    transition: background-color 0.3s ease;
+}
+.btn-cancelar:hover {
+    background-color: #c9302c;
+}
+
+/* Botón Regresar (gris) */
+.btn-regresar {
+    background-color: #d4a500;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Yeseva One';	
+    transition: background-color 0.3s ease;
+}
+.btn-regresar:hover {
+    background-color: #5a6268;
+}
+
+
+.total-container {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 26px;
+    font-family: 'Yeseva One';
+    color: #8d8c8e;
+    font-weight: normal;
+}
+
+#total-pedido {
+    font-size: 32px;
+    font-family: 'Consolas';
+    color: black;
+}
+
+
+
+
+.grupo-formulario {
+    margin-bottom: 12px;
+    margin-left: 60px;
+}
+
+.grupo-flexible {
+    display: flex;
+    flex-direction: column;
+    color: #8d8c8e;
+    font-size: 20px;
+    font-family: 'Yeseva One';
+}
+
+.contenedor-input {
+    margin-top: 6px;
+}
+
+.campo-texto {
+    width: 500px;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #6e6e6e;
+    font-size: 20px;
+    font-family: 'Consolas';
+}
+
+.campo-numero {
+    width: 80px;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #6e6e6e;
+    font-size: 20px;
+    font-family: 'Consolas';
+}
+
+.contenedor-centrado-campos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
 }

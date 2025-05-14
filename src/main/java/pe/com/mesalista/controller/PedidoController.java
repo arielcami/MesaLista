@@ -16,4 +16,9 @@ public class PedidoController {
         model.addAttribute("pedidoId", pedidoId);
         return "ConfirmarPedido"; // Nombre de la vista (plantilla)
     }
+    
+    @GetMapping("/confirmar/ok")
+    public String siguiente() {
+        return "Inicio"; // Nombre de la vista (plantilla)
+    }
 }

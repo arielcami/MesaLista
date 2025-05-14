@@ -18,7 +18,7 @@ public class ClienteRestController {
         return servicio.findAll();
     }
 
-    
+   
     @GetMapping("/nombre/{nombre}")
     public List<ClienteEntity> findByNombre(@PathVariable String nombre) {
         return servicio.findByNombreContainingIgnoreCase(nombre);

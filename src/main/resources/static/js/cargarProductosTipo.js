@@ -18,6 +18,7 @@ function guardarCarritoLocal(clienteId, tipo, productoId, cantidad) {
 		}
 	}
 	localStorage.setItem("carrito", JSON.stringify(carrito));
+	
 }
 
 function limpiarCarritoCliente(clienteId) {

@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Buscar Cliente - MesaLista v1.0</title>
+<title>Confirmar Pedido - MesaLista v1.0</title>
 
 <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
-
-<link rel="stylesheet" type="text/css" th:href="@{/css/ConfirmarPedido.css}" />
-
-<link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/ConfirmarPedido.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/BarraNavegacion.css}" />
 
 </head>
 
@@ -16,32 +16,65 @@
 	<div th:replace="components/BarraNavegacion :: barra-nav"></div>
 
 	<main>
-	
 		<h2>Confirmar Pedido</h2>
-		
-		
+
 		<h3>Detalles del Pedido</h3>
-			<table id="tabla-detalles" border="1">
-			    <thead>
-			        <tr>
-			            <th>ID</th>
-			            <th>Producto</th>
-			            <th>Cantidad</th>
-			            <th>Precio Unitario</th>
-			            <th>Subtotal</th>
-			        </tr>
-			    </thead>
-			    <tbody id="detalle-body">
-			        <!-- Aquí se insertarán las filas -->
-			    </tbody>
+
+		<div class="tabla-container">
+			<table border="1" class="tabla-detallepedido">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Producto</th>
+						<th>Cantidad</th>
+						<th>Precio Unitario</th>
+						<th>Subtotal</th>
+					</tr>
+				</thead>
+				<tbody id="detalle-body">
+					<!-- Aquí se insertarán las filas -->
+				</tbody>
 			</table>
+		</div>
+
+		<div class="total-container">
+			<span>Total del Pedido: <strong id="total-pedido"> S/0.00</strong></span>
+		</div>
+
+		<!-- Campo para ingresar el ID de empleado -->
+		<div class="contenedor-centrado-campos">
+		    <!-- Campo para ingresar el ID de empleado -->
+		    <div class="grupo-formulario">
+		        <div class="grupo-flexible">
+		            <label for="empleado-id">ID del Empleado:</label>
+		            <div class="contenedor-input">
+		                <input type="number" id="empleado-id" class="campo-numero" placeholder="ID" required />
+		            </div>
+		        </div>
+		    </div>
 		
-		
-		<button id="btn-confirmar-final" class="btn-confirmar">Confirmar Pedido</button>
-		
-		
+		    <!-- Campo opcional para ingresar la dirección de entrega -->
+		    <div class="grupo-formulario">
+		        <div class="grupo-flexible">
+		            <label for="direccion-entrega">Dirección de Entrega (opcional):</label>
+		            <div class="contenedor-input">
+		                <input type="text" id="direccion-entrega" class="campo-texto" placeholder="Ingrese la dirección de entrega (opcional)" />
+		            </div>
+		        </div>
+		    </div>
+		</div>
+
+
+
+
+		<div class="button-container">
+			<button id="btn-regresar" class="btn-regresar">Regresar</button>
+			<button id="btn-cancelar" class="btn-cancelar">Cancelar	Pedido</button>
+			<button id="btn-confirmar-final" class="btn-confirmar">Confirmar Pedido</button>
+		</div>
+
 	</main>
-	
-<script type="text/javascript" th:src="@{/js/ConfirmarPedido.js}"></script>
+
+	<script type="text/javascript" th:src="@{/js/ConfirmarPedido.js}"></script>
 </body>
 </html>
