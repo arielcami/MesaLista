@@ -9,7 +9,7 @@ import pe.com.mesalista.service.PedidoService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pedido")
+@RequestMapping("/api/pedido")
 public class PedidoRestController {
 
 	@Autowired

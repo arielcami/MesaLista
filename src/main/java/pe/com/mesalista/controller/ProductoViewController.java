@@ -11,6 +11,6 @@ public class ProductoViewController {
     @GetMapping({"", "/", "/activos", "/inactivos"})
     public String vistaProducto() {
         return "Productos";  // Nombre de tu plantilla HTML
-    }
+    }    
 }
 

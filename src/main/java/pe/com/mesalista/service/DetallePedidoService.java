@@ -30,4 +30,9 @@ public interface DetallePedidoService {
 
 	// Eliminar un detalle de pedido
 	DetallePedidoEntity delete(Long id);
+	
+	// Buscar todos los detalles activos (estado = 1) de un pedido específico
+	List<DetallePedidoEntity> findActivosByPedidoId(Long pedidoId);
+
+	
 }

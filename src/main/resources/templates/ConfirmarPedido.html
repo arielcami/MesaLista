@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Buscar Cliente - MesaLista v1.0</title>
+
+<link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/ConfirmarPedido.css}" />
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
+
+</head>
+
+<body>
+	<div th:replace="components/BarraNavegacion :: barra-nav"></div>
+
+	<main>
+	
+		<h2>Confirmar Pedido</h2>
+		
+		
+		<h3>Detalles del Pedido</h3>
+			<table id="tabla-detalles" border="1">
+			    <thead>
+			        <tr>
+			            <th>ID</th>
+			            <th>Producto</th>
+			            <th>Cantidad</th>
+			            <th>Precio Unitario</th>
+			            <th>Subtotal</th>
+			        </tr>
+			    </thead>
+			    <tbody id="detalle-body">
+			        <!-- Aquí se insertarán las filas -->
+			    </tbody>
+			</table>
+		
+		
+		<button id="btn-confirmar-final" class="btn-confirmar">Confirmar Pedido</button>
+		
+		
+	</main>
+	
+<script type="text/javascript" th:src="@{/js/ConfirmarPedido.js}"></script>
+</body>
+</html>

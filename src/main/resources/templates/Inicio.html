@@ -89,6 +89,7 @@
 			
 			            btnTomarPedido.addEventListener('click', function () {
 			                if (clienteSeleccionadoId) {
+			                	localStorage.clear();
 			                    window.location.href = '/mesalista/cliente/pedido/nuevo/' + clienteSeleccionadoId;
 			                } else {
 			                    alert("Por favor, selecciona un cliente.");
@@ -96,8 +97,6 @@
 			            });
 			        }
 			    </script>
-
-
 
 			</div>
 		</div>

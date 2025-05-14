@@ -179,6 +179,20 @@ document.addEventListener("keydown", (event) => {
 	}
 });
 
+
+// Confirmar pedido y redirigir a la página de confirmar
+document.getElementById("confirmar-pedido").addEventListener("click", () => {
+    const pedidoId = localStorage.getItem("pedido_id");
+    if (pedidoId) {
+        // Redirige a la plantilla de confirmación con el pedidoId como parámetro
+        window.location.href = `/mesalista/pedido/confirmar?pedidoId=${pedidoId}`;
+    } else {
+		alert("No hay ningún producto agregado.");
+        //console.error("No se encontró el pedido_id en localStorage");
+    }
+});
+
+
 // Cargar categorías
 document.getElementById("categoria-entrada").addEventListener("click", () => {
 	cargarProductosPorTipo(1, "Entradas");
@@ -193,7 +207,4 @@ document.getElementById("categoria-postre").addEventListener("click", () => {
 	cargarProductosPorTipo(4, "Postres");
 });
 
-// Confirmar pedido (limpiar carrito)
-document.getElementById("confirmar-pedido").addEventListener("click", () => {
-	localStorage.clear();
-});
+

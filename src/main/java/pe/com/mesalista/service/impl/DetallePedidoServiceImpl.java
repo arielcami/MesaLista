@@ -66,4 +66,12 @@ public class DetallePedidoServiceImpl implements DetallePedidoService {
 		}
 		return null; // Si no existe el detalle de pedido, no hacemos nada
 	}
+	
+	@Override
+	public List<DetallePedidoEntity> findActivosByPedidoId(Long pedidoId) {
+		return detallePedidoRepository.findActivosByPedidoId(pedidoId);
+	}
+
+	
+	
 }

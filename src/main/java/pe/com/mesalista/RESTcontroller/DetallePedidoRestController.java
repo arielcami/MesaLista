@@ -61,4 +61,13 @@ public class DetallePedidoRestController {
 	public void delete(@PathVariable Long id) {
 		servicio.delete(id);
 	}
+	
+	
+	// Obtener todos los detalles activos (estado = 1) de un pedido específico /api/detallepedido/buscaractivo/id
+	@GetMapping("/buscaractivo/{pedidoID}")
+	public List<DetallePedidoEntity> findActivosByPedidoId(@PathVariable("pedidoID") Long pedidoId) {
+		return servicio.findActivosByPedidoId(pedidoId);
+	}
+
+	
 }
