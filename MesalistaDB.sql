@@ -1,4 +1,389 @@
+DROP DATABASE IF EXISTS mesalista_db;
+
+CREATE DATABASE mesalista_db;
+
 USE mesalista_db;
+
+DROP TABLE IF EXISTS clientes;
+CREATE TABLE clientes (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(100) NOT NULL,
+	telefono VARCHAR(16) NOT NULL,
+	documento VARCHAR(12) NOT NULL,
+	direccion VARCHAR(200) NOT NULL,
+	estado BIT(1) DEFAULT b'1',
+	creado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+	actualizado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (id),
+	UNIQUE KEY documento (documento)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+DROP TABLE IF EXISTS estados;
+CREATE TABLE estados (
+	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(20) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+DROP TABLE IF EXISTS tipo_producto;
+CREATE TABLE tipo_producto (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(20) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+DROP TABLE IF EXISTS productos;
+CREATE TABLE productos (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(100) NOT NULL,
+	tipo_producto TINYINT UNSIGNED NOT NULL,
+	precio DECIMAL(10,2) NOT NULL,
+	estado BIT(1) DEFAULT b'1',
+	creado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+	actualizado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (id),
+	UNIQUE KEY nombre (nombre)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+DROP TABLE IF EXISTS empleados;
+CREATE TABLE empleados (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(100) NOT NULL,
+	telefono VARCHAR(19) NOT NULL,
+	documento VARCHAR(12) NOT NULL,
+	clave VARCHAR(45) NOT NULL,
+	direccion VARCHAR(100) NOT NULL,
+	nivel TINYINT UNSIGNED NOT NULL DEFAULT '0',
+	estado TINYINT UNSIGNED DEFAULT '1',
+	creado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+	actualizado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (id),
+	UNIQUE KEY documento (documento)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+DROP TABLE IF EXISTS deliveries;
+CREATE TABLE deliveries (
+	id INT UNSIGNED NOT NULL,
+	unidad VARCHAR(25) NOT NULL,
+	placa VARCHAR(8) NOT NULL,
+	PRIMARY KEY (id),
+	UNIQUE KEY placa (placa),
+	CONSTRAINT fk_delivery_empleado FOREIGN KEY (id) REFERENCES empleados (id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+DROP TABLE IF EXISTS pedidos;
+CREATE TABLE pedidos (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	cliente_id INT UNSIGNED NOT NULL,
+	total DECIMAL(10,2) NOT NULL,
+	empleado_id INT UNSIGNED NULL,
+	estado_pedido TINYINT UNSIGNED NOT NULL,
+	direccion_entrega VARCHAR(200) NULL,
+	fecha_pedido TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+	creado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+	actualizado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	delivery_id INT UNSIGNED DEFAULT NULL,
+	PRIMARY KEY (id),
+	KEY cliente_id (cliente_id),
+	KEY empleado_id (empleado_id),
+	KEY fk_pedidos_delivery (delivery_id),
+	CONSTRAINT fk_pedidos_delivery FOREIGN KEY (delivery_id) REFERENCES deliveries (id) ON DELETE SET NULL ON UPDATE CASCADE,
+	CONSTRAINT pedidos_ibfk_1 FOREIGN KEY (cliente_id) REFERENCES clientes (id),
+	CONSTRAINT pedidos_ibfk_2 FOREIGN KEY (empleado_id) REFERENCES empleados (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+DROP TABLE IF EXISTS detalle_pedido;
+CREATE TABLE detalle_pedido (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	pedido_id INT UNSIGNED NOT NULL,
+	producto_id INT UNSIGNED NOT NULL,
+	cantidad TINYINT UNSIGNED NOT NULL,
+	precio_unitario DECIMAL(10,2) NOT NULL,
+	estado TINYINT UNSIGNED NOT NULL DEFAULT '1',
+	creado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+	actualizado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (id),
+	KEY pedido_id (pedido_id),
+	KEY producto_id (producto_id),
+	CONSTRAINT detalle_pedido_ibfk_1 FOREIGN KEY (pedido_id) REFERENCES pedidos (id),
+	CONSTRAINT detalle_pedido_ibfk_2 FOREIGN KEY (producto_id) REFERENCES productos (id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+-- Stored Procedures
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `addProducto`$$
+
+CREATE PROCEDURE `addProducto`(
+    IN p_cliente_id INT,
+    IN p_producto_id INT,
+    IN p_cantidad INT,
+    IN p_precio_unitario DECIMAL(10,2),
+    OUT p_pedido_id INT  -- Parámetro de salida
+)
+BEGIN
+    DECLARE p_id INT;
+    DECLARE v_total DECIMAL(10,2);
+    DECLARE v_existe INT;
+
+    -- Buscar pedido existente (no asignado aún a empleado)
+    SELECT id INTO p_id 
+    FROM pedidos 
+    WHERE cliente_id = p_cliente_id AND empleado_id IS NULL 
+    ORDER BY id DESC LIMIT 1;
+
+    -- Si no hay pedido en curso, crear uno
+    IF p_id IS NULL THEN
+        INSERT INTO pedidos (cliente_id, direccion_entrega, total, estado_pedido)
+        VALUES (p_cliente_id, NULL, 0, 0);  -- Total 0 mientras se arma el pedido
+        SET p_id = LAST_INSERT_ID();
+    END IF;
+
+    -- Verificar si el producto ya existe en el detalle del pedido
+    SELECT COUNT(*) INTO v_existe
+    FROM detalle_pedido
+    WHERE pedido_id = p_id AND producto_id = p_producto_id;
+
+    -- Si el producto existe, actualizar la cantidad
+    IF v_existe > 0 THEN
+        UPDATE detalle_pedido
+        SET cantidad = cantidad + p_cantidad
+        WHERE pedido_id = p_id AND producto_id = p_producto_id;
+    ELSE
+        -- Si el producto no existe, insertar un nuevo detalle
+        INSERT INTO detalle_pedido (pedido_id, producto_id, cantidad, precio_unitario)
+        VALUES (p_id, p_producto_id, p_cantidad, p_precio_unitario);
+    END IF;
+
+    -- Actualizar el total del pedido
+    SELECT SUM(cantidad * precio_unitario) INTO v_total
+    FROM detalle_pedido
+    WHERE pedido_id = p_id;
+
+    -- Actualizar el campo total del pedido
+    UPDATE pedidos 
+    SET total = v_total
+    WHERE id = p_id;
+
+    -- Asignar el pedido_id al parámetro de salida
+    SET p_pedido_id = p_id;
+
+END$$
+
+DELIMITER ;
+
+
+
+DELIMITER $$
+
+USE `mesalista_db`$$
+
+DROP PROCEDURE IF EXISTS `confirmarPedido`$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `confirmarPedido`(
+    IN p_pedido_id INT,
+    IN p_empleado_id INT,
+    IN p_direccion_entrega VARCHAR(200)
+)
+BEGIN
+    DECLARE v_cliente_id INT;
+    DECLARE v_direccion_cliente VARCHAR(200);
+    DECLARE v_empleado_existente INT;
+    DECLARE v_cliente_existente INT;
+
+    -- Verificar si el pedido existe
+    IF NOT EXISTS (SELECT 1 FROM pedidos WHERE id = p_pedido_id) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El pedido no existe';
+    END IF;
+
+    -- Verificar si el empleado existe
+    SELECT COUNT(1) INTO v_empleado_existente
+    FROM empleados
+    WHERE id = p_empleado_id;
+    
+    IF v_empleado_existente = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El empleado no existe';
+    END IF;
+
+    -- Obtener el cliente_id del pedido
+    SELECT cliente_id INTO v_cliente_id
+    FROM pedidos
+    WHERE id = p_pedido_id;
+
+    -- Verificar si el cliente existe
+    SELECT COUNT(1) INTO v_cliente_existente
+    FROM clientes
+    WHERE id = v_cliente_id;
+    
+    IF v_cliente_existente = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El cliente no existe';
+    END IF;
+
+    -- Si la dirección no fue proporcionada (es NULL o vacía), buscar la del cliente
+    IF p_direccion_entrega IS NULL OR p_direccion_entrega = '' THEN
+        SELECT direccion INTO v_direccion_cliente
+        FROM clientes
+        WHERE id = v_cliente_id;
+    ELSE
+        SET v_direccion_cliente = p_direccion_entrega;
+    END IF;
+
+    -- Verificar si el estado del pedido ya está confirmado (1)
+    IF EXISTS (SELECT 1 FROM pedidos WHERE id = p_pedido_id AND estado_pedido = 1) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El pedido ya ha sido confirmado';
+    END IF;
+
+    -- Actualizar el pedido con empleado_id, dirección de entrega y estado
+    UPDATE pedidos
+    SET
+        empleado_id = p_empleado_id,
+        direccion_entrega = v_direccion_cliente,
+        estado_pedido = 1
+    WHERE id = p_pedido_id;
+    
+    COMMIT;
+END$$
+
+DELIMITER ;
+
+
+
+
+
+
+DELIMITER ;;
+CREATE DEFINER=root@localhost PROCEDURE adjustCantidadProducto(
+    IN p_pedido_id   INT UNSIGNED,
+    IN p_producto_id INT UNSIGNED,
+    IN p_delta       SMALLINT       -- ahora con signo: permite -32768 a +32767
+)
+BEGIN
+    DECLARE v_cantidad_actual INT DEFAULT 0;
+    DECLARE v_nueva_cantidad INT;
+
+    -- 1) Leer la cantidad actual (solo en estado carrito)
+    SELECT cantidad
+      INTO v_cantidad_actual
+      FROM detalle_pedido
+     WHERE pedido_id   = p_pedido_id
+       AND producto_id = p_producto_id
+       AND estado      = 1
+     LIMIT 1;
+
+    -- 2) Calcular la nueva cantidad, evitando negativos
+    SET v_nueva_cantidad = GREATEST(v_cantidad_actual + p_delta, 0);
+
+    -- 3) Si la nueva cantidad es 0, baja lógica
+    IF v_nueva_cantidad = 0 THEN
+        UPDATE detalle_pedido
+           SET cantidad = 0,
+               estado   = 0
+         WHERE pedido_id   = p_pedido_id
+           AND producto_id = p_producto_id;
+    ELSE
+        -- 4) Actualizar cantidad y mantener activo
+        UPDATE detalle_pedido
+           SET cantidad = v_nueva_cantidad,
+               estado   = 1
+         WHERE pedido_id   = p_pedido_id
+           AND producto_id = p_producto_id;
+    END IF;
+
+    -- 5) Recalcular el total del pedido según detalles activos
+    UPDATE pedidos
+       SET total = (
+            SELECT COALESCE(SUM(cantidad * precio_unitario), 0)
+              FROM detalle_pedido
+             WHERE pedido_id = p_pedido_id
+               AND estado    = 1
+       )
+     WHERE id = p_pedido_id;
+END ;;
+DELIMITER ;
+
+
+DELIMITER ;;
+CREATE DEFINER=root@localhost PROCEDURE deleteProducto(
+    IN p_pedido_id    INT UNSIGNED,
+    IN p_producto_id  INT UNSIGNED
+)
+BEGIN
+    -- Marcar el detalle como eliminado (estado = 0)
+    UPDATE detalle_pedido
+       SET estado = 0
+     WHERE pedido_id   = p_pedido_id
+       AND producto_id = p_producto_id
+       AND estado      = 1;
+
+    -- Recalcular el total del pedido, ignorando detalles con estado = 0
+    UPDATE pedidos
+       SET total = (
+            SELECT COALESCE(SUM(cantidad * precio_unitario), 0)
+              FROM detalle_pedido
+             WHERE pedido_id = p_pedido_id
+               AND estado    = 1
+       )
+     WHERE id = p_pedido_id;
+END ;;
+DELIMITER ;
+
+
+DELIMITER ;;
+CREATE DEFINER=root@localhost PROCEDURE enableProducto(
+    IN p_pedido_id    INT UNSIGNED,
+    IN p_producto_id  INT UNSIGNED
+)
+BEGIN
+    -- 1) Marcar el detalle como activo de nuevo (estado = 1)
+    UPDATE detalle_pedido
+       SET estado = 1
+     WHERE pedido_id   = p_pedido_id
+       AND producto_id = p_producto_id
+       AND estado      = 0;
+
+    -- 2) Recalcular el total del pedido, contando sólo los detalles activos
+    UPDATE pedidos
+       SET total = (
+            SELECT COALESCE(SUM(cantidad * precio_unitario), 0)
+              FROM detalle_pedido
+             WHERE pedido_id = p_pedido_id
+               AND estado    = 1
+       )
+     WHERE id = p_pedido_id;
+END ;;
+DELIMITER ;
+
+
+DELIMITER ;;
+CREATE DEFINER=root@localhost PROCEDURE updateEstadoPedido(
+    IN p_pedido_id      INT UNSIGNED,
+    IN p_nuevo_estado   TINYINT UNSIGNED  -- acepta 0 a 255; en tu lógica usarás 0–5, etc.
+)
+BEGIN
+    -- Verificar que el pedido exista
+    IF EXISTS (SELECT 1 FROM pedidos WHERE id = p_pedido_id) THEN
+        -- Actualizar el estado del pedido
+        UPDATE pedidos
+           SET estado_pedido = p_nuevo_estado,
+               actualizado_en = NOW()
+         WHERE id = p_pedido_id;
+    ELSE
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Pedido no encontrado';
+    END IF;
+END ;;
+DELIMITER ;
+
+-- DATA:
+
 
 INSERT INTO clientes (nombre, telefono, documento, direccion, estado) VALUES 
 ('Pedro Sánchez', '970555444', '55667788', 'Jr. Lima 234 Surco', b'1'), 
