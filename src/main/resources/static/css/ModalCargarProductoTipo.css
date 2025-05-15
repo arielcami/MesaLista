@@ -67,8 +67,10 @@
     box-sizing: border-box;
     overflow-y: auto;
     flex-grow: 1;
-    align-content: start; /* Alinea el contenido arriba sin estirarlo */
+    align-content: start;
+    cursor: pointer; /* Esto hace que el cursor cambie a la mano */
 }
+
 
 
 .producto-item {
@@ -143,5 +145,80 @@
 
 .agregar-al-pedido:hover {
     background-color: #218838;
+}
+
+
+
+/* Boton de siguiente categoría */
+.btn-siguiente-categoria {
+    margin: 10px auto 20px auto;
+    display: block;
+    background-color: #d4a500;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    width: fit-content;
+    transition: background-color 0.3s ease;
+    font-family: 'Yeseva one';
+    font-weight: normal;
+}
+
+.btn-siguiente-categoria:hover {
+    background-color: #b38a00;
+}
+
+
+.producto-item {
+    position: relative; /* Necesario para posicionar elementos absolutos dentro */
+}
+
+/* Número de cantidad en círculo, esquina superior derecha */
+.producto-item .cantidad {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: white;
+    color: black;
+    width: 28px;
+    height: 28px;
+    font-size: 22px;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    border: 1.5px solid gray; /* borde gris agregado */
+}
+
+
+/* Botón '-' en círculo, esquina inferior derecha */
+.producto-item .restar-cantidad {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    background-color: #f0f0f0;
+    border: 2px solid #d4a500;
+    border-radius: 50%;
+    font-size: 20px;
+    font-weight: bold;
+    color: #753b00;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.producto-item .restar-cantidad:hover {
+    background-color: #d4a500;
+    color: white;
 }
 

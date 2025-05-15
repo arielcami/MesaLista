@@ -1,3 +1,55 @@
+
+// Array con los tipos en orden y sus nombres para mostrar
+const categoriasOrden = [
+    { tipo: 1, nombre: "Entradas" },
+    { tipo: 2, nombre: "Segundos" },
+    { tipo: 3, nombre: "Bebidas" },
+    { tipo: 4, nombre: "Postres" }
+];
+
+// Variable global para controlar la categoría actual visible
+let categoriaActualIndex = 0;
+
+// Función para cargar productos y actualizar el modal con la categoría actual
+function cargarCategoriaActual() {
+    const categoria = categoriasOrden[categoriaActualIndex];
+    cargarProductosPorTipo(categoria.tipo, categoria.nombre);
+
+    // Actualizamos el texto del botón dependiendo si es el último tipo o no
+    const btnSiguiente = document.getElementById("btn-siguiente-categoria");
+    if (categoriaActualIndex === categoriasOrden.length - 1) {
+        btnSiguiente.textContent = "Confirmar pedido →";
+    } else {
+        btnSiguiente.textContent = "Siguiente categoría →";
+    }
+}
+
+
+
+// Evento click del botón para avanzar o confirmar
+document.getElementById("btn-siguiente-categoria").addEventListener("click", () => {
+    if (categoriaActualIndex < categoriasOrden.length - 1) {
+        // Avanzar a la siguiente categoría
+        categoriaActualIndex++;
+        cargarCategoriaActual();
+    } else {
+        // Última categoría, redirigir a confirmar pedido
+        const pedidoId = localStorage.getItem("pedido_id");
+        if (pedidoId) {
+            window.location.href = `/mesalista/pedido/confirmar?pedidoId=${pedidoId}`;
+        } else {
+            alert("No hay ningún producto agregado.");
+        }
+    }
+});
+
+// Al abrir el modal (cuando se carga la primera categoría), reseteamos a la primera
+document.getElementById("categoria-entrada").addEventListener("click", () => {
+    categoriaActualIndex = 0;
+    cargarCategoriaActual();
+});
+
+
 function obtenerCarritoLocal(clienteId) {
 	const carrito = JSON.parse(localStorage.getItem("carrito")) || {};
 	return carrito[clienteId] || {};
