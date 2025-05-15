@@ -65,7 +65,7 @@ main {
 
 /* Botón general */
 .btn-submit {
-    width: 240px;
+    width: 200px;
     background-color: #d4a500;
     color: white;
     padding: 10px 20px;
@@ -74,8 +74,9 @@ main {
     cursor: pointer;
     font-size: 28px;
     font-family: 'Yeseva One';
-    margin-left: 235px;
+    margin-left: 255px;
     transition: color 0.3s ease;
+    margin-bottom: 25px;
 }
 
 .btn-submit-2 {
@@ -93,12 +94,32 @@ main {
     transition: color 0.3s ease;
 }
 
+/* Botón general */
+.btn-submit-3 {
+    width: 380px;
+    background-color: #d4a500;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 33px;
+    cursor: pointer;
+    font-size: 28px;
+    font-family: 'Yeseva One';
+    margin-left: 170px;
+    transition: color 0.3s ease;
+    margin-bottom: 25px;
+}
+
 .btn-submit:hover {
     color: #333;
 }
 
 .btn-submit-2:hover {
 	color: #333;
+}
+
+.btn-submit-3:hover {
+    color: #333;
 }
 
 

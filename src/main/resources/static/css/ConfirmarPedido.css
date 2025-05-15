@@ -67,6 +67,9 @@ h3 {
 
 
 
+
+
+
 .button-container {
     margin-top: 30px;
     text-align: center;
@@ -75,53 +78,45 @@ h3 {
     justify-content: center;
     flex-wrap: wrap;
 }
-
-/* Botón Confirmar (azul) */
-.btn-confirmar {
-    background-color: #006aff;
+/* Estilo base común a los 3 botones */
+.button-container button {
+    width: 305px; /* puedes ajustar */
     color: white;
-    padding: 12px 24px;
-    font-size: 16px;
+    padding: 10px 20px;
     border: none;
-    border-radius: 8px;
+    border-radius: 33px;
     cursor: pointer;
+    font-size: 28px;
     font-family: 'Yeseva One';
-    transition: background-color 0.3s ease;
-}
-.btn-confirmar:hover {
-    background-color: #b89300;
+    margin: 0 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-bottom: 25px;
 }
 
-/* Botón Cancelar (rojo) */
-.btn-cancelar {
-    background-color: #d9534f;
-    color: white;
-    padding: 12px 24px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: 'Yeseva One';
-    transition: background-color 0.3s ease;
-}
-.btn-cancelar:hover {
-    background-color: #c9302c;
-}
-
-/* Botón Regresar (gris) */
+/* Botón Regresar - Dorado */
 .btn-regresar {
     background-color: #d4a500;
-    color: white;
-    padding: 12px 24px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: 'Yeseva One';	
-    transition: background-color 0.3s ease;
 }
 .btn-regresar:hover {
-    background-color: #5a6268;
+    color: #333;
+}
+
+/* Botón Cancelar - Rojo */
+.btn-cancelar {
+    background-color: #d93025;
+}
+.btn-cancelar:hover {
+
+    color: #333;
+}
+
+/* Botón Confirmar - Azul */
+.btn-confirmar {
+    background-color: #1a73e8;
+}
+.btn-confirmar:hover {
+ 
+    color: #333;
 }
 
 

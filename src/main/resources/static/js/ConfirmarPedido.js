@@ -1,3 +1,5 @@
+
+
 document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
     const pedidoId = params.get("pedidoId");
@@ -37,7 +39,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 document.getElementById("total-pedido").textContent = ` S/${total.toFixed(2)}`;
             })
-            .catch(err => console.error("Error al obtener detalles del pedido:", err));
+            .catch(err => {
+				//console.error("Error al obtener detalles del pedido:", err)
+				mostrarPopupConfirmacion("error", "Error al obtener detalles del pedido: " + toString(err), null);
+				}
+			);
 
         // Obtener clienteId desde el pedido
         fetch(pedidoUrl)
@@ -53,12 +59,13 @@ document.addEventListener("DOMContentLoaded", () => {
                                 direccionEntregaInput.placeholder = cliente.direccion;
                             }
                         })
-                        .catch(err => console.error("Error al obtener datos del cliente:", err));
+                        .catch(err => mostrarPopupConfirmacion("error", "Error al obtener detalles del cliente: " + toString(err)), null);
                 }
             })
-            .catch(err => console.error("Error al obtener datos del pedido:", err));
+            .catch(err => mostrarPopupConfirmacion("error","Error al obtener datos del pedido: " + toString(err)), null);
     } else {
-        console.warn("No se encontró el pedidoId en la URL");
+        //console.warn("No se encontró el pedidoId en la URL");
+		mostrarPopupConfirmacion("warning", "No se encontró el ID del pedido en la URL", null);
     }
 
     document.getElementById("btn-confirmar-final").addEventListener("click", () => {
@@ -66,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const direccionEntrega = direccionEntregaInput.value || "";
 
         if (!pedidoId || !empleadoId) {
-            alert("Faltan datos necesarios: Pedido o Empleado.");
+            mostrarPopupConfirmacion("warning","Faltan datos necesarios: Pedido o Empleado.", null);
             return;
         }
 
@@ -89,13 +96,24 @@ document.addEventListener("DOMContentLoaded", () => {
             return response.text(); // porque el backend devuelve texto plano, no JSON
         })
         .then(message => {
-            alert(message);
-            localStorage.clear();
+			localStorage.clear();
+            // mostrarPopupConfirmacion("success", "OK! " + toString(message)); Esto no porque se corta inmediatamente
+			alert(message);
             window.location.href = "/mesalista";
         })
         .catch(err => {
-            console.error("Error al confirmar el pedido:", err);
-            alert("Hubo un error en la solicitud.");
+            //console.error("Error al confirmar el pedido:", err);
+            //alert("Hubo un error en la solicitud.");
+			mostrarPopupConfirmacion("error", "Hubo un error en al solicitar confirmar el pedido: " + toString(err), null);
         });
     });
 });
+
+// Botón regresar
+document.getElementById("btn-regresar").addEventListener("click", function() {
+    window.history.back();
+});
+
+
+
+

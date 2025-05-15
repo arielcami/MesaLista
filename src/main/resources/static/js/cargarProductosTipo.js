@@ -38,7 +38,7 @@ document.getElementById("btn-siguiente-categoria").addEventListener("click", () 
         if (pedidoId) {
             window.location.href = `/mesalista/pedido/confirmar?pedidoId=${pedidoId}`;
         } else {
-            alert("No hay ningún producto agregado.");
+            mostrarPopupCustom("error","No hay ningún producto agregado.");
         }
     }
 });
@@ -127,7 +127,7 @@ function cargarProductosPorTipo(tipo, tituloCategoria = "Productos") {
 						if (pedidoIdGlobal) {
 							ajustarCantidadProducto(pedidoIdGlobal, producto.id, -1);
 						} else {
-							//console.error("No se encontró el pedido_id en localStorage");
+							mostrarPopupCustom("error","No se encontró el pedido en cuestión (revisar localstorage).");
 						}
 					}
 				});
@@ -145,7 +145,10 @@ function cargarProductosPorTipo(tipo, tituloCategoria = "Productos") {
 			modal.classList.remove("oculto");
 			modal.classList.add("activo");
 		})
-		.catch(error => console.error("Error al cargar productos:", error));
+		.catch(error => {
+			mostrarPopupCustom("error","Error al cargar productos: " + error);
+			}
+		);
 }
 
 
@@ -175,7 +178,7 @@ function agregarProductoAlPedido(productoId, cantidad) {
 			}
 		})
 		.catch(error => {
-			//console.error("Error al agregar producto al pedido:", error.message);
+			mostrarPopupCustom("error","Error al cargar productos: " + error.message);
 		});
 }
 
@@ -240,7 +243,7 @@ document.getElementById("confirmar-pedido").addEventListener("click", () => {
         // Redirige a la plantilla de confirmación con el pedidoId como parámetro
         window.location.href = `/mesalista/pedido/confirmar?pedidoId=${pedidoId}`;
     } else {
-		alert("No hay ningún producto agregado.");
+		mostrarPopupCustom("error","No hay ningún producto agregado.");
         //console.error("No se encontró el pedido_id en localStorage");
     }
 });

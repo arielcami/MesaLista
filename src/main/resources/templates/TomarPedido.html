@@ -7,11 +7,16 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/TomarPedido.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/ModalCargarProductoTipo.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/PopupCustom.css}" />
 </head>
 
 <body>
-    <!-- Incluir barra de navegación -->
-    <div th:replace="components/BarraNavegacion :: barra-nav"></div>
+
+	<!-- Incluir barra de navegación -->
+	<div th:replace="~{components/BarraNavegacion :: barra-nav}"></div>
+	
+	<!-- Popup Custom Fragment -->
+	<div th:replace="~{components/PopupCustom :: popupCustom}"></div>
 
 
 
@@ -75,7 +80,8 @@
 		</section>	
 		
 	</main>
-
+	
+	<script type="text/javascript" th:src="@{/js/PopupCustom.js}"></script>
     <script type="text/javascript" th:src="@{/js/TomarPedido.js}"></script>
     <script type="text/javascript" th:src="@{/js/cargarProductosTipo.js}"></script>
 </body>

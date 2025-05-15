@@ -65,7 +65,7 @@ CREATE TABLE empleados (
 	UNIQUE KEY documento (documento)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-
+/* extends empleados */
 DROP TABLE IF EXISTS deliveries;
 CREATE TABLE deliveries (
 	id INT UNSIGNED NOT NULL,
@@ -82,9 +82,9 @@ CREATE TABLE pedidos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	cliente_id INT UNSIGNED NOT NULL,
 	total DECIMAL(10,2) NOT NULL,
-	empleado_id INT UNSIGNED NULL,
+	empleado_id INT UNSIGNED NULL, -- Puede ser NULL al principio
 	estado_pedido TINYINT UNSIGNED NOT NULL,
-	direccion_entrega VARCHAR(200) NULL,
+	direccion_entrega VARCHAR(200) NULL, -- Puede ser NULL al principio
 	fecha_pedido TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 	creado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 	actualizado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -382,9 +382,7 @@ BEGIN
 END ;;
 DELIMITER ;
 
--- DATA:
-
-
+-- DATA
 INSERT INTO clientes (nombre, telefono, documento, direccion, estado) VALUES 
 ('Pedro Sánchez', '970555444', '55667788', 'Jr. Lima 234 Surco', b'1'), 
 ('Luis González', '981234567', '99001122', 'Jr. Pescadores 123 Surco', b'1'), 
@@ -436,7 +434,7 @@ INSERT INTO empleados (nombre, telefono, documento, clave, direccion, nivel, est
 INSERT INTO deliveries (id, unidad, placa) VALUES  
 (4, 'Mototaxi', '2102-JD'), 
 (8, 'Moto', '3400-AE'), 
-(9, 'AE86', 'TRU-3N0');
+(9, 'Mototaxi', 'TRU3-N0');
 
 INSERT INTO estados (nombre) VALUES  
 ('Inactivo'),
