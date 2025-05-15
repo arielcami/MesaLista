@@ -12,14 +12,20 @@
 <!-- Link al archivo CSS para la página de inicio -->
 <link rel="stylesheet" type="text/css" th:href="@{/css/Inicio.css}" />
 
-<!-- Link al archivo CSS para el popup -->
-<link rel="stylesheet" type="text/css" th:href="@{/css/Popup.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/PopupCustom.css}" />
+
+
 </head>
 
 <body>
 
 	<!-- Incluir barra de navegación -->
-	<div th:replace="components/BarraNavegacion :: barra-nav"></div>
+	<div th:replace="~{components/BarraNavegacion :: barra-nav}"></div>
+	
+	<!-- Popup Custom Fragment -->
+	<div th:replace="~{components/PopupCustom :: popupCustom}"></div>
+
+	
 
 	<main>
 		<h2>Buscar Cliente</h2>
@@ -60,8 +66,7 @@
 						<th>Documento</th>
 						<th>Dirección</th>
 					</tr>
-					<tr th:each="cliente, stat : ${clientes}" th:if="${stat.index < 8}"
-						class="tabla-clientes-rows">
+					<tr th:each="cliente, stat : ${clientes}" th:if="${stat.index < 8}"	class="tabla-clientes-rows">
 						<td><input type="radio" name="clienteSeleccionado"
 							th:value="${cliente.id}" /></td>
 						<td th:text="${cliente.nombre}">Nombre</td>
@@ -92,7 +97,7 @@
 			                	localStorage.clear();
 			                    window.location.href = '/mesalista/cliente/pedido/nuevo/' + clienteSeleccionadoId;
 			                } else {
-			                    alert("Por favor, selecciona un cliente.");
+			                	mostrarPopupCustom("warning", "Por favor, selecciona un cliente.");
 			                }
 			            });
 			        }
@@ -102,21 +107,16 @@
 		</div>
 	</main>
 
-	<!-- Popup de alerta -->
-	<div id="popup-overlay" class="popup-overlay">
-		<div id="popup" class="popup-content">
-			<span id="popup-close" class="popup-close">×</span>
-			<p id="popup-message" class="popup-message"></p>
-		</div>
-	</div>
-
+	<script type="text/javascript" th:src="@{/js/PopupCustom.js}"></script>
 	<script type="text/javascript" th:src="@{/js/Inicio.js}"></script>
+
+
 
 	<script th:inline="javascript">
 	/*<![CDATA[*/
 	var sinResultados = /*[[${sinResultados} ?: false]]*/false;
 	if (sinResultados) {
-		mostrarPopup("No se encontraron resultados con los criterios de búsqueda.");
+		mostrarPopupCustom("error","No se encontraron resultados con los criterios de búsqueda.");
 	}
 	/*]]>*/
 	</script>

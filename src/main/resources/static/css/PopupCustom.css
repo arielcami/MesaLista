@@ -1,0 +1,57 @@
+@font-face {
+    font-family: 'Yeseva One';
+    src: url('../fonts/yeseva-one.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+.popup-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000; /* arriba de todo */
+}
+
+.hidden {
+    display: none !important;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px 30px;
+  border-radius: 6px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  text-align: center;
+  border: 3px solid #b3970b;
+}
+
+.popup-icon {
+  width: 70px;
+  height: 70px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 0 auto;
+}
+
+.popup-message {
+  margin-top: 15px;
+  font-size: 24px;
+  color: #8d8c8e;
+}
+
+.popup-button {
+  margin-top: 25px;
+  padding: 8px 25px;
+  font-size: 18px;
+  background-color: #b3970b;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
