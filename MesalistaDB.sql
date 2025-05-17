@@ -4,7 +4,6 @@ CREATE DATABASE mesalista_db;
 
 USE mesalista_db;
 
-DROP TABLE IF EXISTS clientes;
 CREATE TABLE clientes (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100) NOT NULL,
@@ -18,8 +17,6 @@ CREATE TABLE clientes (
 	UNIQUE KEY documento (documento)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-
-DROP TABLE IF EXISTS estados;
 CREATE TABLE estados (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(20) NOT NULL,

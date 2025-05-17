@@ -8,7 +8,7 @@ import pe.com.mesalista.service.EmpleadoService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/empleado")
+@RequestMapping("/api/empleado")
 public class EmpleadoRestController {
 
 	// Inyección de dependencias
