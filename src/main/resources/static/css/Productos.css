@@ -18,13 +18,13 @@ main h2 {
 .tabla-productos {
     width: 100%;
     border-collapse: collapse;
-    font-family: 'Consolas', monospace;
+    font-family: 'Arial';
     font-size: 20px;
 }
 
 .tabla-productos th {
     border: 1px solid #ccc;
-    padding: 10px;
+    padding: 7px;
     text-align: center;
     background-color: #d4a500;
 }
@@ -94,7 +94,7 @@ main h2 {
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-sizing: border-box; /* Esto es clave para evitar que los campos se salgan del contenedor */
+    box-sizing: border-box;
     font-family: 'Consolas';
     font-size: 16px; /* Ajusta el tamaño de la fuente según tus necesidades */
 }

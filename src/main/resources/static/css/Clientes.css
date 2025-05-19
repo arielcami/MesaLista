@@ -23,20 +23,20 @@ main h2 {
 .tabla-clientes {
     width: 100%;
     border-collapse: collapse;
-    font-family: 'Consolas', monospace;
+    font-family: 'Arial';
     font-size: 20px;
 }
 
 .tabla-clientes th {
     border: 1px solid #ccc;
-    padding: 10px;
+    padding: 7px;
     text-align: center;
     background-color: #d4a500;
 }
 
 .tabla-clientes td {
     border: 1px solid #ccc;
-    padding: 10px;
+    padding: 7px;
     text-align: center;
 }
 

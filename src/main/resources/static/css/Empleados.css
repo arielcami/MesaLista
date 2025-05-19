@@ -47,6 +47,13 @@ main h2 {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+.filtro-botones button#btn-todos-empleados,
+.filtro-botones button#btn-activos-empleados,
+.filtro-botones button#btn-inactivos-empleados {
+    background-color: #d4a500;
+    color: white;
+}
+
 .filtro-botones button#btn-nuevo-empleado {
     background-color: #007dd6;
     color: white;
@@ -75,7 +82,7 @@ main h2 {
     width: 100%;
     border-collapse: collapse;
     font-family: 'Arial';
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .tabla-empleados th {

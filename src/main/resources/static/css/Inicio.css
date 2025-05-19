@@ -135,41 +135,40 @@ main {
 
 /* Contenedor de tabla */
 .tabla-container {
-    flex: 1;
-    overflow-x: auto;
     margin-top: 20px;
     max-width: 920px;
+    padding-right: 200px;
 }
 
 /* Tabla */
 .tabla-clientes {
     width: 860px;
     border-collapse: collapse;
-    font-size: 14px;
+    font-size: 16px;
     color: #333;
     transform: scale(0.95);
-    transform-origin: top left;
+    transform-origin: top left;    
 }
 
 .tabla-clientes-rows {
     width: 50px;
     border-collapse: collapse;
-    font-size: 16px;
+    font-size: 20px;
     color: #333;
-    font-family: 'Consolas';
+    font-family: 'Arial';
 }
 
 /* Radio buttons */
 .tabla-clientes input[type="radio"] {
-    width: 26px;
-    height: 26px;
+    width: 35px;
+    height: 35px;
     accent-color: #d4a500;
     display: block;
     margin: 0 auto;
 }
 
 .tabla-clientes th, .tabla-clientes td {
-    padding: 10px;
+    padding: 5px;
     text-align: left;
     border: 1px solid #ccc;
 }
