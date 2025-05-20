@@ -1,6 +1,8 @@
 package pe.com.mesalista.service.impl;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.mesalista.entity.DeliveryEntity;
@@ -40,11 +42,23 @@ public class DeliveryServiceImpl implements DeliveryService {
 
 	@Override
 	public DeliveryEntity update(DeliveryEntity delivery, Long id) {
-		if (deliveryRepository.existsById(id)) {
-			delivery.setId(id);
-			return deliveryRepository.save(delivery);
-		}
-		return null;
+	    Optional<DeliveryEntity> deliveryExistenteOpt = deliveryRepository.findById(id);
+	    if (deliveryExistenteOpt.isPresent()) {
+	        DeliveryEntity deliveryExistente = deliveryExistenteOpt.get();
+
+	        deliveryExistente.setNombre(delivery.getNombre());
+	        deliveryExistente.setDocumento(delivery.getDocumento());
+	        deliveryExistente.setTelefono(delivery.getTelefono());
+	        deliveryExistente.setDireccion(delivery.getDireccion());
+	        deliveryExistente.setNivel(delivery.getNivel());
+	        deliveryExistente.setEstado(delivery.isEstado());
+
+	        deliveryExistente.setUnidad(delivery.getUnidad());
+	        deliveryExistente.setPlaca(delivery.getPlaca());
+
+	        return deliveryRepository.save(deliveryExistente);
+	    }
+	    return null;
 	}
 
 	@Override

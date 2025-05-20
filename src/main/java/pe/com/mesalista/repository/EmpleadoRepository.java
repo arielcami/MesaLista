@@ -14,5 +14,7 @@ public interface EmpleadoRepository extends JpaRepository<EmpleadoEntity, Long> 
 	
 	// Buscar empleados por nombre
     List<EmpleadoEntity> findByNombreContainingIgnoreCase(String nombre);
+    
+    List<EmpleadoEntity> findByNivel(int nivel);
 	
 }

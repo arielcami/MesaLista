@@ -1,16 +1,16 @@
 body {
-	margin-top: -70px;
-	margin-bottom: 100px;
+    margin-top: -70px;
+    margin-bottom: 100px;
 }
+
 main h2 {
     font-size: 30px;
     text-align: left;
     margin-top: 100px;
     margin-left: 100px;
-    color:  #8d8c8e;
+    color: #8d8c8e;
     font-weight: normal;
 }
-
 
 .btn-filtro {
     background-color: #007BFF;
@@ -21,15 +21,12 @@ main h2 {
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-
 }
 
 .btn-filtro:hover {
     background-color: #0056b3;
 }
 
-
-/* FILTRO BOTONES */
 .filtro-botones {
     display: flex;
     gap: 12px;
@@ -47,14 +44,14 @@ main h2 {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.filtro-botones button#btn-todos-empleados,
-.filtro-botones button#btn-activos-empleados,
-.filtro-botones button#btn-inactivos-empleados {
+.filtro-botones button#btn-todos-deliveries,
+.filtro-botones button#btn-activos-deliveries,
+.filtro-botones button#btn-inactivos-deliveries {
     background-color: #d4a500;
     color: white;
 }
 
-.filtro-botones button#btn-nuevo-empleado {
+.filtro-botones button#btn-nuevo-delivery {
     background-color: #007dd6;
     color: white;
 }
@@ -69,23 +66,21 @@ main h2 {
     box-shadow: 0 0 0 2px #d4a500;
 }
 
-
-/* Tabla de empleados */
-.tabla-empleados-container {
-	margin-top: 10px; 
-    margin-left: 100px; 
+/* Tabla de deliveries */
+.tabla-deliveries-container {
+    margin-top: 10px;
+    margin-left: 100px;
     width: 85%;
-  
 }
 
-.tabla-empleados {
+.tabla-deliveries {
     width: 100%;
     border-collapse: collapse;
     font-family: 'Arial';
     font-size: 20px;
 }
 
-.tabla-empleados th {
+.tabla-deliveries th {
     border: 1px solid #ccc;
     padding: 8px;
     text-align: center;
@@ -93,7 +88,7 @@ main h2 {
     color: white;
 }
 
-.tabla-empleados td {
+.tabla-deliveries td {
     border: 1px solid #ccc;
     padding: 5px;
     text-align: center;
@@ -111,16 +106,13 @@ main h2 {
 .estado-activo {
     color: green;
     font-weight: bold;
-
 }
 
 .estado-inactivo {
     color: red;
     font-weight: bold;
-
 }
 
-/* Reutiliza estilos de botones si los tienes */
 .btn-editar, .btn-eliminar {
     padding: 5px 5px;
     margin: 0 3px;
@@ -133,9 +125,11 @@ main h2 {
 .btn-editar {
     background-color: #007bff;
     color: white;
+    padding: 6px;
+    font-size: 15px;
 }
 
-/* POPUP - Si quieres igualar el popup a ese diseño */
+/* POPUP */
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -150,7 +144,6 @@ main h2 {
 }
 
 .popup-content {
-	
     background-color: white;
     padding: 20px;
     border-radius: 5px;
@@ -160,8 +153,7 @@ main h2 {
     position: relative;
 }
 
-.popup-content input,
-.popup-content select {
+.popup-content input {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
@@ -203,7 +195,7 @@ main h2 {
     font-size: 20px;
 }
 
-
+/* Estado visual en celdas */
 .estado-td {
     text-align: center;
     display: flex;
@@ -235,4 +227,3 @@ main h2 {
     font-weight: bold;
     margin-right: 8px;
 }
-

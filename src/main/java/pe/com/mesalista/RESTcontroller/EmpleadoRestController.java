@@ -14,6 +14,12 @@ public class EmpleadoRestController {
 	// Inyección de dependencias
 	@Autowired
 	private EmpleadoService servicio;
+	
+	@GetMapping("/nivel/{nivel}")
+	public List<EmpleadoEntity> findByNivel(@PathVariable int nivel) {
+	    return servicio.findByNivel(nivel);
+	}
+
 
 	@GetMapping
 	public List<EmpleadoEntity> findAll() {

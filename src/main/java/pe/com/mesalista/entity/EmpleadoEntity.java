@@ -55,5 +55,6 @@ public class EmpleadoEntity implements Serializable {
 	@UpdateTimestamp
 	@Column(name = "actualizado_en")
 	private LocalDateTime actualizadoEn;
-
+	
+	
 }

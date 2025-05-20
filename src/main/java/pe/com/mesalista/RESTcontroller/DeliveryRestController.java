@@ -7,7 +7,7 @@ import pe.com.mesalista.service.DeliveryService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/delivery")
+@RequestMapping("/api/delivery")
 public class DeliveryRestController {
 
 	@Autowired

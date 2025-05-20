@@ -18,6 +18,12 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 	public List<EmpleadoEntity> findAll() {
 		return empleadoRepository.findAll();
 	}
+	
+	@Override
+	public List<EmpleadoEntity> findByNivel(int nivel) {
+	    return empleadoRepository.findByNivel(nivel);
+	}
+
 
 	@Override
 	public List<EmpleadoEntity> findByEstado(boolean estado) {
@@ -42,12 +48,24 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 
 	@Override
 	public EmpleadoEntity update(EmpleadoEntity usuario, Long id) {
-		if (empleadoRepository.existsById(id)) {
-			usuario.setId(id); // Asigna el ID para la actualización
-			return empleadoRepository.save(usuario);
-		}
-		return null;
+	    Optional<EmpleadoEntity> empleadoExistenteOpt = empleadoRepository.findById(id);
+	    if (empleadoExistenteOpt.isPresent()) {
+	    	
+	        EmpleadoEntity empleadoExistente = empleadoExistenteOpt.get();
+
+	        empleadoExistente.setNombre(usuario.getNombre());
+	        empleadoExistente.setDocumento(usuario.getDocumento());
+	        empleadoExistente.setTelefono(usuario.getTelefono());
+	        empleadoExistente.setDireccion(usuario.getDireccion());
+	        empleadoExistente.setNivel(usuario.getNivel());
+	        empleadoExistente.setEstado(usuario.isEstado());
+
+	        return empleadoRepository.save(empleadoExistente);
+	    }
+	    return null;
 	}
+
+
 
 	@Override
 	public EmpleadoEntity delete(Long id) {

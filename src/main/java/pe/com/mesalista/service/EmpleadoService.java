@@ -22,4 +22,6 @@ public interface EmpleadoService {
 	
 	List<EmpleadoEntity> findByNombreIgnoreCase(String nombre);
 	
+	List<EmpleadoEntity> findByNivel(int nivel);
+	
 }

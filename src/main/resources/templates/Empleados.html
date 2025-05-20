@@ -5,13 +5,9 @@
 
 <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
 
-<title>Listado de Productos</title>
+<title>Empleados - MesaLista v1.0</title>
 
-<!-- CSS general -->
-<!-- Link al archivo CSS de la barra de navegación -->
-
-<link rel="stylesheet" type="text/css"
-	th:href="@{/css/BarraNavegacion.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
 <link rel="stylesheet" th:href="@{/css/Empleados.css}" />
 </head>
 <body>
@@ -26,27 +22,19 @@
 			<span id="create-employee-close" class="popup-close">❌</span>
 
 			<form id="create-employee-form">
-				<label for="create-nombre">Nombre:</label> <input type="text"
-					id="create-nombre" class="entradadetexto" required /> <label
-					for="create-documento">Documento:</label> <input type="text"
-					id="create-documento" class="entradadetexto" required /> <label
-					for="create-telefono">Teléfono:</label> <input type="text"
-					id="create-telefono" class="entradadetexto" required /> <label
-					for="create-direccion">Dirección:</label> <input type="text"
-					id="create-direccion" class="entradadetexto" required /> <label
-					for="create-clave">Clave:</label> <input type="password"
-					id="create-clave" class="entradadetexto" required /> <label
-					for="create-nivel">Nivel:</label> <select id="create-nivel"
-					class="entradadetexto" required>
+				<label for="create-nombre">Nombre:</label> 
+				<input type="text" id="create-nombre" class="entradadetexto" required /><label for="create-documento">Documento:</label> 
+				<input type="text" id="create-documento" class="entradadetexto" required /><label for="create-telefono">Teléfono:</label> 
+				<input type="text" id="create-telefono" class="entradadetexto" required /><label for="create-direccion">Dirección:</label> 
+				<input type="text" id="create-direccion" class="entradadetexto" required /> <label for="create-clave">Clave:</label> 
+				<input type="password" id="create-clave" class="entradadetexto" required /> <label for="create-nivel">Nivel:</label> 
+				<select id="create-nivel" class="entradadetexto" required>
 					<option value="0">Administrador</option>
 					<option value="1">Gerente</option>
-					<option value="2 selected">Empleado</option>
+					<option value="2" selected>Mesero</option>
 					<option value="3">Delivery</option>
-				</select> <label for="create-unidad">Unidad (opcional):</label> <input
-					type="text" id="create-unidad" class="entradadetexto" /> <label
-					for="create-placa">Placa (opcional):</label> <input type="text"
-					id="create-placa" class="entradadetexto" />
-
+					<option value="4">Cocina</option>
+				</select> 
 				<button type="submit">Crear Empleado</button>
 			</form>
 		</div>
@@ -68,16 +56,16 @@
 					id="edit-telefono" class="entradadetexto" required /> <label
 					for="edit-direccion">Dirección:</label> <input type="text"
 					id="edit-direccion" class="entradadetexto" required /> <label
-					for="edit-nivel">Nivel:</label> <select id="edit-nivel"
-					class="entradadetexto" required>
-					<option value="0">Administrador</option>
-					<option value="1">Gerente</option>
-					<option value="2">Empleado</option>
-					<option value="3">Delivery</option>
-				</select> <label for="edit-unidad">Unidad (opcional):</label> <input
-					type="text" id="edit-unidad" class="entradadetexto" /> <label
-					for="edit-placa">Placa (opcional):</label> <input type="text"
-					id="edit-placa" class="entradadetexto" /> <label for="edit-estado">Estado:</label>
+					for="edit-nivel">Nivel:</label> 
+					<select id="edit-nivel" class="entradadetexto" required>
+						<option value="0">Administrador</option>
+						<option value="1">Gerente</option>
+						<option value="2" selected>Mesero</option>
+						<option value="3">Delivery</option>
+						<option value="4">Cocina</option>
+					</select> 
+			
+				<label for="edit-estado">Estado:</label>
 				<input type="text" id="edit-estado" class="estado-texto" disabled />
 
 				<button type="submit">Guardar Cambios</button>
@@ -88,8 +76,7 @@
 
 	<main>
 		<h2>Listado de Empleados</h2>
-
-	
+			
 		<div class="filtro-botones">
 			<button id="btn-todos-empleados">Mostrar Todos</button>
 			<button id="btn-activos-empleados">Mostrar Activos</button>
@@ -108,8 +95,6 @@
 						<th>Dirección</th>
 						<th>Nivel</th>
 						<th>Estado</th>
-						<th>Unidad</th>
-						<th>Placa</th>
 						<th>Acciones</th>
 					</tr>
 				</thead>
@@ -119,12 +104,9 @@
 			</table>
 		</div>
 
-
-
-
-
-
 	</main>
 	<script th:src="@{/js/Empleados.js}" defer></script>
+	<script th:src="@{/js/CrearEmpleado.js}" defer></script>
+	
 </body>
 </html>

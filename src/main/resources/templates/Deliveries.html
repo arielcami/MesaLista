@@ -4,15 +4,61 @@
 <meta charset="UTF-8">
 <title>Deliveries - MesaLista v1.0</title>
 
+<!-- Estilos -->
+<link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/Deliveries.css}" /> 
 <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
 
-<!--  <link rel="stylesheet" type="text/css" th:href="@{/css/Pedido.css}" /> -->
-
 </head>
+
 <body>
-	<h1>Aquí se mostrará el personal de delivery.</h1>
+	<!-- Barra de navegación -->
+	<div th:replace="components/BarraNavegacion :: barra-nav"></div>
 
+	<main>
+		<h2>Personal de Delivery</h2>
 
+		<!-- Botones de filtro -->
+		<div class="filtro-botones">
+			<button id="btn-todos-deliveries">Todos</button>
+			<button id="btn-activos-deliveries">Activos</button>
+			<button id="btn-inactivos-deliveries">Inactivos</button>
+			<button id="btn-nuevo-delivery">Agregar Delivery</button>
+		</div>
+
+		<!-- Tabla de deliveries -->
+		<div class="tabla-deliveries-container">
+			<table class="tabla-deliveries">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Nombre</th>
+						<th>Unidad</th>
+						<th>Placa</th>
+						<th>Estado</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody id="tabla-deliveries-body">
+					<!-- JavaScript llenará esta parte dinámicamente -->
+				</tbody>
+			</table>
+		</div>
+	</main>
+
+	<!-- Popup para agregar / editar delivery -->
+	<div id="popup-delivery" class="popup-overlay">
+		<div class="popup-content">
+			<span class="popup-close" id="cerrar-popup-delivery">&times;</span>
+			<h3 id="popup-titulo-delivery">Agregar Delivery</h3>
+			<input type="text" id="unidad" placeholder="Unidad (Ej: Moto, Bicicleta)" /> 
+			<input type="text"	id="placa" placeholder="Placa del vehículo" />
+			<button id="guardar-delivery">Guardar</button>
+		</div>
+	</div>
+
+	<!-- Scripts -->
+	<script th:src="@{/js/Deliveries.js}"></script>
 </body>
-
 </html>
