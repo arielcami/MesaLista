@@ -2,6 +2,7 @@ package pe.com.mesalista.repository;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
@@ -32,5 +33,11 @@ public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
         @Param("p_empleado_id") Long empleadoId,
         @Param("p_direccion_entrega") String direccionEntrega
     );
+        
+    @Query("SELECT DISTINCT p FROM PedidoEntity p LEFT JOIN FETCH p.detalles WHERE p.estadoPedido = 1 ORDER BY p.fechaPedido ASC")
+    List<PedidoEntity> findPedidosParaCocina();
+
+
+
 
 }

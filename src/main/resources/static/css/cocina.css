@@ -1,0 +1,74 @@
+body {
+    font-family: sans-serif;
+    background-color: #fff6cf;
+    margin: 0;
+}
+
+@font-face {
+    font-family: 'Yeseva One';
+    src: url('/static/fonts/yeseva-one.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+.nav-dorada {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #d4a500;
+    padding: 1rem 0;
+    z-index: 1000;
+    text-align: center;
+    padding: 13px;
+}
+
+.nav-dorada h1 {
+    margin: 0;
+    font-family: 'Yeseva One';
+    color: white;
+    font-size: 30px;
+    font-weight: normal;
+}
+
+.pedido-container {
+	margin-top: 100px;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 0 1rem;
+    gap: 1rem;
+}
+
+.pedido-card {
+    flex: 0 0 auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 420px;
+    padding: 1rem;
+    box-sizing: border-box;
+    font-size: 17px;
+}
+
+.pedido-card h2 {
+    margin-top: 0;
+    color: #007bff;
+    font-size: 1.2rem;
+}
+
+.pedido-card p {
+    margin: 0.3rem 0;
+    color: #444;
+}
+
+.detalle-item {
+    border-bottom: 1px dashed #cccccc;
+    padding: 0px;
+}
+
+.total {
+    margin-top: 1rem;
+    font-weight: bold;
+    color: #222;
+}

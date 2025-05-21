@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Data
@@ -38,10 +39,12 @@ public class ClienteEntity implements Serializable {
 	private String direccion;
 
 	@CreationTimestamp
+	@JsonIgnore
 	@Column(name = "creado_en", updatable = false)
 	private LocalDateTime creadoEn;
 
 	@UpdateTimestamp
+	@JsonIgnore
 	@Column(name = "actualizado_en")
 	private LocalDateTime actualizadoEn;
 

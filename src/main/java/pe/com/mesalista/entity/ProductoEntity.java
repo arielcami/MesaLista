@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,10 +37,12 @@ public class ProductoEntity implements Serializable {
 	private boolean estado;
 
 	@CreationTimestamp
+	@JsonIgnore
 	@Column(name = "creado_en", updatable = false)
 	private LocalDateTime creadoEn;
 
 	@UpdateTimestamp
+	@JsonIgnore
 	@Column(name = "actualizado_en")
 	private LocalDateTime actualizadoEn;
 

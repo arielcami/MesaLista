@@ -20,6 +20,10 @@ public class PedidoRestController {
 		return servicio.findAll();
 	}
 	
+	@GetMapping("/cocina")
+	public List<PedidoEntity> obtenerPedidosParaCocina() {
+	    return servicio.findPedidosParaCocina();
+	}
 	
 	@GetMapping("/estado/{estado}")
 	public List<PedidoEntity> findByEstadoPedido(@PathVariable byte estado) {

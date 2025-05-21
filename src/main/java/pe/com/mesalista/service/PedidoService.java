@@ -23,4 +23,7 @@ public interface PedidoService {
     
     void confirmarPedido(Long pedidoId, Long empleadoId, String direccionEntrega);
     
+    List<PedidoEntity> findPedidosParaCocina();
+
+    
 }

@@ -19,6 +19,7 @@ public class PedidoServiceImpl implements PedidoService {
     @Autowired
     private DeliveryRepository deliveryRepository;
 
+    
     @Override
     public List<PedidoEntity> findAll() {
         return pedidoRepository.findAll();
@@ -81,5 +82,11 @@ public class PedidoServiceImpl implements PedidoService {
         // Llamamos al procedimiento almacenado
         pedidoRepository.confirmarPedido(pedidoId, empleadoId, direccionEntrega);
     }
+
+    @Override
+    public List<PedidoEntity> findPedidosParaCocina() {
+        return pedidoRepository.findPedidosParaCocina();
+    }
+
 
 }

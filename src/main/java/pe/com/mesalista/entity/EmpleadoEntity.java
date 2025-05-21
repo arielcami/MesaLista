@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDateTime;
@@ -37,6 +38,7 @@ public class EmpleadoEntity implements Serializable {
 	private String telefono;
 
 	@Column(name = "clave", length = 45, nullable = false)
+	@JsonIgnore
 	private String clave;
 
 	@Column(name = "direccion", length = 200, nullable = false)
@@ -49,10 +51,12 @@ public class EmpleadoEntity implements Serializable {
 	private boolean estado;
 
 	@CreationTimestamp
+	@JsonIgnore
 	@Column(name = "creado_en", updatable = false)
 	private LocalDateTime creadoEn;
 
 	@UpdateTimestamp
+	@JsonIgnore
 	@Column(name = "actualizado_en")
 	private LocalDateTime actualizadoEn;
 	
