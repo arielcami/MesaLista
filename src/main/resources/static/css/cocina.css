@@ -1,16 +1,15 @@
+@font-face {
+    font-family: 'Yeseva One';
+    src: url('/mesalista/fonts/yeseva-one.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     font-family: sans-serif;
     background-color: #fff6cf;
     margin: 0;
 }
-
-@font-face {
-    font-family: 'Yeseva One';
-    src: url('/static/fonts/yeseva-one.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
 
 .nav-dorada {
     position: fixed;

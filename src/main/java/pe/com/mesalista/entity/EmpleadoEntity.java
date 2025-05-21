@@ -38,7 +38,6 @@ public class EmpleadoEntity implements Serializable {
 	private String telefono;
 
 	@Column(name = "clave", length = 45, nullable = false)
-	@JsonIgnore
 	private String clave;
 
 	@Column(name = "direccion", length = 200, nullable = false)
