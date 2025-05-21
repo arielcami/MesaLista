@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
-    <title>Crear Cliente</title>
+    <title>Crear Cliente - MesaLista v1.0</title>
     <link rel="stylesheet" th:href="@{/css/crearCliente.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/PopupCustom.css}" />
 </head>
 <body>
 
-    <div th:replace="components/BarraNavegacion :: barra-nav"></div>
+    <!-- Incluir barra de navegación -->
+	<div th:replace="~{components/BarraNavegacion :: barra-nav}"></div>
+	
+	<!-- Popup Custom Fragment -->
+	<div th:replace="~{components/PopupCustom :: popupCustom}"></div>
 
     <main>
     <h2>Crear Nuevo Cliente</h2>
 
     <div class="contenido-flex">
-        <form th:action="@{/cliente/registrar}" method="POST" class="buscar-cliente-form">
-            
+        <form id="form-crear-cliente" class="buscar-cliente-form">
+                    
             <div class="form-group">
                 <div class="grupo-flex">
                     <label for="nombre">Nombre:</label>
@@ -59,7 +64,7 @@
         </form>
     </div>
 </main>
-
-
+<script th:src="@{/js/PopupCustom.js}"></script>
+<script th:src="@{/js/crearCliente.js}"></script>
 </body>
 </html>
