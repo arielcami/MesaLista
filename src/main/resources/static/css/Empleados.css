@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'Yeseva One';
+    src: url('../fonts/yeseva-one.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 body {
 	margin-top: -70px;
 	margin-bottom: 100px;
@@ -10,6 +18,112 @@ main h2 {
     color:  #8d8c8e;
     font-weight: normal;
 }
+
+
+
+/*Modal autenticacion*/
+.modal-auth-block {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: #000000; /* Fondo negro sólido */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.modal-auth-content {
+    background: #ffffff;
+    padding: 2.5rem 3rem;
+    border-radius: 12px;
+    width: 320px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    text-align: center;
+    animation: fadeInScale 0.3s ease forwards;
+
+    /* Centramos contenido y elementos hijos */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-auth-content h2 {
+	font-family: 'Yeseva One';
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-weight: normal;
+    font-size: 25px;
+    width: 100%;
+    text-align: center;
+    color: #333;
+}
+
+.modal-auth-content input[type="text"],
+.modal-auth-content input[type="password"] {
+	font-family: 'Consolas';
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 1rem;
+    border: 1.5px solid #ccc;
+    border-radius: 6px;
+    font-size: 20px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.modal-auth-content input[type="text"]:focus,
+.modal-auth-content input[type="password"]:focus {
+    outline: none;
+    border-color: #007BFF;
+    box-shadow: 0 0 6px #007BFFAA;
+}
+
+.modal-auth-content button#btn-auth-login, .modal-auth-content button#btn-auth-regresar{
+	font-family: 'Yeseva One';
+    width: 100%;
+    padding: 12px;
+    background-color: #d4a500;
+    border: none;
+    border-radius: 28px;
+    color: white;
+    font-style: 'Yeseva One';
+    font-weight: normal;
+    font-size: 27px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    margin-top: 0.5rem;
+}
+
+.modal-auth-content button#btn-auth-login:hover, .modal-auth-content button#btn-auth-regresar:hover {
+    color: black;
+}
+
+.auth-error {
+    color: #d93025;
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+    display: none;
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+
+
 
 
 .btn-filtro {

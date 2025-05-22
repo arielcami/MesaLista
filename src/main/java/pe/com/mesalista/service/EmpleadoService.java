@@ -1,6 +1,7 @@
 package pe.com.mesalista.service;
 
 import java.util.List;
+import java.util.Map;
 import pe.com.mesalista.entity.EmpleadoEntity;
 
 public interface EmpleadoService {
@@ -24,4 +25,6 @@ public interface EmpleadoService {
 	
 	List<EmpleadoEntity> findByNivel(int nivel);
 	
+	Map<String, Object> validarCredenciales(int id, String clave);
+
 }

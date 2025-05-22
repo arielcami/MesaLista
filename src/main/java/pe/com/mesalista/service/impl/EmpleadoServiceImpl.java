@@ -2,10 +2,18 @@ package pe.com.mesalista.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.ParameterMode;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.StoredProcedureQuery;
 import pe.com.mesalista.entity.EmpleadoEntity;
 import pe.com.mesalista.repository.EmpleadoRepository;
 import pe.com.mesalista.service.EmpleadoService;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -13,7 +21,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 
 	@Autowired
 	private EmpleadoRepository empleadoRepository;
-
+	
 	@Override
 	public List<EmpleadoEntity> findAll() {
 		return empleadoRepository.findAll();
@@ -84,4 +92,39 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 		});
 		return null;
 	}
+	
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	@Override
+    public Map<String, Object> validarCredenciales(int id, String clave) {
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("sp_validar_empleado");
+
+        // Registrar parámetros
+        query.registerStoredProcedureParameter("p_id", Integer.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_clave", String.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_es_valido", Boolean.class, ParameterMode.OUT);
+        query.registerStoredProcedureParameter("p_mensaje", String.class, ParameterMode.OUT);
+
+        // Asignar valores de entrada
+        query.setParameter("p_id", id);
+        query.setParameter("p_clave", clave);
+
+        // Ejecutar el SP
+        query.execute();
+
+        // Obtener parámetros de salida
+        Boolean esValido = (Boolean) query.getOutputParameterValue("p_es_valido");
+        String mensaje = (String) query.getOutputParameterValue("p_mensaje");
+
+        Map<String, Object> resultado = new HashMap<>();
+        resultado.put("p_es_valido", esValido != null ? esValido : false);
+        resultado.put("p_mensaje", mensaje != null ? mensaje : "Error desconocido");
+
+        return resultado;
+    }
+	
+	
+
+
 }
