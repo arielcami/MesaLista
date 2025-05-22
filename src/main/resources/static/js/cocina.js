@@ -70,6 +70,24 @@ function renderPedidos(pedidos) {
     });
 }
 
+function actualizarReloj() {
+    const reloj = document.getElementById('reloj');
+    const ahora = new Date();
+
+    let horas = ahora.getHours();
+    const minutos = ahora.getMinutes().toString().padStart(2, '0');
+    const segundos = ahora.getSeconds().toString().padStart(2, '0');
+    const ampm = horas >= 12 ? 'PM' : 'AM';
+
+    horas = horas % 12 || 12;
+
+    reloj.textContent = `${horas}:${minutos}:${segundos} ${ampm}`;
+}
+
+// Actualizar cada segundo
+setInterval(actualizarReloj, 1000);
+actualizarReloj(); // llamada inicial
+
 
 
 // Inicializa primera carga y refresca cada intervalo

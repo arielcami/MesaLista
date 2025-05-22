@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/pedido")
 public class PedidoController {
 	
-	@GetMapping
+	@GetMapping("/cocina")
 	public String mostrarPedido() {
-		return "Pedido";
+		return "Cocina";
 	}
 	
     @GetMapping("/confirmar")

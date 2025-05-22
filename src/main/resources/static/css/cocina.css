@@ -16,11 +16,28 @@ body {
     top: 0;
     width: 100%;
     background-color: #d4a500;
-    padding: 1rem 0;
+    padding: 13px;
     z-index: 1000;
     text-align: center;
-    padding: 13px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
+
+
+#reloj {
+    position: fixed; /* <-- CAMBIO CLAVE */
+    top: 13px; /* mismo padding superior del nav */
+    right: 1rem;
+    color: black;
+    font-family: 'Arial';
+    font-size: 28px;
+    white-space: nowrap;
+    z-index: 1001;
+    pointer-events: none;
+    margin-right: 30px;
+}
+
+
 
 .nav-dorada h1 {
     margin: 0;
@@ -31,13 +48,14 @@ body {
 }
 
 .pedido-container {
-	margin-top: 100px;
+    margin-top: 100px;
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
     padding: 0 1rem;
     gap: 1rem;
 }
+
 
 .pedido-card {
     flex: 0 0 auto;
