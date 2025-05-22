@@ -252,7 +252,56 @@ END$$
 DELIMITER ;
 
 
+DELIMITER $$
 
+USE `mesalista_db`$$
+
+DROP PROCEDURE IF EXISTS `sp_validar_empleado`$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validar_empleado`(
+    IN p_id INT,
+    IN p_clave VARCHAR(45),
+    OUT p_es_valido BOOLEAN,
+    OUT p_mensaje VARCHAR(100)
+)
+BEGIN
+    DECLARE v_nivel INT;
+    DECLARE v_estado TINYINT;
+    DECLARE v_contador INT DEFAULT 0;
+
+    -- Buscar si el empleado existe con esa clave
+    SELECT COUNT(*)
+    INTO v_contador
+    FROM empleados
+    WHERE id = p_id AND clave = p_clave;
+
+    IF v_contador = 0 THEN
+        SET p_es_valido = FALSE;
+        SET p_mensaje = 'Credenciales inválidas';
+    ELSE
+        -- Obtener nivel y estado
+        SELECT nivel, estado INTO v_nivel, v_estado
+        FROM empleados
+        WHERE id = p_id;
+
+        -- Validar que el empleado esté activo
+        IF v_estado = 1 THEN
+            -- Validar permisos según nivel
+            IF v_nivel IN (0, 1) THEN
+                SET p_es_valido = TRUE;
+                SET p_mensaje = 'Autenticación exitosa';
+            ELSE
+                SET p_es_valido = FALSE;
+                SET p_mensaje = 'Su nivel es muy bajo para acceder';
+            END IF;
+        ELSE
+            SET p_es_valido = FALSE;
+            SET p_mensaje = 'Empleado restringido';
+        END IF;
+    END IF;
+END$$
+
+DELIMITER ;
 
 
 

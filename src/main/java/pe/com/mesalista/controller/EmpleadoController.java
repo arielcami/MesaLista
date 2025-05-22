@@ -25,7 +25,4 @@ public class EmpleadoController {
         return "Deliveries";
     }
     
-    
-	
-	
 }

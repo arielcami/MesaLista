@@ -18,7 +18,6 @@ public interface EmpleadoService {
 
 	EmpleadoEntity enable(Long id);
 
-	// Método para buscar empleados por estado
 	List<EmpleadoEntity> findByEstado(boolean estado);
 	
 	List<EmpleadoEntity> findByNombreIgnoreCase(String nombre);

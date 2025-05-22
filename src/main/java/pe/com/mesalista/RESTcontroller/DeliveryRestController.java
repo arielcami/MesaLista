@@ -1,10 +1,12 @@
 package pe.com.mesalista.RESTcontroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.com.mesalista.entity.DeliveryEntity;
 import pe.com.mesalista.service.DeliveryService;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/delivery")
@@ -16,6 +18,22 @@ public class DeliveryRestController {
 	@GetMapping
 	public List<DeliveryEntity> findAll() { // Postman: OK!
 		return servicio.findAll();
+	}
+	
+	@PostMapping("/validar")
+	public ResponseEntity<Map<String, Object>> validarEmpleado(@RequestBody Map<String, Object> payload) {
+	    try {
+	        int id = ((Number) payload.get("id")).intValue();  // cast seguro
+	        String clave = (String) payload.get("clave");
+
+	        Map<String, Object> resultado = servicio.validarCredenciales(id, clave);
+
+	        return ResponseEntity.ok(resultado);
+	    } catch (Exception e) {
+	        e.printStackTrace();  // Para ver el error completo en consola
+	        return ResponseEntity.badRequest()
+	            .body(Map.of("p_es_valido", false, "p_mensaje", "Error en autenticación"));
+	    }
 	}
 
 	@GetMapping("/estado/{estado}")

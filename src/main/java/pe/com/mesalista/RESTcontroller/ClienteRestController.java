@@ -22,9 +22,9 @@ public class ClienteRestController {
     public List<ClienteEntity> findByNombre(@PathVariable String nombre) {
         return servicio.findByNombreContainingIgnoreCase(nombre);
     }
-    
 
-    @GetMapping("/{id}") // el request mapping del @RestController es: @RequestMapping("/api/cliente")
+
+    @GetMapping("/{id}")
     public ClienteEntity findById(@PathVariable Long id) {
         return servicio.findById(id);
     }
