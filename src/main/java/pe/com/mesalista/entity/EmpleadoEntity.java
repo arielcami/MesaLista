@@ -39,7 +39,7 @@ public class EmpleadoEntity implements Serializable {
 
 	@Column(name = "clave", length = 45, nullable = false)
 	private String clave;
-
+	
 	@Column(name = "direccion", length = 200, nullable = false)
 	private String direccion;
 

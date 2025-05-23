@@ -1,3 +1,24 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 DROP DATABASE IF EXISTS mesalista_db;
 
 CREATE DATABASE mesalista_db;
@@ -10,7 +31,6 @@ CREATE TABLE clientes (
 	telefono VARCHAR(16) NOT NULL,
 	documento VARCHAR(12) NOT NULL,
 	direccion VARCHAR(200) NOT NULL,
-	estado BIT(1) DEFAULT b'1',
 	creado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 	actualizado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (id),
@@ -48,18 +68,19 @@ CREATE TABLE productos (
 
 DROP TABLE IF EXISTS empleados;
 CREATE TABLE empleados (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100) NOT NULL,
-	telefono VARCHAR(19) NOT NULL,
-	documento VARCHAR(12) NOT NULL,
-	clave VARCHAR(45) NOT NULL,
-	direccion VARCHAR(100) NOT NULL,
-	nivel TINYINT UNSIGNED NOT NULL DEFAULT '0',
-	estado TINYINT UNSIGNED DEFAULT '1',
-	creado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-	actualizado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	PRIMARY KEY (id),
-	UNIQUE KEY documento (documento)
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    telefono VARCHAR(16) NOT NULL,
+    documento VARCHAR(12) NOT NULL,
+    clave VARCHAR(64) NOT NULL,
+    salt VARCHAR(64) DEFAULT NULL,
+    direccion VARCHAR(100) NOT NULL,
+    nivel TINYINT UNSIGNED DEFAULT '2',
+    estado TINYINT UNSIGNED DEFAULT '1',
+    creado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY documento (documento)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 /* extends empleados */
@@ -103,7 +124,7 @@ CREATE TABLE detalle_pedido (
 	producto_id INT UNSIGNED NOT NULL,
 	cantidad TINYINT UNSIGNED NOT NULL,
 	precio_unitario DECIMAL(10,2) NOT NULL,
-	estado TINYINT UNSIGNED NOT NULL DEFAULT '1',
+	estado TINYINT UNSIGNED NOT NULL DEFAULT 1, -- Numérico porque manejaremos hasta 8 estados
 	creado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 	actualizado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (id),
@@ -178,7 +199,6 @@ END$$
 DELIMITER ;
 
 
-
 DELIMITER $$
 
 USE `mesalista_db`$$
@@ -195,19 +215,25 @@ BEGIN
     DECLARE v_direccion_cliente VARCHAR(200);
     DECLARE v_empleado_existente INT;
     DECLARE v_cliente_existente INT;
+    DECLARE v_empleado_nivel TINYINT;
 
     -- Verificar si el pedido existe
     IF NOT EXISTS (SELECT 1 FROM pedidos WHERE id = p_pedido_id) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El pedido no existe';
     END IF;
 
-    -- Verificar si el empleado existe
-    SELECT COUNT(1) INTO v_empleado_existente
+    -- Verificar si el empleado existe y obtener su nivel
+    SELECT COUNT(1), nivel INTO v_empleado_existente, v_empleado_nivel
     FROM empleados
     WHERE id = p_empleado_id;
-    
+
     IF v_empleado_existente = 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El empleado no existe';
+    END IF;
+
+    -- Validar que el empleado no sea de nivel 3 (Delivery)
+    IF v_empleado_nivel = 3 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El personal de delivery no puede confirmar pedidos';
     END IF;
 
     -- Obtener el cliente_id del pedido
@@ -219,12 +245,12 @@ BEGIN
     SELECT COUNT(1) INTO v_cliente_existente
     FROM clientes
     WHERE id = v_cliente_id;
-    
+
     IF v_cliente_existente = 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El cliente no existe';
     END IF;
 
-    -- Si la dirección no fue proporcionada (es NULL o vacía), buscar la del cliente
+    -- Si no se proporcionó dirección de entrega, usar la del cliente
     IF p_direccion_entrega IS NULL OR p_direccion_entrega = '' THEN
         SELECT direccion INTO v_direccion_cliente
         FROM clientes
@@ -233,23 +259,25 @@ BEGIN
         SET v_direccion_cliente = p_direccion_entrega;
     END IF;
 
-    -- Verificar si el estado del pedido ya está confirmado (1)
+    -- Verificar si el pedido ya ha sido confirmado
     IF EXISTS (SELECT 1 FROM pedidos WHERE id = p_pedido_id AND estado_pedido = 1) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El pedido ya ha sido confirmado';
     END IF;
 
-    -- Actualizar el pedido con empleado_id, dirección de entrega y estado
+    -- Confirmar el pedido
     UPDATE pedidos
     SET
         empleado_id = p_empleado_id,
         direccion_entrega = v_direccion_cliente,
         estado_pedido = 1
     WHERE id = p_pedido_id;
-    
+
     COMMIT;
 END$$
 
 DELIMITER ;
+
+
 
 
 DELIMITER $$
@@ -260,48 +288,55 @@ DROP PROCEDURE IF EXISTS `sp_validar_empleado`$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validar_empleado`(
     IN p_id INT,
-    IN p_clave VARCHAR(45),
+    IN p_clave VARCHAR(100),
     OUT p_es_valido BOOLEAN,
     OUT p_mensaje VARCHAR(100)
 )
 BEGIN
     DECLARE v_nivel INT;
     DECLARE v_estado TINYINT;
+    DECLARE v_salt VARCHAR(64);
     DECLARE v_contador INT DEFAULT 0;
+    DECLARE v_hash_clave VARCHAR(64);
 
-    -- Buscar si el empleado existe con esa clave
-    SELECT COUNT(*)
-    INTO v_contador
+    -- Intentamos obtener estado, nivel y salt del empleado
+    SELECT estado, nivel, salt
+    INTO v_estado, v_nivel, v_salt
     FROM empleados
-    WHERE id = p_id AND clave = p_clave;
+    WHERE id = p_id;
 
-    IF v_contador = 0 THEN
+    -- Validaciones
+    IF v_estado IS NULL THEN
         SET p_es_valido = FALSE;
-        SET p_mensaje = 'Credenciales inválidas';
+        SET p_mensaje = 'Empleado no encontrado';
+    ELSEIF v_estado <> 1 THEN
+        SET p_es_valido = FALSE;
+        SET p_mensaje = 'Empleado restringido';
+    ELSEIF v_nivel >= 2 THEN
+        SET p_es_valido = FALSE;
+        SET p_mensaje = 'Su nivel es muy bajo para acceder';
     ELSE
-        -- Obtener nivel y estado
-        SELECT nivel, estado INTO v_nivel, v_estado
-        FROM empleados
-        WHERE id = p_id;
+        -- Si pasa validaciones, validar clave con hash
+        SET v_hash_clave = SHA2(CONCAT(p_clave, v_salt), 256);
 
-        -- Validar que el empleado esté activo
-        IF v_estado = 1 THEN
-            -- Validar permisos según nivel
-            IF v_nivel IN (0, 1) THEN
-                SET p_es_valido = TRUE;
-                SET p_mensaje = 'Autenticación exitosa';
-            ELSE
-                SET p_es_valido = FALSE;
-                SET p_mensaje = 'Su nivel es muy bajo para acceder';
-            END IF;
-        ELSE
+        SELECT COUNT(*) INTO v_contador 
+        FROM empleados 
+        WHERE id = p_id AND clave = v_hash_clave;
+
+        IF v_contador = 0 THEN
             SET p_es_valido = FALSE;
-            SET p_mensaje = 'Empleado restringido';
+            SET p_mensaje = 'Credenciales inválidas';
+        ELSE
+            SET p_es_valido = TRUE;
+            SET p_mensaje = 'Autenticación exitosa';
         END IF;
     END IF;
+
 END$$
 
 DELIMITER ;
+
+
 
 
 
@@ -428,6 +463,43 @@ BEGIN
 END ;;
 DELIMITER ;
 
+
+
+/* TRIGGERS */
+
+DELIMITER $$
+
+CREATE TRIGGER before_insert_empleados
+BEFORE INSERT ON empleados
+FOR EACH ROW
+BEGIN
+    SET NEW.salt = SUBSTRING(MD5(RAND()), 1, 16);  
+    SET NEW.clave = SHA2(CONCAT(NEW.clave, NEW.salt), 256);
+END$$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE TRIGGER before_update_empleados
+BEFORE UPDATE ON empleados
+FOR EACH ROW
+BEGIN
+    IF NEW.clave <> OLD.clave THEN
+        SET NEW.salt = SUBSTRING(MD5(RAND()), 1, 16);
+        SET NEW.clave = SHA2(CONCAT(NEW.clave, NEW.salt), 256);
+    ELSE
+        SET NEW.salt = OLD.salt;
+        SET NEW.clave = OLD.clave;
+    END IF;
+END$$
+
+DELIMITER ;
+
+
+
+
 -- DATA
 INSERT INTO clientes (nombre, telefono, documento, direccion, estado) VALUES 
 ('Pedro Sánchez', '970555444', '55667788', 'Jr. Lima 234 Surco', b'1'), 
@@ -469,7 +541,7 @@ INSERT INTO empleados (nombre, telefono, documento, clave, direccion, nivel, est
 ('AdminAdmin', '000000000', '00000000', '1954260873', '000000000000', 3, 1), 
 ('Mariela Salazar Vargas', '987654321', '41015448', '8845122', 'Jirón Las Gaviotas 122 Chorrillos', 2, 1), 
 ('Andrea Mamani', '976543210', '87654321', '234567', 'Jirón Las Gaviotas 355 Chorrillos', 0, 1), 
-('Carlos Fernández', '965432109', '23456789', '345678', 'Av. Arequipa 789 Chorrillos', 1, 1), 
+('Carlos José Fernández', '965432109', '23456789', '345678', 'Av. Arequipa 789 Chorrillos', 1, 1), 
 ('Ana Torres', '954321098', '34567890', '456789', 'Calle La Paz 321 Chorrillos', 0, 1), 
 ('Luis Martínez', '943210987', '45678901', '567890', 'Av. Brasil 654 Surco', 0, 1), 
 ('Sofía Ruiz', '932109876', '56789012', '678901', 'Calle Los Pinos 987 Chorrillos', 0, 1), 

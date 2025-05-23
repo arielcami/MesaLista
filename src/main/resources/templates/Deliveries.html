@@ -35,16 +35,34 @@
 			<span id="create-delivery-close" class="popup-close">❌</span>
 
 			<form id="create-delivery-form">
-				<label for="create-nombre">Nombre:</label> <input type="text"
-					id="create-nombre" class="entradadetexto" required /> <label
-					for="create-documento">Documento:</label> <input type="text"
-					id="create-documento" class="entradadetexto" required /> <label
-					for="create-telefono">Teléfono:</label> <input type="text"
-					id="create-telefono" class="entradadetexto" required /> <label
-					for="create-direccion">Dirección:</label> <input type="text"
-					id="create-direccion" class="entradadetexto" required /> <label
-					for="create-clave">Clave:</label> <input type="password"
-					id="create-clave" class="entradadetexto" required />
+				<label for="create-nombre">Nombre:</label> 
+				<input type="text" id="create-nombre" class="entradadetexto" required /> 
+				
+				<label for="create-documento">Documento:</label> 
+				<input type="text" id="create-documento" class="entradadetexto" required /> 
+				
+				<label for="create-telefono">Teléfono:</label> 
+				<input type="text" id="create-telefono" class="entradadetexto" required /> 
+				
+				<label for="create-direccion">Dirección:</label> 
+				<input type="text" id="create-direccion" class="entradadetexto" required /> 
+				
+				<label for="create-unidad">Unidad:</label> 
+				<select id="create-unidad" class="entradadetexto" required>
+					<option value="Moto">Moto</option>
+					<option value="Mototaxi">Mototaxi</option>
+					<option value="Carro">Carro</option>
+					<option value="Otro">Otro</option>
+				</select> 
+			
+				<label for="create-placa">Placa:</label> 
+				<input type="text" id="create-placa" class="entradadetexto" required/> 
+								
+				<label for="create-clave">Clave:</label> 
+				<input type="password" id="create-clave" class="entradadetexto" required />
+				
+				<label for="create-confirm-clave">Confirmar Clave:</label>
+				<input type="password" id="create-confirm-clave" class="entradadetexto" required />
 
 				<!-- Nivel fijo 3 (Delivery), no editable ni visible -->
 				<input type="hidden" id="create-nivel" value="3" />
@@ -65,16 +83,19 @@
 					class="entradadetexto" disabled /> <label for="edit-nombre">Nombre:</label>
 				<input type="text" id="edit-nombre" class="entradadetexto" disabled />
 
-				<label for="edit-unidad">Unidad:</label> <select id="edit-unidad"
-					class="entradadetexto" required>
+				<label for="edit-unidad">Unidad:</label> 
+				<select id="edit-unidad" class="entradadetexto" required>
 					<option value="Moto">Moto</option>
 					<option value="Mototaxi">Mototaxi</option>
 					<option value="Carro">Carro</option>
 					<option value="Otro">Otro</option>
-				</select> <label for="edit-placa">Placa:</label> <input type="text"
-					id="edit-placa" class="entradadetexto" required /> <label
-					for="edit-estado">Estado:</label> <input type="text"
-					id="edit-estado" class="estado-texto" disabled />
+				</select> 
+				
+				<label for="edit-placa">Placa:</label> 
+				<input type="text" id="edit-placa" class="entradadetexto" required/> 
+				
+				<label for="edit-estado">Estado:</label> 
+				<input type="text" id="edit-estado" class="estado-texto" disabled/>
 
 				<button type="submit">Guardar Cambios</button>
 			</form>

@@ -21,12 +21,21 @@ document.addEventListener("DOMContentLoaded", () => {
 	form.addEventListener("submit", (e) => {
 		e.preventDefault();
 
+		const clave = document.getElementById("create-clave").value;
+		const confirmarClave = document.getElementById("create-confirm-clave").value;
+
+		// Validación: claves deben coincidir
+		if (clave !== confirmarClave) {
+			alert("Las claves no coinciden.");
+			return;
+		}
+
 		const nuevoEmpleado = {
 			nombre: document.getElementById("create-nombre").value.trim(),
 			documento: document.getElementById("create-documento").value.trim(),
 			telefono: document.getElementById("create-telefono").value.trim(),
 			direccion: document.getElementById("create-direccion").value.trim(),
-			clave: document.getElementById("create-clave").value,
+			clave: clave,
 			nivel: parseInt(document.getElementById("create-nivel").value),
 			estado: true
 		};
@@ -42,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			})
 			.then(() => {
 				popupOverlay.style.display = "none";
-				// Refrescar tabla si la función está definida globalmente
 				if (typeof window.fetchYRenderEmpleados === "function") {
 					window.fetchYRenderEmpleados();
 				}
