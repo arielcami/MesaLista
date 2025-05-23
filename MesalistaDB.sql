@@ -1,24 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 DROP DATABASE IF EXISTS mesalista_db;
 
 CREATE DATABASE mesalista_db;
@@ -222,14 +201,19 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El pedido no existe';
     END IF;
 
-    -- Verificar si el empleado existe y obtener su nivel
-    SELECT COUNT(1), nivel INTO v_empleado_existente, v_empleado_nivel
+    -- Verificar si el empleado existe
+    SELECT COUNT(1) INTO v_empleado_existente
     FROM empleados
     WHERE id = p_empleado_id;
 
     IF v_empleado_existente = 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El empleado no existe';
     END IF;
+
+    -- Obtener el nivel del empleado
+    SELECT nivel INTO v_empleado_nivel
+    FROM empleados
+    WHERE id = p_empleado_id;
 
     -- Validar que el empleado no sea de nivel 3 (Delivery)
     IF v_empleado_nivel = 3 THEN
@@ -336,6 +320,59 @@ END$$
 
 DELIMITER ;
 
+
+
+DELIMITER $$
+
+USE `mesalista_db`$$
+
+DROP PROCEDURE IF EXISTS `sp_validar_delivery`$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validar_delivery`(
+    IN p_id INT,
+    IN p_clave VARCHAR(100),
+    OUT p_es_valido BOOLEAN,
+    OUT p_mensaje VARCHAR(100)
+)
+BEGIN
+    DECLARE v_nivel INT;
+    DECLARE v_estado TINYINT;
+    DECLARE v_salt VARCHAR(64);
+    DECLARE v_contador INT DEFAULT 0;
+    DECLARE v_hash_clave VARCHAR(64);
+
+    SELECT estado, nivel, salt
+    INTO v_estado, v_nivel, v_salt
+    FROM empleados
+    WHERE id = p_id;
+
+    IF v_estado IS NULL THEN
+        SET p_es_valido = FALSE;
+        SET p_mensaje = 'Empleado no encontrado';
+    ELSEIF v_estado <> 1 THEN
+        SET p_es_valido = FALSE;
+        SET p_mensaje = 'Empleado restringido';
+    ELSEIF v_nivel NOT IN (0, 1, 3) THEN
+        SET p_es_valido = FALSE;
+        SET p_mensaje = 'No tiene permisos para ver esta pantalla';
+    ELSE
+        SET v_hash_clave = SHA2(CONCAT(p_clave, v_salt), 256);
+
+        SELECT COUNT(*) INTO v_contador 
+        FROM empleados 
+        WHERE id = p_id AND clave = v_hash_clave;
+
+        IF v_contador = 0 THEN
+            SET p_es_valido = FALSE;
+            SET p_mensaje = 'Credenciales inválidas';
+        ELSE
+            SET p_es_valido = TRUE;
+            SET p_mensaje = 'Autenticación exitosa';
+        END IF;
+    END IF;
+END$$
+
+DELIMITER ;
 
 
 

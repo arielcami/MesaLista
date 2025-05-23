@@ -122,8 +122,33 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 
         return resultado;
     }
-	
-	
 
+	@Override
+	public Map<String, Object> validarDeliveryCredenciales(int id, String clave) {
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("sp_validar_delivery");
 
+        // Registrar parámetros
+        query.registerStoredProcedureParameter("p_id", Integer.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_clave", String.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_es_valido", Boolean.class, ParameterMode.OUT);
+        query.registerStoredProcedureParameter("p_mensaje", String.class, ParameterMode.OUT);
+
+        // Asignar valores de entrada
+        query.setParameter("p_id", id);
+        query.setParameter("p_clave", clave);
+
+        // Ejecutar el SP
+        query.execute();
+
+        // Obtener parámetros de salida
+        Boolean esValido = (Boolean) query.getOutputParameterValue("p_es_valido");
+        String mensaje = (String) query.getOutputParameterValue("p_mensaje");
+
+        Map<String, Object> resultado = new HashMap<>();
+        resultado.put("p_es_valido", esValido != null ? esValido : false);
+        resultado.put("p_mensaje", mensaje != null ? mensaje : "Error desconocido");
+
+        return resultado;
+	}
+	
 }

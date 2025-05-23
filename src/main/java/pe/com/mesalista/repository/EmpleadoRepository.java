@@ -19,8 +19,16 @@ public interface EmpleadoRepository extends JpaRepository<EmpleadoEntity, Long> 
     
     List<EmpleadoEntity> findByNivel(int nivel);
     
+    
     @Procedure(procedureName = "sp_validar_empleado")
     Map<String, Object> spValidarEmpleado(
+        @Param("p_id") int p_id,
+        @Param("p_clave") String p_clave
+    );
+    
+    
+    @Procedure(procedureName = "sp_validar_delivery")
+    Map<String, Object> spValidarDelivery(
         @Param("p_id") int p_id,
         @Param("p_clave") String p_clave
     );

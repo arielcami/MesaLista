@@ -1,15 +1,48 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Entregas - MesaLista v1.0</title>
-
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
-
+<title>Entregas - MesaLista v1.0</title>
+<link rel="stylesheet" th:href="@{/css/Entregas.css}">
+<link rel="stylesheet" th:href="@{/css/PedidosEntrega.css}">
 </head>
-
 <body>
-	<h1>Aquí se mostrarán las entregas pendientes para que un delivery la acepte.</h1>
-	
+
+	<!-- Modal de Autenticación para Delivery -->
+	<div id="delivery-auth-modal" class="modal-auth-block">
+		<div class="modal-auth-content">
+			<h2>Validar Delivery</h2>
+
+			<input type="text" id="delivery-id" placeholder="ID de Delivery"
+				autocomplete="off" /> <input type="password" id="delivery-clave"
+				placeholder="Clave" autocomplete="off" />
+
+			<button id="btn-delivery-login">Ingresar</button>
+
+			<p id="delivery-auth-error" class="auth-error" style="display: none;">Credenciales
+				inválidas o acceso denegado</p>
+		</div>
+	</div>
+
+
+	<header class="top-buttons">
+		<a href="#" id="btn-listar-pedidos" class="circle-btn">Listar</a> <a
+			href="#" class="circle-btn">Entregados</a> <a href="#"
+			class="circle-btn">Fallidos</a> <a href="#" class="circle-btn">Incidente</a>
+	</header>
+
+	<main class="entregas-main-wrapper">
+		<p class="texto-intro-entregas">Pedidos disponibles para entregar:</p>
+
+		<!-- Contenedor de tarjetas de pedidos -->
+		<div id="bloque-pedidos-entrega">
+			<!-- Aquí se insertarán las tarjetas dinámicamente -->
+		</div>
+	</main>
+
+	<script type="text/javascript" th:src="@{/js/Entregas.js}"></script>
 </body>
 </html>

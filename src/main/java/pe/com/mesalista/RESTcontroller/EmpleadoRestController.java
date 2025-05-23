@@ -32,6 +32,23 @@ public class EmpleadoRestController {
 	            .body(Map.of("p_es_valido", false, "p_mensaje", "Error en autenticación"));
 	    }
 	}
+	
+	
+	@PostMapping("/validar-delivery")
+	public ResponseEntity<Map<String, Object>> validarDelivery(@RequestBody Map<String, Object> payload) {
+	    try {
+	        int id = ((Number) payload.get("id")).intValue();
+	        String clave = (String) payload.get("clave");
+
+	        Map<String, Object> resultado = servicio.validarDeliveryCredenciales(id, clave);
+
+	        return ResponseEntity.ok(resultado);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.badRequest()
+	            .body(Map.of("p_es_valido", false, "p_mensaje", "Error en autenticación"));
+	    }
+	}
 
 	
 	@GetMapping("/nivel/{nivel}")

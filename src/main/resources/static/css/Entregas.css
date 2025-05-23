@@ -1,0 +1,157 @@
+@font-face {
+    font-family: 'Yeseva One';
+    src: url('../fonts/yeseva-one.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial';
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.top-buttons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 5px;
+    background-color: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    flex-wrap: wrap; /* Para evitar desbordamiento en pantallas pequeñas */
+}
+
+.circle-btn {
+    background-color: #d4a500;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    width: 80px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 6px;
+    text-align: center;
+    line-height: 1.1;
+    word-wrap: break-word;
+    white-space: normal;
+    transition: background-color 0.3s ease;
+}
+
+.circle-btn:hover {
+    background-color: #b68f00;
+}
+
+
+/* Modal autenticacion para Delivery */
+.modal-auth-block {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* ← Alineamos arriba */
+    padding-top: 5px; /* ← Separación desde el borde superior */
+    z-index: 5000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-y: auto; /* Permite desplazamiento si es necesario */
+} 
+
+.modal-auth-content {
+    background: #ffffff;
+    padding: 2.5rem 3rem;
+    border-radius: 12px;
+    width: 320px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    text-align: center;
+    animation: fadeInScale 0.3s ease forwards;
+
+    /* Centramos contenido y elementos hijos */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-auth-content h2 {
+    font-family: 'Yeseva One';
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-weight: normal;
+    font-size: 25px;
+    width: 100%;
+    text-align: center;
+    color: #333;
+}
+
+.modal-auth-content input[type="text"],
+.modal-auth-content input[type="password"] {
+    font-family: 'Consolas';
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 1rem;
+    border: 1.5px solid #ccc;
+    border-radius: 6px;
+    font-size: 20px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.modal-auth-content input[type="text"]:focus,
+.modal-auth-content input[type="password"]:focus {
+    outline: none;
+    border-color: #007BFF;
+    box-shadow: 0 0 6px #007BFFAA;
+}
+
+.modal-auth-content button#btn-delivery-login {
+    font-family: 'Yeseva One';
+    width: 100%;
+    padding: 12px;
+    background-color: #d4a500;
+    border: none;
+    border-radius: 28px;
+    color: white;
+    font-weight: normal;
+    font-size: 27px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    margin-top: 0.5rem;
+}
+
+.modal-auth-content button#btn-delivery-login:hover {
+    color: black;
+}
+
+.auth-error {
+    color: #d93025;
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+    display: none;
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+

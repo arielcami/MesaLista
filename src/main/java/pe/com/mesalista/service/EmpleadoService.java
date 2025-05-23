@@ -25,5 +25,7 @@ public interface EmpleadoService {
 	List<EmpleadoEntity> findByNivel(int nivel);
 	
 	Map<String, Object> validarCredenciales(int id, String clave);
+	
+	Map<String, Object> validarDeliveryCredenciales(int id, String clave);
 
 }
