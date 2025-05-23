@@ -23,6 +23,11 @@ public class DetallePedidoEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pedido_id", nullable = false)
+    @JsonBackReference
+    private PedidoEntity pedido;
 
     @ManyToOne
     @JoinColumn(name = "producto_id", nullable = false)
@@ -37,6 +42,7 @@ public class DetallePedidoEntity implements Serializable {
     @Column(name = "estado", nullable = false)
     private byte estado;
 
+    // Campos para registro interno, ignorar.
     @CreationTimestamp
     @JsonIgnore
     @Column(name = "creado_en", updatable = false)
@@ -46,10 +52,5 @@ public class DetallePedidoEntity implements Serializable {
     @JsonIgnore
     @Column(name = "actualizado_en")
     private LocalDateTime actualizadoEn;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pedido_id", nullable = false)
-    @JsonBackReference
-    private PedidoEntity pedido;
 
 }

@@ -45,9 +45,11 @@ function renderPedidos(pedidos) {
     pedidos.forEach(pedido => {
         // Ordenar detalles según tipoProducto: segundos (2), entradas (1), bebidas (3), postres (4)
         const prioridad = [2, 1, 3, 4];
-        const detallesOrdenados = pedido.detalles.slice().sort((a, b) => {
-            return prioridad.indexOf(a.producto.tipoProducto) - prioridad.indexOf(b.producto.tipoProducto);
-        });
+		const detallesOrdenados = pedido.detalles
+		    .filter(detalle => detalle.cantidad > 0)
+		    .sort((a, b) => {
+		        return prioridad.indexOf(a.producto.tipoProducto) - prioridad.indexOf(b.producto.tipoProducto);
+		    });
 
         const card = document.createElement('div');
         card.className = 'pedido-card';
@@ -87,8 +89,6 @@ function actualizarReloj() {
 // Actualizar cada segundo
 setInterval(actualizarReloj, 1000);
 actualizarReloj(); // llamada inicial
-
-
 
 // Inicializa primera carga y refresca cada intervalo
 fetchPedidos();

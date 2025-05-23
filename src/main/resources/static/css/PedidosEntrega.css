@@ -30,7 +30,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 5px;
+    gap: 20px;
 }
 
 /* Estilos de texto del pedido */
@@ -85,3 +85,33 @@ a.btn-ver-detalle:active {
     background-color: #806400; /* Aún más oscuro al hacer clic */
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3); /* Da sensación de botón hundido */
 }
+
+
+.detalle-lista-productos {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.detalle-item {
+	display: flex;
+	justify-content: space-between;
+	font-size: 15px;
+}
+
+.detalle-izquierda {
+	text-align: left;
+	flex: 1;
+}
+
+.detalle-derecha {
+	text-align: right;
+	width: 80px; /* ajusta según necesidad */
+}
+
+.detalle-total {
+	text-align: right;
+	font-size: 16px;
+	margin-top: 10px;
+}
+

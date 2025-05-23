@@ -42,7 +42,16 @@
 			<!-- Aquí se insertarán las tarjetas dinámicamente -->
 		</div>
 	</main>
-
+	
+	<!-- Modal de Detalle de Pedido -->
+	<div id="modal-detalle-pedido-entrega" class="modal" style="display:none;">
+		<div class="modal-content">
+			<span id="modal-detalle-pedido-entrega-close" class="modal-close">&times;</span>
+			<div id="detalle-pedido-lista"></div>
+		</div>
+	</div>	
+	
+	<script type="text/javascript" th:src="@{/js/DetallePedidoModalEntregas.js}"></script>
 	<script type="text/javascript" th:src="@{/js/Entregas.js}"></script>
 </body>
 </html>

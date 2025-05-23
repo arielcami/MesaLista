@@ -12,7 +12,7 @@ function formatearHoraAMPM(fechaStr) {
 function formatearTelefono(numero) {
 	const limpio = numero.replace(/\D/g, ''); // Elimina caracteres no numéricos
 	if (limpio.length !== 9) return numero; // Devuelve como está si no son 9 dígitos
-	return `${limpio.slice(0,3)}-${limpio.slice(3,6)}-${limpio.slice(6)}`;
+	return `${limpio.slice(0, 3)}-${limpio.slice(3, 6)}-${limpio.slice(6)}`;
 }
 
 
@@ -35,10 +35,10 @@ async function cargarPedidosDisponibles() {
 		}
 
 		pedidos.forEach(pedido => {
-		  const tarjeta = document.createElement('div');
-		  tarjeta.className = 'entregas-pedido-tarjeta';
+			const tarjeta = document.createElement('div');
+			tarjeta.className = 'entregas-pedido-tarjeta';
 
-		  tarjeta.innerHTML = `
+			tarjeta.innerHTML = `
 		    <div class="lado-izquierdo">
 		      <h3 class="entregas-pedido-id">ID Pedido: ${pedido.id}</h3>
 		      <p class="entregas-pedido-cliente"><strong>Cliente:</strong> ${pedido.cliente?.nombre ?? 'N/D'}</p>
@@ -50,29 +50,40 @@ async function cargarPedidosDisponibles() {
 		    
 		    <div class="lado-derecho">
 		      <a href="#" class="btn-ver-ruta" data-direccion="${encodeURIComponent(pedido.direccionEntrega)}">Ver rutas</a>
-			  <a href="#" class="btn-ver-detalle">Ver detalle</a>
+		      <a href="#" class="btn-ver-detalle" data-pedido-id="${pedido.id}">Ver detalle</a>
 		    </div>
 		  `;
 
-		  // Evento para abrir Google Maps al hacer clic en "Ver destino"
-		  const botonRuta = tarjeta.querySelector('.btn-ver-ruta');
-		  botonRuta.addEventListener('click', function (e) {
-		    e.stopPropagation(); // evita disparar el evento click de la tarjeta
-		    e.preventDefault();
-		    
-		    const direccion = this.dataset.direccion;
-		    const url = `https://www.google.com/maps/search/?api=1&query=${direccion}`;
-		    window.open(url, '_blank');
-		  });
+			// Evento para abrir Google Maps al hacer clic en "Ver rutas"
+			const botonRuta = tarjeta.querySelector('.btn-ver-ruta');
+			botonRuta.addEventListener('click', function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+				const direccion = this.dataset.direccion;
+				const url = `https://www.google.com/maps/search/?api=1&query=${direccion}`;
+				window.open(url, '_blank');
+			});
 
-		  // Evento opcional para la tarjeta completa
-		  tarjeta.addEventListener('click', () => {
-		    alert(`Pedido seleccionado: ${pedido.id}`);
-		  });
+			// Evento para "Ver detalle"
+			const botonDetalle = tarjeta.querySelector('.btn-ver-detalle');
+			botonDetalle.addEventListener('click', function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+				const idPedido = this.dataset.pedidoId;
+				if (window.abrirModalDetallePedido) {
+					window.abrirModalDetallePedido(idPedido);
+				} else {
+					alert('Función para mostrar detalle no disponible.');
+				}
+			});
 
-		  contenedor.appendChild(tarjeta);
+			// Evento opcional para la tarjeta completa
+			tarjeta.addEventListener('click', () => {
+				alert(`Pedido seleccionado: ${pedido.id}`);
+			});
+
+			contenedor.appendChild(tarjeta);
 		});
-
 
 	} catch (error) {
 		contenedor.innerHTML = `<p>Error cargando pedidos: ${error.message}</p>`;
@@ -82,16 +93,18 @@ async function cargarPedidosDisponibles() {
 
 // Función para autenticar empleado delivery
 function autenticarEmpleado() {
-	let id = document.getElementById("delivery-id").value.trim();
-	let clave = document.getElementById("delivery-clave").value.trim();
+	const id = document.getElementById("delivery-id").value.trim();
+	const clave = document.getElementById("delivery-clave").value.trim();
 	const errorMsg = document.getElementById("delivery-auth-error");
 
+	/*
 	// Si ambos campos están vacíos, usar credenciales hardcodeadas para desarrollo
 	if (!id && !clave) {
 		id = 4;
 		clave = "345678";
 	}
-	
+	*/
+
 	if (!id || !clave) {
 		errorMsg.textContent = "Por favor, complete ambos campos";
 		errorMsg.style.display = "block";
