@@ -187,6 +187,7 @@ DROP PROCEDURE IF EXISTS `confirmarPedido`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `confirmarPedido`(
     IN p_pedido_id INT,
     IN p_empleado_id INT,
+    IN p_clave VARCHAR(100),
     IN p_direccion_entrega VARCHAR(200)
 )
 BEGIN
@@ -195,6 +196,10 @@ BEGIN
     DECLARE v_empleado_existente INT;
     DECLARE v_cliente_existente INT;
     DECLARE v_empleado_nivel TINYINT;
+    DECLARE v_estado TINYINT;
+    DECLARE v_salt VARCHAR(64);
+    DECLARE v_hash_clave VARCHAR(64);
+    DECLARE v_clave_almacenada VARCHAR(64);
 
     -- Verificar si el pedido existe
     IF NOT EXISTS (SELECT 1 FROM pedidos WHERE id = p_pedido_id) THEN
@@ -210,17 +215,29 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El empleado no existe';
     END IF;
 
-    -- Obtener el nivel del empleado
-    SELECT nivel INTO v_empleado_nivel
+    -- Obtener estado, nivel, salt y clave (válido porque ya verificamos que el empleado existe)
+    SELECT estado, nivel, salt, clave
+    INTO v_estado, v_empleado_nivel, v_salt, v_clave_almacenada
     FROM empleados
     WHERE id = p_empleado_id;
+
+    -- Validar estado del empleado
+    IF v_estado <> 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Empleado restringido';
+    END IF;
 
     -- Validar que el empleado no sea de nivel 3 (Delivery)
     IF v_empleado_nivel = 3 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El personal de delivery no puede confirmar pedidos';
     END IF;
 
-    -- Obtener el cliente_id del pedido
+    -- Validar clave usando hash + salt
+    SET v_hash_clave = SHA2(CONCAT(p_clave, v_salt), 256);
+    IF v_hash_clave <> v_clave_almacenada THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Credenciales inválidas';
+    END IF;
+
+    -- Obtener cliente_id del pedido
     SELECT cliente_id INTO v_cliente_id
     FROM pedidos
     WHERE id = p_pedido_id;

@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.com.mesalista.entity.PedidoEntity;
 import pe.com.mesalista.service.PedidoService;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -21,12 +20,12 @@ public class PedidoRestController {
 	public List<PedidoEntity> findAll() {
 		return servicio.findAll();
 	}
-	
+
 	@GetMapping("/cocina")
 	public List<PedidoEntity> obtenerPedidosParaCocina() {
-	    return servicio.findPedidosParaCocina();
+		return servicio.findPedidosParaCocina();
 	}
-	
+
 	@GetMapping("/estado/{estado}")
 	public List<PedidoEntity> findByEstadoPedido(@PathVariable byte estado) {
 		return servicio.findByEstadoPedido(estado);
@@ -55,45 +54,50 @@ public class PedidoRestController {
 		PedidoEntity pedidoActualizado = servicio.update(pedido, id);
 		return pedidoActualizado != null ? ResponseEntity.ok(pedidoActualizado) : ResponseEntity.notFound().build();
 	}
-	
+
 	@PutMapping("/{id}/set-delivery/{deliveryId}")
-    public ResponseEntity<PedidoEntity> asignarDelivery(
-            @PathVariable Long id,
-            @PathVariable Long deliveryId) {
-        PedidoEntity actualizado = servicio.asignarDelivery(id, deliveryId);
-        return ResponseEntity.ok(actualizado);
-    }
-	
+	public ResponseEntity<PedidoEntity> asignarDelivery(@PathVariable Long id, @PathVariable Long deliveryId) {
+		PedidoEntity actualizado = servicio.asignarDelivery(id, deliveryId);
+		return ResponseEntity.ok(actualizado);
+	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		servicio.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-	
-	// Endpoint para confirmar el pedido
+
+	// SP
 	@PostMapping("/confirmar")
-	public ResponseEntity<String> confirmarPedido(@RequestParam Long pedidoId, @RequestParam Long empleadoId, 
-	        @RequestParam(required = false) String direccionEntrega) {
-	    
-	    try {
-	        servicio.confirmarPedido(pedidoId, empleadoId, direccionEntrega);
-	        return ResponseEntity.ok("Pedido confirmado correctamente.");
-	    } catch (Exception e) {
-	        String mensajeLimpio = "Error al confirmar el pedido.";
+	public ResponseEntity<String> confirmarPedido(@RequestParam Long pedidoId, @RequestParam Long empleadoId,
+			@RequestParam String clave, @RequestParam(required = false) String direccionEntrega) {
 
-	        // Buscar si hay una SQLException en la causa
-	        Throwable causa = e;
-	        while (causa != null) {
-	            if (causa instanceof SQLException) {
-	                mensajeLimpio = causa.getMessage();
-	                break;
-	            }
-	            causa = causa.getCause();
-	        }
+		try {
+			servicio.confirmarPedido(pedidoId, empleadoId, clave, direccionEntrega);
+			return ResponseEntity.ok("Pedido confirmado correctamente.");
+		} catch (Exception e) {
+			String mensajeLimpio = "Error al confirmar el pedido.";
+			String sqlState = null;
 
-	        return ResponseEntity.status(500).body(mensajeLimpio);
-	    }
+			// Buscar si hay una SQLException en la causa
+			Throwable causa = e;
+			while (causa != null) {
+				if (causa instanceof SQLException sqlEx) {
+					mensajeLimpio = sqlEx.getMessage();
+					sqlState = sqlEx.getSQLState();
+					break;
+				}
+				causa = causa.getCause();
+			}
+
+			// Si es un error esperado (SIGNAL SQLSTATE '45000'), devolver 400 (Bad Request)
+			if ("45000".equals(sqlState)) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensajeLimpio);
+			}
+
+			// Si es otro tipo de error, devolver 500
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mensajeLimpio);
+		}
 	}
-	
+
 }

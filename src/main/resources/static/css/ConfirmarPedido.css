@@ -21,26 +21,25 @@ h3 {
 .tabla-container {
     flex: 1;
     overflow-x: auto;
-    margin-top: 20px;
-    max-width: 920px;
+    margin-top: 0px;
+    max-width: 950px;
     margin-left: auto;
     margin-right: auto;
 }
 
 /* Tabla general */
 .tabla-detallepedido {
-    width: 860px;
+    width: 950px;
     border-collapse: collapse;
-    font-size: 19px;
-    color: #333;
-    transform: scale(0.95);
+    font-size: 15px;
+    color: black;
     transform-origin: top left;
     margin: 0 auto;
 }
 
 /* Filas de tabla */
 .tabla-detallepedido-rows {
-    font-size: 18px;
+    font-size: 15px;
     color: black;
 
 }
@@ -48,11 +47,11 @@ h3 {
 /* Celdas */
 .tabla-detallepedido th,
 .tabla-detallepedido td {
-    padding: 10px;
+    padding: 2px;
     text-align: center; /* CAMBIO AQUÍ */
     border: 1px solid #ccc;
-    font-family: 'Consolas';
-    font-size: 22px;
+    font-family: 'Arial';
+    font-size: 17px;
 }
 
 
@@ -64,9 +63,6 @@ h3 {
     font-family: 'Arial';
     font-size: 20px;
 }
-
-
-
 
 
 
@@ -157,6 +153,15 @@ h3 {
 
 .campo-texto {
     width: 500px;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #6e6e6e;
+    font-size: 20px;
+    font-family: 'Consolas';
+}
+
+.campo-texto-clave {
+    width: 250px;
     padding: 8px;
     border-radius: 8px;
     border: 1px solid #6e6e6e;

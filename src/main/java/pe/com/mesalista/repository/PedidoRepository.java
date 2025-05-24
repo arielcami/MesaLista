@@ -31,13 +31,12 @@ public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
     void confirmarPedido(
         @Param("p_pedido_id") Long pedidoId,
         @Param("p_empleado_id") Long empleadoId,
+        @Param("p_clave") String claveEmpleado,
         @Param("p_direccion_entrega") String direccionEntrega
     );
         
     @Query("SELECT DISTINCT p FROM PedidoEntity p LEFT JOIN FETCH p.detalles WHERE p.estadoPedido = 1 ORDER BY p.fechaPedido ASC")
     List<PedidoEntity> findPedidosParaCocina();
-
-
 
 
 }

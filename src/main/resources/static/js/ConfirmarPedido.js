@@ -3,8 +3,8 @@
 document.addEventListener("DOMContentLoaded", () => {
 	const params = new URLSearchParams(window.location.search);
 	const pedidoId = params.get("pedidoId");
-
 	const empleadoIdInput = document.getElementById("empleado-id");
+	const claveEmpleadoInput = document.getElementById("empleado-clave");
 	const direccionEntregaInput = document.getElementById("direccion-entrega");
 
 	const API_URL_CONFIRMAR = "/mesalista/api/pedido/confirmar";
@@ -28,9 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
 					total += subtotal;
 
 					fila.innerHTML = `
-                        <td>${detalle.id}</td>
+                        <td style="width: 90px;">${detalle.cantidad}</td>
                         <td>${detalle.producto.nombre}</td>
-                        <td>${detalle.cantidad}</td>
                         <td>S/ ${detalle.precioUnitario.toFixed(2)}</td>
                         <td>S/ ${subtotal.toFixed(2)}</td>
                     `;
@@ -70,16 +69,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	document.getElementById("btn-confirmar-final").addEventListener("click", () => {
 		const empleadoId = empleadoIdInput.value;
+		const claveEmpleado = claveEmpleadoInput.value;
 		const direccionEntrega = direccionEntregaInput.value || "";
 
-		if (!pedidoId || !empleadoId) {
-			mostrarPopupConfirmacion("warning", "Faltan datos necesarios: Pedido o Empleado.", null);
+		if (!pedidoId || !empleadoId || !claveEmpleado) { // <- validamos también clave
+			mostrarPopupConfirmacion("warning", "Faltan datos necesarios: Pedido, Empleado o Clave.", null);
 			return;
 		}
 
 		const formData = new URLSearchParams();
 		formData.append("pedidoId", pedidoId);
 		formData.append("empleadoId", empleadoId);
+		formData.append("clave", claveEmpleado); // <- NUEVO
 		if (direccionEntrega.trim()) {
 			formData.append("direccionEntrega", direccionEntrega);
 		}
@@ -107,7 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			.catch(err => {
 				mostrarPopupConfirmacion("error", "Error: " + err.message, null);
 			});
-
 	});
 });
 

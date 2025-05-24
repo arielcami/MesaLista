@@ -70,18 +70,16 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setDelivery(delivery);
         return pedidoRepository.save(pedido);
     }
-    
-    @Override
-    public void confirmarPedido(Long pedidoId, Long empleadoId, String direccionEntrega) {
     	
-        // Verificamos si se pasó el parámetro de dirección de entrega. Si es null o vacío, se pasa como NULL al SP.
+    // SP
+    @Override
+    public void confirmarPedido(Long pedidoId, Long empleadoId, String clave, String direccionEntrega) {
         if (direccionEntrega == null || direccionEntrega.trim().isEmpty()) {
-            direccionEntrega = null;  // Pasamos explicitamente como NULL si la dirección es vacía o null
+            direccionEntrega = null;
         }
-
-        // Llamamos al procedimiento almacenado
-        pedidoRepository.confirmarPedido(pedidoId, empleadoId, direccionEntrega);
+        pedidoRepository.confirmarPedido(pedidoId, empleadoId, clave, direccionEntrega);
     }
+
 
     @Override
     public List<PedidoEntity> findPedidosParaCocina() {
