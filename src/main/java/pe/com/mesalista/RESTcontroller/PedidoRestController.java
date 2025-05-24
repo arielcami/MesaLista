@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.com.mesalista.entity.PedidoEntity;
 import pe.com.mesalista.service.PedidoService;
+
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -70,20 +72,28 @@ public class PedidoRestController {
 	}
 	
 	// Endpoint para confirmar el pedido
-    @PostMapping("/confirmar")
-    public ResponseEntity<String> confirmarPedido(@RequestParam Long pedidoId, @RequestParam Long empleadoId, 
-            @RequestParam(required = false) String direccionEntrega) {
-        
-        try {
-            // Llamada al servicio para confirmar el pedido
-            servicio.confirmarPedido(pedidoId, empleadoId, direccionEntrega);
+	@PostMapping("/confirmar")
+	public ResponseEntity<String> confirmarPedido(@RequestParam Long pedidoId, @RequestParam Long empleadoId, 
+	        @RequestParam(required = false) String direccionEntrega) {
+	    
+	    try {
+	        servicio.confirmarPedido(pedidoId, empleadoId, direccionEntrega);
+	        return ResponseEntity.ok("Pedido confirmado correctamente.");
+	    } catch (Exception e) {
+	        String mensajeLimpio = "Error al confirmar el pedido.";
 
-            // Retornamos una respuesta exitosa
-            return ResponseEntity.ok("Pedido confirmado correctamente.");
-        } catch (Exception e) {
-            // Si ocurre un error, retornamos un error con un mensaje
-            return ResponseEntity.status(500).body("Error al confirmar el pedido: " + e.getMessage());
-        }
-    }
+	        // Buscar si hay una SQLException en la causa
+	        Throwable causa = e;
+	        while (causa != null) {
+	            if (causa instanceof SQLException) {
+	                mensajeLimpio = causa.getMessage();
+	                break;
+	            }
+	            causa = causa.getCause();
+	        }
+
+	        return ResponseEntity.status(500).body(mensajeLimpio);
+	    }
+	}
 	
 }
