@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pe.com.mesalista.entity.ClienteEntity;
 import pe.com.mesalista.service.ClienteService;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/cliente")
@@ -16,6 +17,26 @@ public class ClienteRestController {
     @GetMapping
     public List<ClienteEntity> findAll() {
         return servicio.findAll();
+    }
+    
+    @PostMapping("addcliente_sp")
+    public Map<String, Object> addCliente_sp(@RequestBody ClienteEntity cliente) {
+        return servicio.addClienteSP(
+            cliente.getNombre(),
+            cliente.getTelefono(),
+            cliente.getDocumento(),
+            cliente.getDireccion()
+        );
+    }
+      
+    @GetMapping("buscar-documento")
+    public ClienteEntity findByDocumento(@PathVariable String documento) {
+    	return servicio.findByDocumento(documento);
+    }
+    
+    @GetMapping("buscar")
+    public List<ClienteEntity> findByDocumentoContainingIgnoreCase(@PathVariable String documento) {
+    	return servicio.findByDocumentoContainingIgnoreCase(documento);
     }
    
     @GetMapping("/nombre/{nombre}")

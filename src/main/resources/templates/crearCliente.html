@@ -6,7 +6,7 @@
     <title>Crear Cliente - MesaLista v1.0</title>
     <link rel="stylesheet" th:href="@{/css/crearCliente.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/PopupCustom.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/PopupCustom2Options.css}" />
 </head>
 <body>
 
@@ -14,7 +14,7 @@
 	<div th:replace="~{components/BarraNavegacion :: barra-nav}"></div>
 	
 	<!-- Popup Custom Fragment -->
-	<div th:replace="~{components/PopupCustom :: popupCustom}"></div>
+	<div th:replace="~{components/PopupCustom2Options :: popupCustom2Options}"></div>
 
     <main>
     <h2>Crear Nuevo Cliente</h2>
@@ -64,7 +64,9 @@
         </form>
     </div>
 </main>
-<script th:src="@{/js/PopupCustom.js}"></script>
+<!--  script th:src="@{/js/PopupCustom.js}"></script>-->
+
+<script th:src="@{/js/PopupCustom2Options.js}"></script>
 <script th:src="@{/js/crearCliente.js}"></script>
 </body>
 </html>

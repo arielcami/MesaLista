@@ -1,6 +1,8 @@
 package pe.com.mesalista.service;
 
 import java.util.List;
+import java.util.Map;
+
 import pe.com.mesalista.entity.ClienteEntity;
 
 
@@ -10,12 +12,17 @@ public interface ClienteService {
 	    	
 	List <ClienteEntity> findByNombreContainingIgnoreCase(String nombre);
 	
-	List <ClienteEntity> findByDocumentoContainingIgnoreCase(String documento);
+	List <ClienteEntity> findByDocumentoContainingIgnoreCase(String nombre);
+	
+	ClienteEntity findByDocumento(String documento);
 
 	ClienteEntity findById(Long id);
 	
 	ClienteEntity save(ClienteEntity usuario);
 	
 	ClienteEntity update(ClienteEntity usuario, Long id);
+	
+	// SP
+	Map<String, Object> addClienteSP(String nombre, String telefono, String documento, String direccion);
 		
 }

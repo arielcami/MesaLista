@@ -392,6 +392,54 @@ END$$
 DELIMITER ;
 
 
+DELIMITER $$
+
+USE `mesalista_db`$$
+
+DROP PROCEDURE IF EXISTS `addCliente`$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addCliente`(
+    IN cliente_nombre VARCHAR(100),
+    IN cliente_telefono VARCHAR(16),
+    IN cliente_documento VARCHAR(12),
+    IN cliente_direccion VARCHAR(200),
+    OUT created BOOLEAN,
+    OUT msg VARCHAR(60)
+)
+BEGIN
+    DECLARE existe INT DEFAULT 0;
+
+    -- Manejo de errores
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SET created = FALSE;
+        SET msg = 'Error durante la creación del cliente.';
+    END;
+
+    START TRANSACTION;
+
+    -- Verificar si ya existe el cliente
+    SELECT COUNT(*) INTO existe 
+    FROM clientes 
+    WHERE TRIM(documento) = TRIM(cliente_documento);
+
+    IF existe > 0 THEN
+        ROLLBACK;
+        SET created = FALSE;
+        SET msg = 'Existe otro Cliente con ese número de documento.';
+    ELSE
+        INSERT INTO clientes (nombre, telefono, documento, direccion)
+        VALUES (cliente_nombre, cliente_telefono, cliente_documento, cliente_direccion);
+
+        COMMIT;
+        SET created = TRUE;
+        SET msg = 'Cliente creado exitosamente.';
+    END IF;
+END$$
+
+DELIMITER ;
+
 
 
 DELIMITER ;;
