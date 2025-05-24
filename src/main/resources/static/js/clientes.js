@@ -17,32 +17,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 	// Función para cargar la lista de clientes
-	const cargarClientes = (url) => {
+	window.cargarClientes = (url) => {
 		fetch(url)
 			.then(response => response.json())
 			.then(clientes => {
-
-				// Limpiar la tabla antes de insertar nuevos datos
 				clientesTableBody.innerHTML = '';
-
-				// Insertar cada cliente en la tabla
 				clientes.forEach(cliente => {
 					const row = document.createElement('tr');
-
 					row.innerHTML = `
-				        <td><input type="text" value="${cliente.id}" disabled class="input-id" /></td>
+				        <td><input type="text" value="${cliente.id}" disabled class="input-id" name="cliente-id-unico"/></td>
 				        <td class="nombre">${cliente.nombre}</td>
 						<td class="telefono">${cliente.telefono}</td>
 						<td class="documento">${cliente.documento}</td>
 						<td class="direccion">${cliente.direccion}</td>
 				        <td><button class="btn-editar" data-id="${cliente.id}">Editar</button></td>`;
-
-					// Agregar la fila a la tabla
 					clientesTableBody.appendChild(row);
 				});
-
-				// Volver a asignar los eventos de edición y de cambio de estado
-				agregarEventosEdicion();
+				window.agregarEventosEdicion();
 			})
 			.catch(err => {
 				console.error('Error al obtener los clientes:', err);
@@ -54,14 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
 	cargarClientes('/mesalista/api/cliente');
 
 	// Función para agregar eventos de edición
-	const agregarEventosEdicion = () => {
+	window.agregarEventosEdicion = () => {
 		const btnEditar = document.querySelectorAll('.btn-editar');
 		btnEditar.forEach(btn => {
 			btn.addEventListener('click', (e) => {
 				const clienteId = e.target.getAttribute('data-id');
-
-
-				// Llamar a la API para obtener los datos del cliente
 				fetch(`/mesalista/api/cliente/${clienteId}`)
 					.then(response => response.json())
 					.then(cliente => {
@@ -69,11 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 						editTelefono.value = cliente.telefono;
 						editDocumento.value = cliente.documento;
 						editDireccion.value = cliente.direccion;
-
-						// Guardar el ID del cliente en el formulario para enviarlo con los cambios
 						editClientForm.setAttribute('data-id', cliente.id);
-
-						// Mostrar el popup
 						editPopupOverlay.style.display = 'flex';
 					})
 					.catch(err => console.error('Error al obtener cliente:', err));
@@ -81,10 +65,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	};
 
+	// Exportar la función para que sea accesible globalmente
+	window.agregarEventosEdicion = agregarEventosEdicion;
+
 	// Enviar los cambios del cliente
 	editClientForm.addEventListener('submit', (e) => {
 		e.preventDefault();
-
 		const clienteId = editClientForm.getAttribute('data-id');
 		const updatedCliente = {
 			id: clienteId,
@@ -135,7 +121,5 @@ document.addEventListener("DOMContentLoaded", () => {
 			editPopupOverlay.style.display = 'none';
 		}
 	});
-
-
 
 });

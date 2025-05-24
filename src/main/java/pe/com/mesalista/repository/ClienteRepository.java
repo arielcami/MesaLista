@@ -2,6 +2,9 @@ package pe.com.mesalista.repository;
 
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +16,10 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Long>{
 	List <ClienteEntity> findByNombreContainingIgnoreCase(String nombre);
 	
 	// Tipo LISTA
-	List <ClienteEntity> findByDocumentoContainingIgnoreCase(String documento);
+	List<ClienteEntity> findByDocumentoContainingIgnoreCase(String documento);
+	
+	// Paginación
+	Page<ClienteEntity> findByNombreContainingIgnoreCase(String nombre, Pageable pageable);
 	
 	// Tipo ClienteEntity = solo encuentra 1 con el documento completo
 	ClienteEntity findByDocumento(String documento);

@@ -8,29 +8,28 @@
     <!-- CSS general -->
     <link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
     <link rel="stylesheet" th:href="@{/css/Clientes.css}" />
+    <link rel="stylesheet" th:href="@{/css/cliente-paginacion.css}" />
 </head>
 <body>
 
-	<!-- Popup de Éxito al Crear Cliente -->
-	<div id="success-popup-overlay" class="popup-overlay">
-	    <div class="popup-content">
-	        <h3>¡Cliente Creado Exitosamente!</h3>
-	        <p>El cliente ha sido registrado correctamente.</p>
-	        
-	        <!-- Botones de acción -->
-	        <div class="popup-buttons">
-	            <a href=# class="btn-tomar-pedido">
-	                <button type="button" class="btn-action">Tomar Pedido</button>
-	            </a>
-	            <a th:href="@{/cliente/registrar}" class="btn-registrar-otro">
-	                <button type="button" class="btn-action">Registrar Otro Cliente</button>
-	            </a>
-	        </div>
-	    </div>
-	</div>
-	
-
-
+    <!-- Popup de Éxito al Crear Cliente -->
+    <div id="success-popup-overlay" class="popup-overlay">
+        <div class="popup-content">
+            <h3>¡Cliente Creado Exitosamente!</h3>
+            <p>El cliente ha sido registrado correctamente.</p>
+            
+            <!-- Botones de acción -->
+            <div class="popup-buttons">
+                <a href=# class="btn-tomar-pedido">
+                    <button type="button" class="btn-action">Tomar Pedido</button>
+                </a>
+                <a th:href="@{/cliente/registrar}" class="btn-registrar-otro">
+                    <button type="button" class="btn-action">Registrar Otro Cliente</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    
 
     <!-- Incluir barra de navegación -->
     <div th:replace="components/BarraNavegacion :: barra-nav"></div>
@@ -42,20 +41,20 @@
             <span id="edit-close-btn" class="popup-close">❌</span>
             
             <form id="edit-client-form">
-                <label for="edit-nombre">Nombre:</label>
-                <input class="entradadetexto" type="text" id="edit-nombre" required />
-                
-                <label for="edit-telefono">Teléfono:</label>
-                <input class="entradadetexto" type="text" id="edit-telefono" required />
-                
-                <label for="edit-documento">Documento:</label>
-                <input class="entradadetexto" type="text" id="edit-documento" required />
-                
-                <label for="edit-direccion">Dirección:</label>
-                <input class="entradadetexto" type="text" id="edit-direccion" required />
-
-                <button type="submit">Guardar cambios</button>
-            </form>
+			    <label for="edit-nombre">Nombre:</label>
+			    <input class="entradadetexto" type="text" id="edit-nombre" name="nombre" required />
+			    
+			    <label for="edit-telefono">Teléfono:</label>
+			    <input class="entradadetexto" type="text" id="edit-telefono" name="telefono" required />
+			    
+			    <label for="edit-documento">Documento:</label>
+			    <input class="entradadetexto" type="text" id="edit-documento" name="documento" required />
+			    
+			    <label for="edit-direccion">Dirección:</label>
+			    <input class="entradadetexto" type="text" id="edit-direccion" name="direccion" required />
+			
+			    <button type="submit">Guardar cambios</button>
+			</form>
         </div>
     </div>
 
@@ -67,6 +66,15 @@
             <a href="/mesalista/cliente/registrar">
                 <button id="btn-nuevo-cliente" class="btn-filtro">Agregar Nuevo Cliente</button>
             </a>
+        </div>
+
+        <!-- NUEVO: Filtros y Paginación -->
+        <div class="filtros-paginacion">
+            <input type="text" id="input-buscar-nombre" placeholder="Buscar cliente por nombre..." />
+            <div id="paginacion-controls">
+                <!-- Aquí se agregarán los botones de paginación -->
+            </div>
+            <a th:href="@{/cliente}" class="btn-mostrartodos">Mostar todos</a>
         </div>
 
         <div class="tabla-clientes-container">
@@ -104,7 +112,7 @@
     </main>
 
     <script th:src="@{/js/clientes.js}" defer></script>
+    <script th:src="@{/js/cliente-paginacion.js}" defer></script>
     
-
 </body>
 </html>

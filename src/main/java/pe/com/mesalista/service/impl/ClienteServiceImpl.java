@@ -1,6 +1,8 @@
 package pe.com.mesalista.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.ParameterMode;
@@ -28,6 +30,7 @@ public class ClienteServiceImpl implements ClienteService {
     public List<ClienteEntity> findByNombreContainingIgnoreCase(String nombre) {
         return clienteRepository.findByNombreContainingIgnoreCase(nombre);
     }
+    
     
     @Override
     public List<ClienteEntity> findByDocumentoContainingIgnoreCase(String nombre) {
@@ -93,5 +96,14 @@ public class ClienteServiceImpl implements ClienteService {
         return clienteRepository.findByDocumento(documento);
     }
 
+    @Override
+    public Page<ClienteEntity> findAllPaginado(Pageable pageable) {
+        return clienteRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<ClienteEntity> findByNombreContainingIgnoreCase(String nombre, Pageable pageable) {
+        return clienteRepository.findByNombreContainingIgnoreCase(nombre, pageable);
+    }
    
 }
