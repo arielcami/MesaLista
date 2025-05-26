@@ -2,10 +2,12 @@ package pe.com.mesalista.repository;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
+import jakarta.transaction.Transactional;
 import pe.com.mesalista.entity.PedidoEntity;
 
 public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
@@ -37,6 +39,12 @@ public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
         
     @Query("SELECT DISTINCT p FROM PedidoEntity p LEFT JOIN FETCH p.detalles WHERE p.estadoPedido = 1 ORDER BY p.fechaPedido ASC")
     List<PedidoEntity> findPedidosParaCocina();
+    
+    @Transactional
+    @Modifying
+    @Query("UPDATE PedidoEntity p SET p.estadoPedido = :estado WHERE p.id = :id")
+    void setEstadoPedido(@Param("id") Long id, @Param("estado") Byte estado);
+
 
 
 }

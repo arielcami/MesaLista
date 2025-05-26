@@ -15,6 +15,11 @@ public class PedidoController {
 		return "Cocina";
 	}
 	
+	@GetMapping("/cocina/control")
+	public String controlDePedidos() {
+		return "CocinaPedidosControl";
+	}
+	
     @GetMapping("/confirmar")
     public String siguiente(@RequestParam Long pedidoId, Model model) {
         // Agregar el pedidoId al modelo

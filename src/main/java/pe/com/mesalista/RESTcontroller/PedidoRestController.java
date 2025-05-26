@@ -20,6 +20,11 @@ public class PedidoRestController {
 	public List<PedidoEntity> findAll() {
 		return servicio.findAll();
 	}
+	
+	@PutMapping("/marcarEstado/{pedidoId}")
+	public void marcarEstado(@PathVariable Long pedidoId, @RequestParam Byte estado) {
+	    servicio.marcarPedidoEstado(pedidoId, estado);
+	}
 
 	@GetMapping("/cocina")
 	public List<PedidoEntity> obtenerPedidosParaCocina() {
@@ -49,7 +54,7 @@ public class PedidoRestController {
 		return new ResponseEntity<>(nuevoPedido, HttpStatus.CREATED);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/{id}") // Concatena de @RequestMapping("/api/pedido")
 	public ResponseEntity<PedidoEntity> update(@RequestBody PedidoEntity pedido, @PathVariable Long id) {
 		PedidoEntity pedidoActualizado = servicio.update(pedido, id);
 		return pedidoActualizado != null ? ResponseEntity.ok(pedidoActualizado) : ResponseEntity.notFound().build();

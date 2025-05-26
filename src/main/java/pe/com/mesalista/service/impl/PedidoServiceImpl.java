@@ -2,6 +2,8 @@ package pe.com.mesalista.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
 import pe.com.mesalista.entity.DeliveryEntity;
 import pe.com.mesalista.entity.PedidoEntity;
 import pe.com.mesalista.repository.DeliveryRepository;
@@ -84,6 +86,12 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public List<PedidoEntity> findPedidosParaCocina() {
         return pedidoRepository.findPedidosParaCocina();
+    }
+    
+    @Override
+    @Transactional
+    public void marcarPedidoEstado(Long pedidoId, Byte estado) {
+        pedidoRepository.setEstadoPedido(pedidoId, estado);
     }
 
 

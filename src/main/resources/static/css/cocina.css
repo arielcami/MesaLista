@@ -16,17 +16,38 @@ body {
     top: 0;
     width: 100%;
     background-color: #d4a500;
-    padding: 13px;
+    padding: 13px 0;
     z-index: 1000;
-    text-align: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+    position: relative;   /* importante para que el <a> se posicione dentro */
+    text-align: center;   /* centra el h1 */
 }
 
 
+/* Enlace a la izquierda */
+.nav-dorada a {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 28px;
+    font-family: 'Yeseva One';
+    font-weight: normal;
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+
+.nav-dorada a:hover {
+    color: black;
+}
+
 
 #reloj {
-    position: fixed; /* <-- CAMBIO CLAVE */
-    top: 13px; /* mismo padding superior del nav */
+    position: fixed;
+    top: 13px;
     right: 1rem;
     color: black;
     font-family: 'Arial';
@@ -38,13 +59,13 @@ body {
 }
 
 
-
 .nav-dorada h1 {
     margin: 0;
     font-family: 'Yeseva One';
     color: white;
     font-size: 30px;
     font-weight: normal;
+    display: inline-block;
 }
 
 .pedido-container {

@@ -2,19 +2,30 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Pantalla Cocina - MesaLista v1.0</title>
+    <title>Control de pedidos - MesaLista v1.0</title>
     <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/Cocina.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/CocinaControl.css}" />
 </head>
 <body>
 
 	<nav class="nav-dorada">
-		<a th:href="@{/pedido/cocina/control}">Control de Pedidos</a>
-		<h1>Pedidos en preparación</h1>
-		<div id="reloj"></div>
+		<a th:href="@{/pedido/cocina}">Pedidos en Preparación</a>
+		<h1>Control de pedidos</h1>
 	</nav>
-
-    <div class="pedido-container">
+	
+	<!-- Modal de acciones para pedidos en preparación -->
+	<div id="modal-acciones" class="modal-acciones hidden">
+	    <div class="modal-contenido">
+	        <div id="modal-titulo">Pedido #123: Juan Pérez</div>
+	        <div class="botones-contenedor">
+	            <button class="btn-modal" id="btn-listo">✅ Listo</button>
+	            <button class="btn-modal" id="btn-editar">✏️ Editar</button>
+	            <button class="btn-modal" id="btn-eliminar">❌ Eliminar</button>
+	        </div>
+	    </div>
+	</div>
+	
+	<div class="pedido-container">
         <div class="pedido-card" th:each="pedido : ${pedidos}">
             <h2 th:text="'Pedido #' + ${pedido.id}">Pedido</h2>
 
@@ -30,6 +41,7 @@
 
         </div>
     </div>
+
 </body>
-<script th:src="@{/js/Cocina.js}"></script>
+<script th:src="@{/js/CocinaControl.js}"></script>
 </html>
