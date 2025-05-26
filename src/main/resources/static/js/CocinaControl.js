@@ -16,8 +16,6 @@ function estadoPedidoTexto(codigo) {
 }
 
 
-
-
 function formatHora(fechaISO) {
 	const fecha = new Date(fechaISO);
 	let horas = fecha.getHours();
@@ -48,7 +46,7 @@ async function fetchPedidos() {
 		const pedidos = await response.json();
 		renderPedidos(pedidos);
 	} catch (error) {
-		console.error('Error de red o inesperado:', error);
+		//console.error('Error de red o inesperado:', error);
 	}
 }
 
@@ -61,7 +59,6 @@ function renderPedidos(pedidos) {
 		// Ordenar detalles según prioridad
 		const prioridad = [2, 1, 3, 4];
 		const detallesOrdenados = pedido.detalles
-			.filter(d => d.cantidad > 0)
 			.sort((a, b) => prioridad.indexOf(a.producto.tipoProducto) - prioridad.indexOf(b.producto.tipoProducto));
 
 		const card = document.createElement('div');
@@ -100,12 +97,16 @@ function mostrarModal(pedido) {
 
 	const titulo = document.getElementById('modal-titulo');
 	titulo.textContent = `Pedido #${pedido.id}: ${pedido.cliente.nombre}`;
+	
+	localStorage.setItem('clienteId', `${pedido.cliente.id}`);
+	
 }
 
 // Cerrar modal si clic fuera
 window.addEventListener('click', (e) => {
 	if (e.target === modal) {
 		modal.classList.add('hidden');
+		localStorage.clear();
 	}
 });
 
@@ -113,6 +114,7 @@ window.addEventListener('click', (e) => {
 window.addEventListener('keydown', (e) => {
 	if (e.key === 'Escape') {
 		modal.classList.add('hidden');
+		localStorage.clear();
 	}
 });
 
@@ -142,8 +144,8 @@ document.getElementById('btn-listo').addEventListener('click', async () => {
 
 document.getElementById('btn-editar').addEventListener('click', () => {
 	const id = modal.dataset.pedidoId;
-	console.log(`Editar pedido ${id}`);
-	modal.classList.add('hidden');
+	modal.classList.add('hidden'); 
+	abrirModalEditar(id); 
 });
 
 document.getElementById('btn-eliminar').addEventListener('click', async () => {

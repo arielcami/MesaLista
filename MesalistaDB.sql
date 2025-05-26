@@ -134,7 +134,7 @@ BEGIN
     -- Buscar pedido existente (no asignado aún a empleado)
     SELECT id INTO p_id 
     FROM pedidos 
-    WHERE cliente_id = p_cliente_id AND empleado_id IS NULL 
+    WHERE cliente_id = p_cliente_id
     ORDER BY id DESC LIMIT 1;
 
     -- Si no hay pedido en curso, crear uno
@@ -176,7 +176,6 @@ BEGIN
 END$$
 
 DELIMITER ;
-
 
 DELIMITER $$
 

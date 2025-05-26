@@ -1,0 +1,172 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'Yeseva One';
+    src: url('/mesalista/fonts/yeseva-one.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/* === MODAL EDITAR PEDIDO === */
+
+.modal-editar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2100;
+    opacity: 1;
+    pointer-events: auto;
+    font-size: 22px;
+}
+
+.modal-editar.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-editar-contenido {
+    background-color: #fff;
+    padding: 1.5rem 2rem;
+    border-radius: 10px;
+    width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+.modal-editar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+}
+
+#modal-editar-titulo {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.btn-cerrar {
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: #999;
+}
+
+.btn-cerrar:hover {
+    color: #333;
+}
+
+.productos-editables {
+    margin-bottom: 1.5rem;
+}
+
+.producto-editable {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.producto-editable span {
+    font-size: 1rem;
+}
+
+.controles-cantidad {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.btn-cantidad {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background-color: rgb(233, 233, 233);
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.btn-cantidad:hover {
+    background-color: #d4a500;
+}
+
+/* Buscador */
+.campo-busqueda {
+    margin-bottom: 1rem;
+}
+
+.campo-busqueda input {
+    width: 95%;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.resultados-busqueda {
+    margin-top: 0.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: white;
+}
+
+.resultados-busqueda > div {
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Para que no aparezca la línea debajo del último elemento */
+.resultados-busqueda > div:last-child {
+    border-bottom: none;
+}
+
+.resultados-busqueda > div:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+.resultado-item {
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+}
+
+.resultado-item:hover {
+    background-color: #d4a500;
+}
+
+/* Botón Guardar */
+.acciones-edicion {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.btn-guardar {
+	font-family: 'Yeseva One';
+    background-color: #d4a500;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.7rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.btn-guardar:hover {
+    color: black;
+}

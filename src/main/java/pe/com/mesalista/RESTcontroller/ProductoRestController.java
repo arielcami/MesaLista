@@ -46,7 +46,7 @@ public class ProductoRestController {
 	public List<ProductoEntity> findByEstadoTrue() {
 		return productoService.findByEstadoTrue();
 	}
-
+	
 	@GetMapping("/inactivos")
 	public List<ProductoEntity> findByEstadoFalse() {
 		return productoService.findByEstadoFalse();
@@ -56,6 +56,11 @@ public class ProductoRestController {
 	@GetMapping("/buscar/{nombre}")
 	public List<ProductoEntity> findByNombreContaining(@PathVariable String nombre) {
 		return productoService.findByNombreContainingIgnoreCase(nombre);
+	}
+	
+	@GetMapping("/buscar-nombre-activo/{nombre}")
+	public List<ProductoEntity> findByNombreContainingIgnoreCaseAndEstadoTrue(@PathVariable String nombre) {
+		return productoService.findByNombreContainingIgnoreCaseAndEstadoTrue(nombre);
 	}
 
 	@GetMapping("/tipo/{tipo}")

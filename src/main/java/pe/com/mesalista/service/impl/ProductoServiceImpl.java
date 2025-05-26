@@ -57,12 +57,19 @@ public class ProductoServiceImpl implements ProductoService {
 	public List<ProductoEntity> findByEstadoFalse() {
 		return productoRepository.findByEstadoFalse();
 	}
-
+	
+	// Métodos casi gemelos
 	@Override
 	public List<ProductoEntity> findByNombreContainingIgnoreCase(String nombre) {
 		return productoRepository.findByNombreContainingIgnoreCase(nombre);
 	}
-
+	
+	@Override
+	public List<ProductoEntity> findByNombreContainingIgnoreCaseAndEstadoTrue(String nombre) {
+		return productoRepository.findByNombreContainingIgnoreCaseAndEstadoTrue(nombre);
+	}
+	
+	
 	@Override
 	public List<ProductoEntity> findByTipoProducto(byte tipoProducto) {
 		return productoRepository.findByTipoProducto(tipoProducto);
@@ -80,5 +87,7 @@ public class ProductoServiceImpl implements ProductoService {
 	public List<ProductoEntity> findByTipoProductoAndEstadoTrue(byte tipoProducto) {
 	    return productoRepository.findByTipoProductoAndEstadoTrue(tipoProducto);
 	}
+
+
 
 }

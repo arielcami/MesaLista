@@ -5,6 +5,7 @@
     <title>Control de pedidos - MesaLista v1.0</title>
     <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/CocinaControl.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/ControlEditarPedidos.css}" />
 </head>
 <body>
 
@@ -41,7 +42,39 @@
 
         </div>
     </div>
+    
+	<!-- Modal para editar pedido -->
+	<div id="modal-editar-pedido" class="modal-editar hidden">
+	    <div class="modal-editar-contenido">
+	        <div class="modal-editar-header">
+	            <h2 id="modal-editar-titulo">Editar pedido: </h2>
+	            <button id="btn-cerrar-editar" class="btn-cerrar">&times;</button>
+	        </div>
+	
+	        <!-- Lista de productos -->
+	        <div id="lista-productos-editables" class="productos-editables">
+	            <!-- Aquí se generarán dinámicamente los productos -->
+	        </div>
+	
+	        <!-- Añadir nuevo producto -->
+	        <div class="agregar-producto">
+	            <div id="campo-busqueda-producto" class="campo-busqueda hidden">
+	                <input type="text" id="input-busqueda-producto" placeholder="Busca un producto para agregar..." />
+	                <div id="resultados-busqueda" class="resultados-busqueda"></div>
+	            </div>
+	        </div>
+	
+	        <!-- Confirmar cambios -->
+	        <div class="acciones-edicion">
+	            <button id="btn-guardar-edicion" class="btn-guardar">Guardar cambios</button>
+	        </div>
+	    </div>
+	</div>
+    
+    
+    
 
 </body>
 <script th:src="@{/js/CocinaControl.js}"></script>
+<script th:src="@{/js/ControlEditarPedido.js}"></script>
 </html>

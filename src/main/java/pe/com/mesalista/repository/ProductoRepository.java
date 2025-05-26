@@ -17,6 +17,9 @@ public interface ProductoRepository extends JpaRepository<ProductoEntity, Long> 
 
     // Búsqueda por nombre que contenga un texto (ignorando mayúsculas/minúsculas)
     List<ProductoEntity> findByNombreContainingIgnoreCase(String nombre);
+    
+    // Búsqueda por nombre y que estén activos
+    List<ProductoEntity> findByNombreContainingIgnoreCaseAndEstadoTrue(String nombre);
 
     // Búsqueda por tipo de producto (ej: 1 = Entrada, 2 = Segundo, etc.)
     List<ProductoEntity> findByTipoProducto(byte tipoProducto);

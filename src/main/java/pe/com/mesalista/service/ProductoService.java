@@ -22,6 +22,8 @@ public interface ProductoService {
 	List<ProductoEntity> findByEstadoFalse();
 
 	List<ProductoEntity> findByNombreContainingIgnoreCase(String nombre);
+	
+	List<ProductoEntity> findByNombreContainingIgnoreCaseAndEstadoTrue(String nombre);
 
 	List<ProductoEntity> findByTipoProducto(byte tipoProducto);
 	
