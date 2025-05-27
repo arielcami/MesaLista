@@ -7,9 +7,7 @@
     font-style: normal;
 }
 
-
 /* === MODAL EDITAR PEDIDO === */
-
 .modal-editar {
     position: fixed;
     top: 0;
@@ -169,4 +167,57 @@
 
 .btn-guardar:hover {
     color: black;
+}
+
+
+/* === Filtros de pedidos === */
+.filtros-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+    margin-left: 15px;
+    margin-top: 10px;
+    align-items: flex-end;
+    font-family: 'Arial;
+}
+
+.filtro-bloque {
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+}
+
+.filtro-bloque label {
+    margin-bottom: 0.4rem;
+    color: #333;
+}
+
+.filtro-bloque input,
+.filtro-bloque select {
+    padding: 0.5rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    width: 200px;
+    transition: border 0.3s ease;
+}
+
+.filtro-bloque input:focus,
+.filtro-bloque select:focus {
+    border: 1px solid #d4a500;
+    outline: none;
+}
+
+@media (max-width: 768px) {
+    .filtros-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filtro-bloque input,
+    .filtro-bloque select {
+        width: 100%;
+    }
 }

@@ -1,6 +1,5 @@
 // === FiltrosPedidos.js ===
 
-// Diccionario de estados
 const estadosPedido = {
     0: 'Inactivo',
     1: 'En preparación',
@@ -16,17 +15,33 @@ const estadosPedido = {
 let listaPedidosCompleta = [];
 let renderPedidosCallback = null;
 
-// Renderiza el select dinámicamente dentro del contenedor
-function renderFiltroEstado(containerId = 'filtro-estado-container') {
-    const contenedor = document.getElementById(containerId);
-    if (!contenedor) return;
+let estadoFiltro = '';
+let clienteFiltro = '';
+let empleadoFiltro = '';
+let fechaFiltro = '';
 
-    // Evita duplicar si ya fue insertado
-    if (document.getElementById('filtro-estado')) return;
+export function inicializarFiltroPedidos(pedidos, renderPedidosFn) {
+    listaPedidosCompleta = pedidos;
+    renderPedidosCallback = renderPedidosFn;
+    renderTodosLosFiltros();
+    aplicarFiltrosCombinados();
+}
+
+function renderTodosLosFiltros() {
+    renderFiltroEstado();
+    renderFiltroCliente();
+    renderFiltroEmpleado();
+    renderFiltroFecha();
+}
+
+// Filtro por estado
+function renderFiltroEstado() {
+    const contenedor = document.getElementById('filtro-estado-container');
+    if (!contenedor || document.getElementById('filtro-estado')) return;
 
     const label = document.createElement('label');
     label.setAttribute('for', 'filtro-estado');
-    label.textContent = 'Mostrar por estado:';
+    label.textContent = 'Estado:';
 
     const select = document.createElement('select');
     select.id = 'filtro-estado';
@@ -46,28 +61,160 @@ function renderFiltroEstado(containerId = 'filtro-estado-container') {
     contenedor.appendChild(label);
     contenedor.appendChild(select);
 
+    // Seleccionar "En preparación" por defecto y aplicar filtro
+    select.value = '1';
+    estadoFiltro = '1';
+    aplicarFiltrosCombinados();
+
     select.addEventListener('change', () => {
-        const estadoSeleccionado = select.value;
-        aplicarFiltroEstado(estadoSeleccionado);
+        estadoFiltro = select.value;
+        aplicarFiltrosCombinados();
     });
 }
 
-function aplicarFiltroEstado(codigoEstado) {
-    let pedidosFiltrados = listaPedidosCompleta;
+// === Filtro por nombre de cliente ===
+function renderFiltroCliente() {
+    const contenedor = document.getElementById('filtro-cliente-container');
+    if (!contenedor || document.getElementById('input-filtro-cliente')) return;
 
-    if (codigoEstado !== '') {
-        const estadoInt = parseInt(codigoEstado, 10);
-        pedidosFiltrados = listaPedidosCompleta.filter(p => p.estadoPedido === estadoInt);
+    const label = document.createElement('label');
+    label.setAttribute('for', 'input-filtro-cliente');
+    label.textContent = 'Cliente:';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = 'input-filtro-cliente';
+    input.placeholder = 'Buscar por nombre...';
+
+    contenedor.appendChild(label);
+    contenedor.appendChild(input);
+
+    input.addEventListener('input', () => {
+        clienteFiltro = input.value.trim().toLowerCase();
+        aplicarFiltrosCombinados();
+    });
+}
+
+// === Filtro por nombre de empleado ===
+function renderFiltroEmpleado() {
+    const contenedor = document.getElementById('filtro-empleado-container');
+    if (!contenedor || document.getElementById('input-filtro-empleado')) return;
+
+    const label = document.createElement('label');
+    label.setAttribute('for', 'input-filtro-empleado');
+    label.textContent = 'Empleado:';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = 'input-filtro-empleado';
+    input.placeholder = 'Buscar por empleado...';
+
+    contenedor.appendChild(label);
+    contenedor.appendChild(input);
+
+    input.addEventListener('input', () => {
+        empleadoFiltro = input.value.trim().toLowerCase();
+        aplicarFiltrosCombinados();
+    });
+}
+
+// === Filtro por fecha relativa (Hoy, Ayer, Antes de ayer) ===
+function renderFiltroFecha() {
+    const contenedor = document.getElementById('filtro-fecha-container');
+    if (!contenedor || document.getElementById('filtro-fecha')) return;
+
+    const label = document.createElement('label');
+    label.setAttribute('for', 'filtro-fecha');
+    label.textContent = 'Fecha:';
+
+    const select = document.createElement('select');
+    select.id = 'filtro-fecha';
+
+    const opciones = [
+        { value: '', text: '-- Todas --' },
+        { value: 'hoy', text: 'Hoy' },
+        { value: 'ayer', text: 'Ayer' },
+        { value: 'antesdeayer', text: 'Antes de ayer' }
+    ];
+
+    opciones.forEach(op => {
+        const option = document.createElement('option');
+        option.value = op.value;
+        option.textContent = op.text;
+        select.appendChild(option);
+    });
+
+    contenedor.appendChild(label);
+    contenedor.appendChild(select);
+
+    // Seleccionar "Hoy" por defecto y aplicar filtro
+    select.value = 'hoy';
+    fechaFiltro = 'hoy';
+    aplicarFiltrosCombinados();
+
+    select.addEventListener('change', () => {
+        fechaFiltro = select.value;
+        aplicarFiltrosCombinados();
+    });
+}
+
+
+function aplicarFiltrosCombinados() {
+    let filtrados = [...listaPedidosCompleta];
+
+    // Filtrar por estado
+    if (estadoFiltro !== '') {
+        const estadoInt = parseInt(estadoFiltro, 10);
+        filtrados = filtrados.filter(p => p.estadoPedido === estadoInt);
+    }
+
+    // Filtrar por cliente
+    if (clienteFiltro !== '') {
+        filtrados = filtrados.filter(p =>
+            p.cliente.nombre.toLowerCase().includes(clienteFiltro)
+        );
+    }
+
+    // Filtrar por empleado
+    if (empleadoFiltro !== '') {
+        filtrados = filtrados.filter(p =>
+            p.empleado.nombre.toLowerCase().includes(empleadoFiltro)
+        );
+    }
+
+    // Filtrar por fecha relativa
+    if (fechaFiltro !== '') {
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+
+        const fechaPedidoToDate = (pedido) => {
+            const fecha = new Date(pedido.fechaPedido);
+            fecha.setHours(0, 0, 0, 0);
+            return fecha;
+        };
+
+        const compararDias = (diasRestar) => {
+            const comparacion = new Date(hoy);
+            comparacion.setDate(hoy.getDate() - diasRestar);
+            return comparacion.getTime();
+        };
+
+        filtrados = filtrados.filter(pedido => {
+            const pedidoFecha = fechaPedidoToDate(pedido);
+            const pedidoTime = pedidoFecha.getTime();
+
+            if (fechaFiltro === 'hoy') {
+                return pedidoTime === compararDias(0);
+            } else if (fechaFiltro === 'ayer') {
+                return pedidoTime === compararDias(1);
+            } else if (fechaFiltro === 'antesdeayer') {
+                return pedidoTime === compararDias(2);
+            }
+            return true;
+        });
     }
 
     if (typeof renderPedidosCallback === 'function') {
-        renderPedidosCallback(pedidosFiltrados);
+        renderPedidosCallback(filtrados);
     }
-}
-
-// ✅ Esta es la única función que se exporta
-export function inicializarFiltroPedidos(pedidos, renderPedidosFn) {
-    listaPedidosCompleta = pedidos;
-    renderPedidosCallback = renderPedidosFn;
-    renderFiltroEstado();
 }

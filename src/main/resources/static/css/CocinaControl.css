@@ -55,19 +55,19 @@ body {
 .pedido-container {
     margin-top: 10px;
     display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    flex-wrap: wrap;
     padding: 0 1rem;
-    gap: 1rem;
+    gap: 10px;
+    justify-content: flex-start; 
+    overflow-x: hidden;
 }
 
 
 .pedido-card {
-    flex: 0 0 auto;
     background-color: #fff;
     border-radius: 10px;
     border: 1px solid #dadada;
-    width: 350px;
+    width: 380px;
     padding: 1rem;
     box-sizing: border-box;
     font-size: 15px;

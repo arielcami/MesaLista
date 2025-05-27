@@ -9,6 +9,7 @@
 </head>
 <body>
 
+	<!-- Barra de navegación -->
 	<nav class="nav-dorada">
 		<a th:href="@{/pedido/cocina}">Pedidos en Preparación</a>
 		<h1>Control de pedidos</h1>
@@ -26,12 +27,18 @@
 	    </div>
 	</div>
 	
-	<div id="filtro-estado-container" class="filtro-por-estados"></div>
-	
+	<!-- Todos los filtros a aplicar -->
+	<div class="filtros-container">
+	    <div id="filtro-estado-container" class="filtro-bloque"></div>
+	    <div id="filtro-cliente-container" class="filtro-bloque"></div>
+	    <div id="filtro-empleado-container" class="filtro-bloque"></div>
+	    <div id="filtro-fecha-container" class="filtro-bloque"></div>
+	</div>
+
+	<!-- Tarjeta que mostrará los pedidos -->
 	<div class="pedido-container">
         <div class="pedido-card" th:each="pedido : ${pedidos}">
             <h2 th:text="'Pedido #' + ${pedido.id}">Pedido</h2>
-
             <p><strong>Cliente:</strong> <span th:text="${pedido.cliente.nombre}">Nombre Cliente</span></p>
             <p><strong>Dirección:</strong> <span th:text="${pedido.direccionEntrega}">Dirección</span></p>
             <p><strong>Hora de orden:</strong><span th:text="${#dates.format(pedido.fechaPedido, 'HH:mm')}">00:00</span></p>

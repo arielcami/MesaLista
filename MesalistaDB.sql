@@ -117,30 +117,34 @@ CREATE TABLE detalle_pedido (
 -- Stored Procedures
 DELIMITER $$
 
+USE `mesalista_db`$$
+
 DROP PROCEDURE IF EXISTS `addProducto`$$
 
-CREATE PROCEDURE `addProducto`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addProducto`(
     IN p_cliente_id INT,
     IN p_producto_id INT,
     IN p_cantidad INT,
     IN p_precio_unitario DECIMAL(10,2),
-    OUT p_pedido_id INT  -- Parámetro de salida
+    OUT p_pedido_id INT
 )
 BEGIN
     DECLARE p_id INT;
     DECLARE v_total DECIMAL(10,2);
     DECLARE v_existe INT;
 
-    -- Buscar pedido existente (no asignado aún a empleado)
+    -- Buscar pedido existente EN ESTADO 0 (no confirmado aún)
     SELECT id INTO p_id 
     FROM pedidos 
-    WHERE cliente_id = p_cliente_id
-    ORDER BY id DESC LIMIT 1;
+    WHERE cliente_id = p_cliente_id 
+      AND estado_pedido = 0
+    ORDER BY id DESC 
+    LIMIT 1;
 
-    -- Si no hay pedido en curso, crear uno
+    -- Si no hay pedido en estado 0, crear uno nuevo
     IF p_id IS NULL THEN
         INSERT INTO pedidos (cliente_id, direccion_entrega, total, estado_pedido)
-        VALUES (p_cliente_id, NULL, 0, 0);  -- Total 0 mientras se arma el pedido
+        VALUES (p_cliente_id, NULL, 0, 0);  -- estado 0: pedido en armado
         SET p_id = LAST_INSERT_ID();
     END IF;
 
@@ -176,6 +180,8 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
 
 DELIMITER $$
 
