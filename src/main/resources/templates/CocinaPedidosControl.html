@@ -26,6 +26,8 @@
 	    </div>
 	</div>
 	
+	<div id="filtro-estado-container" class="filtro-por-estados"></div>
+	
 	<div class="pedido-container">
         <div class="pedido-card" th:each="pedido : ${pedidos}">
             <h2 th:text="'Pedido #' + ${pedido.id}">Pedido</h2>
@@ -70,11 +72,10 @@
 	        </div>
 	    </div>
 	</div>
-    
-    
-    
+   
 
 </body>
-<script th:src="@{/js/CocinaControl.js}"></script>
+<script type="module" th:src="@{/js/FiltrosPedidos.js}"></script>
+<script type="module" th:src="@{/js/CocinaControl.js}"></script>
 <script th:src="@{/js/ControlEditarPedido.js}"></script>
 </html>

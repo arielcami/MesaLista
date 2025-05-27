@@ -1,3 +1,6 @@
+// CocinaControl.js
+import { inicializarFiltroPedidos } from './FiltrosPedidos.js';
+
 const API_URL = '/mesalista/api/pedido'; // Ajusta según tu API
 
 function estadoPedidoTexto(codigo) {
@@ -14,7 +17,6 @@ function estadoPedidoTexto(codigo) {
 	};
 	return estados[codigo] || 'Desconocido';
 }
-
 
 function formatHora(fechaISO) {
 	const fecha = new Date(fechaISO);
@@ -45,25 +47,24 @@ async function fetchPedidos() {
 		}
 		const pedidos = await response.json();
 		renderPedidos(pedidos);
+		inicializarFiltroPedidos(pedidos, renderPedidos);
 	} catch (error) {
-		//console.error('Error de red o inesperado:', error);
+		console.error('Error de red o inesperado:', error);
 	}
 }
 
 function renderPedidos(pedidos) {
 	const container = document.querySelector('.pedido-container');
-	container.innerHTML = ''; // limpiar antes
+	container.innerHTML = '';
 
 	pedidos.forEach(pedido => {
-
-		// Ordenar detalles según prioridad
 		const prioridad = [2, 1, 3, 4];
 		const detallesOrdenados = pedido.detalles
 			.sort((a, b) => prioridad.indexOf(a.producto.tipoProducto) - prioridad.indexOf(b.producto.tipoProducto));
 
 		const card = document.createElement('div');
 		card.className = 'pedido-card';
-		card.dataset.pedidoId = pedido.id; // importante para el modal
+		card.dataset.pedidoId = pedido.id;
 
 		card.innerHTML = `
             <h2>Pedido #${pedido.id} - ${estadoPedidoTexto(pedido.estadoPedido)}</h2>
@@ -83,7 +84,6 @@ function renderPedidos(pedidos) {
 			mostrarModal(pedido);
 		});
 
-
 		container.appendChild(card);
 	});
 }
@@ -97,9 +97,8 @@ function mostrarModal(pedido) {
 
 	const titulo = document.getElementById('modal-titulo');
 	titulo.textContent = `Pedido #${pedido.id}: ${pedido.cliente.nombre}`;
-	
+
 	localStorage.setItem('clienteId', `${pedido.cliente.id}`);
-	
 }
 
 // Cerrar modal si clic fuera
@@ -131,7 +130,6 @@ document.getElementById('btn-listo').addEventListener('click', async () => {
 		if (!response.ok) {
 			console.error('Error al actualizar pedido:', response.statusText);
 		} else {
-			//console.log(`Pedido ${id} marcado como listo`);
 			fetchPedidos();
 		}
 	} catch (error) {
@@ -141,11 +139,10 @@ document.getElementById('btn-listo').addEventListener('click', async () => {
 	modal.classList.add('hidden');
 });
 
-
 document.getElementById('btn-editar').addEventListener('click', () => {
 	const id = modal.dataset.pedidoId;
-	modal.classList.add('hidden'); 
-	abrirModalEditar(id); 
+	modal.classList.add('hidden');
+	abrirModalEditar(id);
 });
 
 document.getElementById('btn-eliminar').addEventListener('click', async () => {
@@ -160,7 +157,6 @@ document.getElementById('btn-eliminar').addEventListener('click', async () => {
 		if (!response.ok) {
 			console.error('Error al eliminar pedido:', response.statusText);
 		} else {
-			//console.log(`Pedido ${id} marcado como eliminado`);
 			fetchPedidos();
 		}
 	} catch (error) {
@@ -170,5 +166,5 @@ document.getElementById('btn-eliminar').addEventListener('click', async () => {
 	modal.classList.add('hidden');
 });
 
-// Carga inicial de pedidos
+// Carga inicial
 fetchPedidos();

@@ -53,7 +53,7 @@ body {
 
 
 .pedido-container {
-    margin-top: 55px;
+    margin-top: 10px;
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -65,13 +65,18 @@ body {
 .pedido-card {
     flex: 0 0 auto;
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    width: 380px;
+    border-radius: 10px;
+    border: 1px solid #dadada;
+    width: 350px;
     padding: 1rem;
     box-sizing: border-box;
     font-size: 15px;
     cursor: pointer;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.pedido-card:hover {
+    border-color: #2bd700;
 }
 
 
@@ -184,3 +189,39 @@ body {
 #btn-eliminar:hover {
     background-color: #ad2c00;
 }
+
+/* Contenedor filtro estado */
+.filtro-por-estados {
+  padding: 10px;
+  margin-left: 20px;
+  font-family: 'Arial';
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Label estilizado */
+.filtro-por-estados label {
+  color: black;
+  font-size: 1.1rem;
+  font-weight: normal;
+}
+
+/* Select estilizado */
+.filtro-por-estados select {
+  padding: 5px 14px;
+  font-size: 0.9rem;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.filtro-por-estados select:hover,
+.filtro-por-estados select:focus {
+  border-color: #0078d4;
+  box-shadow: 0 0 5px rgba(0, 120, 212, 0.5);
+  outline: none;
+}
+
