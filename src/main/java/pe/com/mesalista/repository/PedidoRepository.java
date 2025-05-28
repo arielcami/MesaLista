@@ -28,6 +28,16 @@ public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
     );
     
     
+    // Variante del SP de arriba
+    @Procedure(procedureName = "addProductoConPedidoId")
+    void agregarProductoConPedidoId(
+    	@Param("p_pedido_id") Long pedidoId,
+        @Param("p_producto_id") Long productoId,
+        @Param("p_cantidad") Integer cantidad,
+        @Param("p_precio_unitario") double precioUnitario
+    );
+    
+    
     // Método para ejecutar el SP 'confirmarPedido'
     @Procedure(procedureName = "confirmarPedido")
     void confirmarPedido(

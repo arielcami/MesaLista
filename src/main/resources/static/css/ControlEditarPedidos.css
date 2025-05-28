@@ -221,3 +221,26 @@
         width: 100%;
     }
 }
+
+/* Estilo para el select de estado del pedido */
+.campo-estado-pedido select {
+    padding: 6px 10px;
+    border: 1.5px solid #4a90e2; /* un azul suave */
+    border-radius: 5px;
+    background-color: #f0f8ff; /* un azul muy claro */
+    font-size: 1rem;
+    color: #333;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.campo-estado-pedido select:hover {
+    border-color: #357ABD;
+    box-shadow: 0 0 5px rgba(53, 122, 189, 0.5);
+}
+
+.campo-estado-pedido select:focus {
+    border-color: #1e4f8a;
+    box-shadow: 0 0 8px rgba(30, 79, 138, 0.7);
+}

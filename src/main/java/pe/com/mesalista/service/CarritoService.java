@@ -12,11 +12,16 @@ public class CarritoService {
     private final PedidoRepository pedidoRepository;
     private final DetallePedidoRepository detallePedidoRepository;
 
- // Método para agregar un producto a un pedido
+    // Método para agregar un producto a un pedido
     public Long agregarProducto(Long clienteId, Long productoId, Integer cantidad, double precioUnitario) {
         // Llamada al SP 'addProducto' con los parámetros adecuados
         // El procedimiento ahora devuelve el pedido_id
         return pedidoRepository.agregarProducto(clienteId, productoId, cantidad, precioUnitario);
+    }
+    
+    // Versión con pedido ID
+    public void agregarProductoConPedidoId(Long pedidoId, Long productoId, Integer cantidad, double precioUnitario) {
+        pedidoRepository.agregarProductoConPedidoId(pedidoId, productoId, cantidad, precioUnitario);
     }
 
     // Método para ajustar la cantidad de un producto en un pedido

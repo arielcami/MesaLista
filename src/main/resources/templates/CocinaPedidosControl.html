@@ -52,7 +52,7 @@
         </div>
     </div>
     
-	<!-- Modal para editar pedido -->
+	<!-- Modal para editar pedido AQUI VAMOS A TRABAJAR -->
 	<div id="modal-editar-pedido" class="modal-editar hidden">
 	    <div class="modal-editar-contenido">
 	        <div class="modal-editar-header">
@@ -72,6 +72,21 @@
 	                <div id="resultados-busqueda" class="resultados-busqueda"></div>
 	            </div>
 	        </div>
+	        
+			<div class="campo-estado-pedido">
+			    <label for="select-estado-pedido"><strong>Estado del pedido:</strong></label>
+			    <select id="select-estado-pedido">
+			        <option value="0">Inactivo</option>
+			        <option value="1">En preparación</option>
+			        <option value="2">Listo</option>
+			        <option value="3">En tránsito</option>
+			        <option value="4">Entregado</option>
+			        <option value="5">No entregado</option>
+			        <option value="6">Incidente</option>
+			        <option value="7">Devuelto</option>
+			        <option value="8">ERROR</option>
+			    </select>
+			</div>
 	
 	        <!-- Confirmar cambios -->
 	        <div class="acciones-edicion">

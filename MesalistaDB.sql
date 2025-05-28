@@ -126,12 +126,20 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addProducto`(
     IN p_producto_id INT,
     IN p_cantidad INT,
     IN p_precio_unitario DECIMAL(10,2),
-    OUT p_pedido_id INT
+    OUT p_pedido_id INT  -- Parámetro de salida
 )
 BEGIN
     DECLARE p_id INT;
     DECLARE v_total DECIMAL(10,2);
     DECLARE v_existe INT;
+    DECLARE v_precio DECIMAL(10,2);
+
+    -- Si p_precio_unitario es NULL o 0, buscar precio en tabla productos
+    IF p_precio_unitario IS NULL OR p_precio_unitario = 0 THEN
+        SELECT precio INTO v_precio FROM productos WHERE id = p_producto_id LIMIT 1;
+    ELSE
+        SET v_precio = p_precio_unitario;
+    END IF;
 
     -- Buscar pedido existente EN ESTADO 0 (no confirmado aún)
     SELECT id INTO p_id 
@@ -159,9 +167,9 @@ BEGIN
         SET cantidad = cantidad + p_cantidad
         WHERE pedido_id = p_id AND producto_id = p_producto_id;
     ELSE
-        -- Si el producto no existe, insertar un nuevo detalle
+        -- Si el producto no existe, insertar un nuevo detalle con el precio correcto
         INSERT INTO detalle_pedido (pedido_id, producto_id, cantidad, precio_unitario)
-        VALUES (p_id, p_producto_id, p_cantidad, p_precio_unitario);
+        VALUES (p_id, p_producto_id, p_cantidad, v_precio);
     END IF;
 
     -- Actualizar el total del pedido
@@ -180,6 +188,79 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+
+DELIMITER $$
+
+USE `mesalista_db`$$
+
+DROP PROCEDURE IF EXISTS `addProductoConPedidoId`$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addProductoConPedidoId`(
+    IN p_pedido_id INT,
+    IN p_producto_id INT,
+    IN p_cantidad INT,
+    IN p_precio_unitario DECIMAL(10,2)
+)
+BEGIN
+    DECLARE v_total DECIMAL(10,2);
+    DECLARE v_existe INT;
+    DECLARE v_precio DECIMAL(10,2);
+    DECLARE v_estado INT;
+
+    -- Verificar que el pedido existe y obtener su estado
+    SELECT estado_pedido INTO v_estado
+    FROM pedidos
+    WHERE id = p_pedido_id;
+
+    -- Si no se encontró el pedido, lanzar error
+    IF v_estado IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El pedido no existe.';
+    END IF;
+
+    -- Verificar que el estado sea permitido (0 o 1)
+    IF v_estado > 1 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se puede modificar un pedido con estado mayor a 1.';
+    END IF;
+
+    -- Si no se proporcionó un precio válido, obtener el precio desde la tabla productos
+    IF p_precio_unitario IS NULL OR p_precio_unitario = 0 THEN
+        SELECT precio INTO v_precio FROM productos WHERE id = p_producto_id LIMIT 1;
+    ELSE
+        SET v_precio = p_precio_unitario;
+    END IF;
+
+    -- Verificar si ya existe el producto en el pedido
+    SELECT COUNT(*) INTO v_existe
+    FROM detalle_pedido
+    WHERE pedido_id = p_pedido_id AND producto_id = p_producto_id;
+
+    IF v_existe > 0 THEN
+        -- Actualizar cantidad si ya existe
+        UPDATE detalle_pedido
+        SET cantidad = cantidad + p_cantidad
+        WHERE pedido_id = p_pedido_id AND producto_id = p_producto_id;
+    ELSE
+        -- Insertar nuevo detalle
+        INSERT INTO detalle_pedido (pedido_id, producto_id, cantidad, precio_unitario)
+        VALUES (p_pedido_id, p_producto_id, p_cantidad, v_precio);
+    END IF;
+
+    -- Recalcular el total del pedido
+    SELECT SUM(cantidad * precio_unitario) INTO v_total
+    FROM detalle_pedido
+    WHERE pedido_id = p_pedido_id;
+
+    UPDATE pedidos
+    SET total = v_total
+    WHERE id = p_pedido_id;
+
+END$$
+
+DELIMITER ;
+
+
 
 
 

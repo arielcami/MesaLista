@@ -1,3 +1,5 @@
+//====== ControlEditarPedido.js =======//
+
 const modalEditar = document.getElementById('modal-editar-pedido');
 const contenedorProductos = document.getElementById('lista-productos-editables');
 const inputBuscar = document.getElementById('input-busqueda-producto');
@@ -9,53 +11,61 @@ let pedidoActual = null;
 // Abrir modal
 async function abrirModalEditar(pedidoId) {
 	try {
-		// Obtener detalles del pedido (productos y cantidades)
-		const response = await fetch(`/mesalista/api/detallepedido/pedido/${pedidoId}`);
-		if (!response.ok) throw new Error("No se pudo obtener los detalles del pedido");
+		const response = await fetch(`/mesalista/api/pedido/${pedidoId}`);
+		if (!response.ok) throw new Error("No se pudo obtener el pedido completo");
 
-		const detalles = await response.json();
+		const pedido = await response.json();
 
-		// Guardamos la estructura básica del pedido actual
-		pedidoActual = {
-			id: pedidoId,
-			detalles: detalles.map(d => ({
-				producto: d.producto,
-				cantidad: d.cantidad
-			}))
-		};
+		// Guardar el pedido completo en memoria
+		pedidoActual = pedido;
+		//console.log('PEDIDO SELECCIONADO: ');
+		//console.log(pedidoActual);
 
-		// Guardar en localStorage	
+		// Guardar en localStorage sólo el id
 		localStorage.setItem('pedidoId', pedidoId);
-		// localStorage.setItem('clienteId', pedidoActual.clienteId);
 
 		document.getElementById('modal-editar-titulo').textContent = `Editar pedido: #${pedidoId}`;
 
+		// Renderizar productos (pasamos el array detalles)
 		renderProductosPedido(pedidoActual.detalles);
+
+		// Setear el select de estado con el estado actual del pedido
+		document.getElementById('select-estado-pedido').value = pedidoActual.estadoPedido;
+
 		modalEditar.classList.remove('hidden');
 
 	} catch (error) {
-		console.error('Error al cargar detalles del pedido para editar:', error);
+		console.error('Error al cargar pedido completo para editar:', error);
 	}
 }
+
 
 
 // Renderiza productos actuales del pedido
 function renderProductosPedido(detalles) {
 	contenedorProductos.innerHTML = '';
-	detalles.forEach(detalle => {
+
+	const prioridad = [2, 1, 3, 4];
+	const detallesOrdenados = detalles
+		.filter(detalle => detalle.cantidad > 0)
+		.sort((a, b) => {
+			return prioridad.indexOf(a.producto.tipoProducto) - prioridad.indexOf(b.producto.tipoProducto);
+		});
+
+	detallesOrdenados.forEach(detalle => {
 		const div = document.createElement('div');
 		div.classList.add('producto-item');
 		div.dataset.productoId = detalle.producto.id;
 
 		div.innerHTML = `
-			    <div class="cantidad-control">
-			        <button class="btn-cantidad" onclick="cambiarCantidad(${detalle.producto.id}, -1)">-</button>
-			        <span id="cantidad-${detalle.producto.id}">${detalle.cantidad}</span>
-			        <span class="multiplicador">×</span>
-			        <span class="nombre-producto">${detalle.producto.nombre}</span>
-			        <button class="btn-cantidad" onclick="cambiarCantidad(${detalle.producto.id}, 1)">+</button>
-			    </div>
-			`;
+            <div class="cantidad-control">
+                <button class="btn-cantidad" onclick="cambiarCantidad(${detalle.producto.id}, -1)">-</button>
+                <span id="cantidad-${detalle.producto.id}">${detalle.cantidad}</span>
+                <span class="multiplicador">×</span>
+                <span class="nombre-producto">${detalle.producto.nombre}</span>
+                <button class="btn-cantidad" onclick="cambiarCantidad(${detalle.producto.id}, 1)">+</button>
+            </div>
+        `;
 
 		contenedorProductos.appendChild(div);
 	});
@@ -64,6 +74,7 @@ function renderProductosPedido(detalles) {
 	contenedorSugerencias.innerHTML = '';
 }
 
+// Esto ejecuta un SP en la base de datos
 async function ajustarCantidadProducto(pedidoId, productoId, delta) {
 	const url = `/mesalista/api/sp/delta?pedidoId=${pedidoId}&productoId=${productoId}&delta=${delta}`;
 
@@ -98,6 +109,83 @@ function cambiarCantidad(productoId, delta) {
 }
 
 
+async function actualizarPedidoCompleto(pedido) {
+	try {
+		const response = await fetch(`/mesalista/api/pedido/${pedido.id}`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(pedido)
+		});
+
+		if (!response.ok) throw new Error('Error actualizando pedido');
+
+		return await response.json();
+
+	} catch (error) {
+		console.error(error);
+		alert('No se pudo actualizar el pedido.');
+		throw error;
+	}
+}
+
+// Agrega un producto nuevo al pedido usando el SP en el backend
+async function agregarProducto(producto) {
+
+	const pedidoId = localStorage.getItem('pedidoId');
+
+	if (!pedidoId) {
+		alert("No se puede agregar producto: información de pedido no disponible.");
+		return;
+	}
+
+	// Evitar duplicados
+	if (pedidoActual.detalles.find(d => d.producto.id === producto.id)) {
+		alert("Producto ya está en el pedido");
+		return;
+	}
+
+	try {
+		const productoId = producto.id;
+		const cantidad = 1;
+		const precioUnitario = producto.precioUnitario ?? 0;
+
+		const url = `/mesalista/api/sp/addConProductoId?pedidoId=${pedidoId}&productoId=${productoId}&cantidad=${cantidad}&precioUnitario=${precioUnitario}`;
+
+		const response = await fetch(url, {
+			method: "POST"
+		});
+
+		if (!response.ok) {
+			const errorText = await response.text();
+			throw new Error(`Error al agregar producto: ${errorText}`);
+		}
+
+		const data = await response.json();
+
+		// Actualizar el pedidoActual con el nuevo ID si vino desde el backend (aunque no debería cambiar en esta versión)
+		if (data.pedido_id) {
+			pedidoActual.id = data.pedido_id;
+		}
+
+		// Agregar a memoria local
+		pedidoActual.detalles.push({
+			producto: producto,
+			cantidad: cantidad,
+			precioUnitario: precioUnitario
+		});
+
+		renderProductosPedido(pedidoActual.detalles);
+		inputBuscar.value = '';
+		contenedorSugerencias.innerHTML = '';
+
+	} catch (error) {
+		console.error("Error al agregar producto:", error);
+		alert("No se pudo agregar el producto. Intenta nuevamente.");
+	}
+}
+
 // Buscar productos mientras se escribe
 inputBuscar.addEventListener('input', async (e) => {
 	const query = e.target.value.trim();
@@ -122,61 +210,7 @@ inputBuscar.addEventListener('input', async (e) => {
 	}
 });
 
-// Agrega un producto nuevo al pedido usando el SP en el backend
-async function agregarProducto(producto) {
 
-	const pedidoId = localStorage.getItem('pedidoId');
-	const clienteId = localStorage.getItem('clienteId');
-
-	if (!pedidoId || !clienteId) {
-		alert("No se puede agregar producto: información de pedido o cliente no disponible.");
-		return;
-	}
-
-	// Evitar duplicados
-	if (pedidoActual.detalles.find(d => d.producto.id === producto.id)) {
-		alert("Producto ya está en el pedido");
-		return;
-	}
-
-	try {
-		const productoId = producto.id;
-		const cantidad = 1;
-		const precioUnitario = producto.precio;
-
-		const url = `/mesalista/api/sp/add?clienteId=${clienteId}&productoId=${productoId}&cantidad=${cantidad}&precioUnitario=${precioUnitario}`;
-
-		const response = await fetch(url, {
-			method: "POST"
-		});
-
-		if (!response.ok) {
-			const errorText = await response.text();
-			throw new Error(`Error al agregar producto: ${errorText}`);
-		}
-
-		const data = await response.json();
-
-		// Actualizar el pedidoActual con el nuevo ID si vino desde el backend (puede cambiar si se creó uno nuevo)
-		if (data.pedido_id) {
-			pedidoActual.id = data.pedido_id;
-		}
-
-		// Agregar a memoria local
-		pedidoActual.detalles.push({
-			producto: producto,
-			cantidad: cantidad
-		});
-
-		renderProductosPedido(pedidoActual.detalles);
-		inputBuscar.value = '';
-		contenedorSugerencias.innerHTML = '';
-
-	} catch (error) {
-		console.error("Error al agregar producto:", error);
-		alert("No se pudo agregar el producto. Intenta nuevamente.");
-	}
-}
 
 btnGuardarCambios.addEventListener('click', async () => {
 	localStorage.clear();
@@ -184,6 +218,7 @@ btnGuardarCambios.addEventListener('click', async () => {
 	// Exportar el evento al global
 	document.dispatchEvent(new Event('pedidoEditado'));
 });
+
 
 window.addEventListener('keydown', (keyboard) => {
 	if (keyboard.key === 'Escape') {

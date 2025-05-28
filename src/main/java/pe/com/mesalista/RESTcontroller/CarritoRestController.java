@@ -32,6 +32,23 @@ public class CarritoRestController {
 		}
 	}
 
+	// Versión 2:
+	@PostMapping("/addConProductoId")
+	public ResponseEntity<Object> agregarProductoAlPedidoConProductoId(@RequestParam Long pedidoId, @RequestParam Long productoId, 
+	        @RequestParam Integer cantidad, @RequestParam double precioUnitario) 
+	{
+	    try {
+	        carritoService.agregarProductoConPedidoId(pedidoId, productoId, cantidad, precioUnitario);
+
+	        // Retornamos el pedidoId recibido porque el SP no lo modifica ni genera uno nuevo
+	        return ResponseEntity.status(HttpStatus.CREATED)
+	                .body("{\"message\": \"Producto agregado con éxito\", \"pedido_id\": " + pedidoId + "}");
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body("{\"message\": \"Error al agregar producto al pedido: " + e.getMessage() + "\"}");
+	    }
+	}
+
 	// Endpoint para ajustar la cantidad de un producto en el pedido
 	@PutMapping("/delta")
 	public ResponseEntity<String> ajustarCantidadProducto(@RequestParam Long pedidoId, @RequestParam Long productoId,
