@@ -103,7 +103,7 @@ inputBuscar.addEventListener('input', async (e) => {
 	const query = e.target.value.trim();
 	contenedorSugerencias.innerHTML = '';
 
-	if (query.length <= 2) return;
+	if (query.length < 2) return;
 
 	try {
 		const response = await fetch(`/mesalista/api/producto/buscar-nombre-activo/${query}`);
@@ -181,7 +181,8 @@ async function agregarProducto(producto) {
 btnGuardarCambios.addEventListener('click', async () => {
 	localStorage.clear();
 	modalEditar.classList.add('hidden');
-	fetchPedidos();
+	// Exportar el evento al global
+	document.dispatchEvent(new Event('pedidoEditado'));
 });
 
 window.addEventListener('keydown', (keyboard) => {

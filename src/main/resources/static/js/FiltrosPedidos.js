@@ -171,6 +171,8 @@ function aplicarFiltrosCombinados() {
     // Filtrar por cliente
     if (clienteFiltro !== '') {
         filtrados = filtrados.filter(p =>
+            p.cliente &&
+            p.cliente.nombre &&
             p.cliente.nombre.toLowerCase().includes(clienteFiltro)
         );
     }
@@ -178,6 +180,8 @@ function aplicarFiltrosCombinados() {
     // Filtrar por empleado
     if (empleadoFiltro !== '') {
         filtrados = filtrados.filter(p =>
+            p.empleado &&
+            p.empleado.nombre &&
             p.empleado.nombre.toLowerCase().includes(empleadoFiltro)
         );
     }
@@ -218,3 +222,4 @@ function aplicarFiltrosCombinados() {
         renderPedidosCallback(filtrados);
     }
 }
+

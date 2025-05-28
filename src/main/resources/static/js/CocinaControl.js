@@ -72,7 +72,7 @@ function renderPedidos(pedidos) {
             <p><strong>Teléfono:</strong> ${formatTelefono(pedido.cliente.telefono)}</p>
             <p><strong>Dirección:</strong> ${pedido.direccionEntrega}</p>
             <p><strong>Hora del pedido:</strong> ${formatHora(pedido.fechaPedido)}</p>
-            <p><strong>Atendido por:</strong> ${pedido.empleado.nombre}</p>
+            <p><strong>Atendido por:</strong> ${pedido.empleado ? pedido.empleado.nombre : 'No asignado'}</p>
             ${detallesOrdenados.map(detalle => `
                 <div class="detalle-item">
                     <p>${detalle.cantidad} × ${detalle.producto.nombre}</p>
@@ -168,3 +168,8 @@ document.getElementById('btn-eliminar').addEventListener('click', async () => {
 
 // Carga inicial
 fetchPedidos();
+
+// Escuchar el pedido editado de ControlEditarPedido
+document.addEventListener('pedidoEditado', () => {
+	fetchPedidos(); // Se ejecuta en el contexto correcto y refresca todo
+});
