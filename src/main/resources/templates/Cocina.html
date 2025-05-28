@@ -13,6 +13,10 @@
 		<h1>Pedidos en preparación</h1>
 		<div id="reloj"></div>
 	</nav>
+	
+	<button id="btn-sonido" class="boton-sonido" title="Activar sonido de notificación">
+	    <img th:src="@{/img/parlante.png}" alt="Sonido" />
+	</button>
 
     <div class="pedido-container">
         <div class="pedido-card" th:each="pedido : ${pedidos}">

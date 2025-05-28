@@ -24,6 +24,11 @@ function formatTelefono(telefono) {
 }
 
 
+let idsPedidosAnteriores = [];
+let sonidoActivado = false;
+const audio = new Audio('/mesalista/snd/chimes.mp3');
+
+
 async function fetchPedidos() {
     try {
         const response = await fetch(API_URL);
@@ -31,12 +36,27 @@ async function fetchPedidos() {
             console.error('Error al obtener pedidos:', response.statusText);
             return;
         }
+
         const pedidos = await response.json();
+        const idsNuevos = pedidos.map(p => p.id);
+
+        // Comprobar si hay algún ID nuevo que antes no existía
+        const hayNuevo = idsNuevos.some(id => !idsPedidosAnteriores.includes(id));
+
+        if (hayNuevo && sonidoActivado) {
+            audio.play().catch(err => console.warn("No se pudo reproducir el sonido:", err));
+        }
+
+        // Guardar los IDs para la próxima comparación
+        idsPedidosAnteriores = idsNuevos;
+
         renderPedidos(pedidos);
+
     } catch (error) {
         console.error('Error de red o inesperado:', error);
     }
 }
+
 
 function renderPedidos(pedidos) {
     const container = document.querySelector('.pedido-container');
@@ -56,11 +76,11 @@ function renderPedidos(pedidos) {
 
         card.innerHTML = `
             <h2>Pedido #${pedido.id}</h2>
-            <p><strong>Cliente:</strong> ${pedido.cliente.nombre} - ${pedido.cliente.documento}</p>
+			<p><strong>Cliente:</strong> ${pedido.cliente?.nombre ?? 'Sin nombre'} - ${pedido.cliente?.documento ?? 'Sin documento'}</p>
 			<p><strong>Teléfono:</strong> ${formatTelefono(pedido.cliente.telefono)}</p>
-            <p><strong>Dirección:</strong> ${pedido.direccionEntrega}</p>
+			<p><strong>Dirección:</strong> ${pedido.direccionEntrega ? pedido.direccionEntrega : 'No especificada'}</p>
             <p><strong>Hora del pedido:</strong> ${formatHora(pedido.fechaPedido)}</p>
-			<p><strong>Atendido por:</strong> ${pedido.empleado.nombre}</p>
+			<p><strong>Atendido por:</strong> ${pedido.empleado?.nombre ?? 'Sin asignar'}</p>
             ${detallesOrdenados.map(detalle => `
                 <div class="detalle-item">
                     <p>${detalle.cantidad} × ${detalle.producto.nombre}</p>
@@ -92,4 +112,19 @@ actualizarReloj(); // llamada inicial
 
 // Inicializa primera carga y refresca cada intervalo
 fetchPedidos();
-setInterval(fetchPedidos, REFRESH_INTERVAL_MS);
+setInterval(fetchPedidos, REFRESH_INTERVAL_MS)
+
+
+
+document.getElementById('btn-sonido').addEventListener('click', () => {
+    audio.play().then(() => {
+        sonidoActivado = true;
+        console.log("Sonido activado");
+        //alert("Sonido activado. Se notificará con un sonido cuando llegue un pedido nuevo.");
+    }).catch(err => {
+        console.warn("El navegador bloqueó el sonido hasta que el usuario interactúe:", err);
+        //alert("Haz clic nuevamente si no escuchaste el sonido.");
+    });
+});
+
+

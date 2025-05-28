@@ -211,13 +211,41 @@ inputBuscar.addEventListener('input', async (e) => {
 });
 
 
-
 btnGuardarCambios.addEventListener('click', async () => {
-	localStorage.clear();
-	modalEditar.classList.add('hidden');
-	// Exportar el evento al global
-	document.dispatchEvent(new Event('pedidoEditado'));
+	// 1. Obtener el pedido ID desde localStorage
+	const pedido_ID = localStorage.getItem('pedidoId');
+
+	// Validación básica
+	if (!pedido_ID) {
+		alert("No se encontró el ID del pedido en localStorage.");
+		return;
+	}
+
+	// 2. Capturar el nuevo estado del pedido
+	const estadoDelPedido = document.getElementById('select-estado-pedido').value;
+
+	try {
+		// 3. Hacer la petición PUT
+		const response = await fetch(`/mesalista/api/pedido/marcarEstado/${pedido_ID}?estado=${estadoDelPedido}`, {
+			method: 'PUT'
+		});
+
+		if (!response.ok) {
+			const errorText = await response.text();
+			throw new Error(`Error al actualizar estado del pedido: ${errorText}`);
+		}
+
+		// 4. Si fue exitoso, limpiar localStorage y continuar
+		localStorage.clear();
+		modalEditar.classList.add('hidden');
+		document.dispatchEvent(new Event('pedidoEditado'));
+
+	} catch (error) {
+		console.error("Error al guardar cambios del pedido:", error);
+		alert("Ocurrió un error al guardar el estado del pedido. Revisa la consola.");
+	}
 });
+
 
 
 window.addEventListener('keydown', (keyboard) => {
