@@ -14,11 +14,16 @@ const estadosPedido = {
 
 let listaPedidosCompleta = [];
 let renderPedidosCallback = null;
-
 let estadoFiltro = '';
 let clienteFiltro = '';
 let empleadoFiltro = '';
 let fechaFiltro = '';
+let deliveryFiltro = '';
+
+function normalizarTexto(texto) {
+    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
 
 export function inicializarFiltroPedidos(pedidos, renderPedidosFn) {
     listaPedidosCompleta = pedidos;
@@ -32,6 +37,7 @@ function renderTodosLosFiltros() {
     renderFiltroCliente();
     renderFiltroEmpleado();
     renderFiltroFecha();
+	renderFiltroDelivery();
 }
 
 // Filtro por estado
@@ -84,7 +90,7 @@ function renderFiltroCliente() {
     const input = document.createElement('input');
     input.type = 'text';
     input.id = 'input-filtro-cliente';
-    input.placeholder = 'Buscar por nombre...';
+    input.placeholder = 'Nombre de cliente...';
 
     contenedor.appendChild(label);
     contenedor.appendChild(input);
@@ -107,7 +113,7 @@ function renderFiltroEmpleado() {
     const input = document.createElement('input');
     input.type = 'text';
     input.id = 'input-filtro-empleado';
-    input.placeholder = 'Buscar por empleado...';
+    input.placeholder = 'Nombre de empleado...';
 
     contenedor.appendChild(label);
     contenedor.appendChild(input);
@@ -117,6 +123,31 @@ function renderFiltroEmpleado() {
         aplicarFiltrosCombinados();
     });
 }
+
+// === Filtro por delivery ===
+function renderFiltroDelivery() {
+    const contenedor = document.getElementById('filtro-delivery-container');
+    if (!contenedor || document.getElementById('input-filtro-delivery')) return;
+
+    const label = document.createElement('label');
+    label.setAttribute('for', 'input-filtro-delivery');
+    label.textContent = 'Repartidor:';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = 'input-filtro-delivery';
+    input.placeholder = 'Buscar por repartidor...';
+
+    contenedor.appendChild(label);
+    contenedor.appendChild(input);
+
+    input.addEventListener('input', () => {
+        deliveryFiltro = input.value.trim().toLowerCase();
+        aplicarFiltrosCombinados();
+    });
+}
+
+
 
 // === Filtro por fecha relativa (Hoy, Ayer, Antes de ayer) ===
 function renderFiltroFecha() {
@@ -173,7 +204,7 @@ function aplicarFiltrosCombinados() {
         filtrados = filtrados.filter(p =>
             p.cliente &&
             p.cliente.nombre &&
-            p.cliente.nombre.toLowerCase().includes(clienteFiltro)
+            normalizarTexto(p.cliente.nombre).includes(normalizarTexto(clienteFiltro))
         );
     }
 
@@ -182,9 +213,18 @@ function aplicarFiltrosCombinados() {
         filtrados = filtrados.filter(p =>
             p.empleado &&
             p.empleado.nombre &&
-            p.empleado.nombre.toLowerCase().includes(empleadoFiltro)
+            normalizarTexto(p.empleado.nombre).includes(normalizarTexto(empleadoFiltro))
         );
     }
+	
+	// Filtrar por delivery
+	if (deliveryFiltro !== '') {
+	    filtrados = filtrados.filter(p =>
+	        p.delivery &&
+	        p.delivery.nombre &&
+	        normalizarTexto(p.delivery.nombre).includes(normalizarTexto(deliveryFiltro))
+	    );
+	}
 
     // Filtrar por fecha relativa
     if (fechaFiltro !== '') {
