@@ -3,24 +3,6 @@
     padding: 0 5px;
 }
 
-/* Tarjeta individual del pedido */
-.entregas-pedido-tarjeta {
-    background-color: #fdf6e3;
-    border: 2px solid #d4a500;
-    border-radius: 5px;
-    padding: 5px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.entregas-pedido-tarjeta:hover {
-    background-color: #fff3b0;
-}
-
 /* Lado izquierdo: detalles del pedido */
 .lado-izquierdo {
     flex: 1;

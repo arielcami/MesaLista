@@ -46,8 +46,6 @@ window.abrirModalDetallePedido = function(idPedido) {
 
 
 
-
-
 // Cerrar modal al hacer click en X
 btnCerrarDetalle.addEventListener('click', () => {
 	modalDetalle.style.display = 'none';

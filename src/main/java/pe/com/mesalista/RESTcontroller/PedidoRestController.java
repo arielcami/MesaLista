@@ -21,6 +21,7 @@ public class PedidoRestController {
 		return servicio.findAll();
 	}
 	
+	// Este usamos para cambiar el estado del pedido
 	@PutMapping("/marcarEstado/{pedidoId}")
 	public void marcarEstado(@PathVariable Long pedidoId, @RequestParam Byte estado) {
 	    servicio.marcarPedidoEstado(pedidoId, estado);
@@ -47,7 +48,6 @@ public class PedidoRestController {
 		return pedido != null ? ResponseEntity.ok(pedido) : ResponseEntity.notFound().build();
 	}
 
-	// Forma manual, mejor usa el Stored Procedure
 	@PostMapping
 	public ResponseEntity<PedidoEntity> add(@RequestBody PedidoEntity pedido) {
 		PedidoEntity nuevoPedido = servicio.save(pedido);
@@ -60,6 +60,7 @@ public class PedidoRestController {
 		return pedidoActualizado != null ? ResponseEntity.ok(pedidoActualizado) : ResponseEntity.notFound().build();
 	}
 
+	// Este usaremos para asignar el id del usuario que aceptó los pedidos
 	@PutMapping("/{id}/set-delivery/{deliveryId}")
 	public ResponseEntity<PedidoEntity> asignarDelivery(@PathVariable Long id, @PathVariable Long deliveryId) {
 		PedidoEntity actualizado = servicio.asignarDelivery(id, deliveryId);
