@@ -16,10 +16,7 @@ async function abrirModalEditar(pedidoId) {
 
 		const pedido = await response.json();
 
-		// Guardar el pedido completo en memoria
 		pedidoActual = pedido;
-		//console.log('PEDIDO SELECCIONADO: ');
-		//console.log(pedidoActual);
 
 		// Guardar en localStorage sólo el id
 		localStorage.setItem('pedidoId', pedidoId);

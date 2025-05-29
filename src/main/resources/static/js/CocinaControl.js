@@ -66,13 +66,17 @@ function renderPedidos(pedidos) {
 		card.className = 'pedido-card';
 		card.dataset.pedidoId = pedido.id;
 
+		//console.log(pedido);
+
 		card.innerHTML = `
             <h2>Pedido #${pedido.id} - ${estadoPedidoTexto(pedido.estadoPedido)}</h2>
             <p><strong>Cliente:</strong> ${pedido.cliente.nombre} - ${pedido.cliente.documento}</p>
             <p><strong>Teléfono:</strong> ${formatTelefono(pedido.cliente.telefono)}</p>
-            <p><strong>Dirección:</strong> ${pedido.direccionEntrega}</p>
+            <p><strong>Dirección:</strong> ${pedido.direccionEntrega ?? 'No registrada'}</p>
             <p><strong>Hora del pedido:</strong> ${formatHora(pedido.fechaPedido)}</p>
             <p><strong>Atendido por:</strong> ${pedido.empleado ? pedido.empleado.nombre : 'No asignado'}</p>
+			<p><strong>Entregado por:</strong> ${pedido.delivery?.nombre ?? 'No asignado'}</p>
+
             ${detallesOrdenados.map(detalle => `
                 <div class="detalle-item">
                     <p>${detalle.cantidad} × ${detalle.producto.nombre}</p>

@@ -19,6 +19,7 @@
 
 /* Contenido del modal */
 .modal-contenido {
+	user-select: none;
     background-color: #fff;
     width: 90vw;
     max-width: 1000px;
