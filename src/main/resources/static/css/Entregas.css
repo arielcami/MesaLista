@@ -195,3 +195,24 @@ body {
 .modal-close:hover {
   color: #c49a00;
 }
+
+/*Cerrar sesion*/
+.circle-btn-cerrarsesion {
+    position: fixed;
+    top: 70px;
+    right: 10px;
+    padding: 6px 12px;
+    font-size: 14px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    color: #333;
+    text-decoration: none;
+    z-index: 999;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.circle-btn-cerrarsesion:hover {
+    background-color: #d4a500;
+    border-color: #aaa;
+}

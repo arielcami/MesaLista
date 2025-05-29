@@ -17,8 +17,6 @@ function formatearTelefono(numero) {
 
 
 
-
-
 // Función para cargar y mostrar pedidos con estado 2 (Listo para entregar)
 async function cargarPedidosDisponibles() {
 	const contenedor = document.getElementById('bloque-pedidos-entrega');
@@ -122,6 +120,9 @@ function autenticarEmpleado() {
 		})
 		.then(data => {
 			if (data.p_es_valido === true) {
+				
+				localStorage.setItem('id_de_empleado_delivery', id);
+				
 				// Ocultar modal y limpiar error
 				document.getElementById("delivery-auth-modal").style.display = "none";
 				errorMsg.style.display = "none";
@@ -143,10 +144,22 @@ function autenticarEmpleado() {
 
 // Cuando DOM esté listo
 document.addEventListener("DOMContentLoaded", () => {
+	const deliveryID = localStorage.getItem('id_de_empleado_delivery');
+	const modal = document.getElementById("delivery-auth-modal");
+
+	if (deliveryID) {
+		// Ocultar el modal de autenticación
+		modal.style.display = "none";
+		cargarPedidosDisponibles(); // Cargar directamente los pedidos
+	} else {
+		// Mostrar el modal si no hay sesión previa
+		modal.style.display = "block";
+	}
+
 	// Evento para el botón de login
 	document.getElementById("btn-delivery-login").addEventListener("click", autenticarEmpleado);
 
-	// Evento para botón "Listar" para recargar pedidos disponibles
+	// Evento para botón "Listar"
 	const btnListar = document.getElementById("btn-listar-pedidos");
 	if (btnListar) {
 		btnListar.addEventListener("click", e => {
@@ -155,3 +168,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 });
+
+
+/* Cerrar sesion */
+const btnLogout = document.getElementById("btn-logout-delivery");
+if (btnLogout) {
+	btnLogout.addEventListener("click", e => {
+		e.preventDefault();
+		localStorage.clear();
+		window.location.href = "/mesalista/entregas";
+	});
+}
