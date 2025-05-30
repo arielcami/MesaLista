@@ -20,11 +20,11 @@ public class PedidoRestController {
 	public List<PedidoEntity> findAll() {
 		return servicio.findAll();
 	}
-	
+
 	// Este usamos para cambiar el estado del pedido
 	@PutMapping("/marcarEstado/{pedidoId}")
 	public void marcarEstado(@PathVariable Long pedidoId, @RequestParam Byte estado) {
-	    servicio.marcarPedidoEstado(pedidoId, estado);
+		servicio.marcarPedidoEstado(pedidoId, estado);
 	}
 
 	@GetMapping("/cocina")
@@ -40,6 +40,11 @@ public class PedidoRestController {
 	@GetMapping("/cliente/{clienteId}")
 	public List<PedidoEntity> findByClienteId(@PathVariable Long clienteId) {
 		return servicio.findByClienteId(clienteId);
+	}
+
+	@GetMapping("/buscarPorDeliveryCustom/{deliveryId}/{estadoPedido}")
+	public List<PedidoEntity> buscarPorDeliveryYEstado(@PathVariable Long deliveryId, @PathVariable Byte estadoPedido) {
+		return servicio.obtenerPedidosPorDeliveryYEstado(deliveryId, estadoPedido);
 	}
 
 	@GetMapping("/{id}")

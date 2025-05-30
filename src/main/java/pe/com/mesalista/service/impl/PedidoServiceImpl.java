@@ -36,6 +36,11 @@ public class PedidoServiceImpl implements PedidoService {
     public List<PedidoEntity> findByClienteId(Long clienteId) {
         return pedidoRepository.findByCliente_Id(clienteId);
     }
+    
+    @Override
+    public List<PedidoEntity> obtenerPedidosPorDeliveryYEstado(Long deliveryId, Byte estadoPedido) {
+        return pedidoRepository.buscarPorDeliveryYEstado(deliveryId, estadoPedido);
+    }
 
     @Override
     public PedidoEntity findById(Long id) {

@@ -16,7 +16,8 @@ public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
 
     List<PedidoEntity> findByCliente_Id(Long clienteId);
 
-    List<PedidoEntity> findByDelivery_Id(Long deliveryId);
+    @Query("SELECT p FROM PedidoEntity p WHERE p.delivery.id = :deliveryId AND p.estadoPedido = :estadoPedido")
+    List<PedidoEntity> buscarPorDeliveryYEstado(@Param("deliveryId") Long deliveryId, @Param("estadoPedido") Byte estadoPedido);
     
     // Método para ejecutar el SP 'addProducto'
     @Procedure(procedureName = "addProducto")

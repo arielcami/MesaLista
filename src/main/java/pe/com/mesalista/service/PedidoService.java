@@ -10,6 +10,8 @@ public interface PedidoService {
     List<PedidoEntity> findByEstadoPedido(Byte estadoPedido);
 
     List<PedidoEntity> findByClienteId(Long clienteId);
+    
+    List<PedidoEntity> obtenerPedidosPorDeliveryYEstado(Long deliveryId, Byte estadoPedido);
 
     PedidoEntity findById(Long id);
 

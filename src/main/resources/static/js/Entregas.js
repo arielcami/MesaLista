@@ -1,12 +1,4 @@
-// ============================
-// VARIABLES GLOBALES
-// ============================
 let pedidosSeleccionados = new Set();
-
-
-// ============================
-// FUNCIONES AUXILIARES
-// ============================
 
 function formatearHoraAMPM(fechaStr) {
 	const fecha = new Date(fechaStr);
@@ -38,18 +30,10 @@ function estadoPedidoTexto(codigo) {
 	return estados[codigo] || 'Desconocido';
 }
 
-// ============================
-// ACTUALIZAR BOTÓN DE ENTREGA
-// ============================
-
 function actualizarBotonEntrega() {
 	let boton = document.getElementById('btn-empezar-entrega');
-	
 
 	if (pedidosSeleccionados.size > 0) {
-		
-		
-		
 		if (!boton) {
 			boton = document.createElement('button');
 			boton.id = 'btn-empezar-entrega';
@@ -89,21 +73,15 @@ function actualizarBotonEntrega() {
 	} else {
 		if (boton) {
 			boton.style.display = 'none';
-
 		}
 	}
 }
-
-// ============================
-// RENDERIZAR PEDIDOS
-// ============================
 
 function renderizarTarjetasPedido(pedidos) {
 	const contenedor = document.getElementById('bloque-pedidos-entrega');
 	contenedor.innerHTML = '';
 
 	pedidos.forEach(pedido => {
-				
 		const tarjeta = document.createElement('div');
 		tarjeta.className = 'entregas-pedido-tarjeta';
 
@@ -124,7 +102,7 @@ function renderizarTarjetasPedido(pedidos) {
 
 		// Acciones: ver ruta
 		const botonRuta = tarjeta.querySelector('.btn-ver-ruta');
-		botonRuta.addEventListener('click', function (e) {
+		botonRuta.addEventListener('click', function(e) {
 			e.stopPropagation();
 			e.preventDefault();
 			const direccion = this.dataset.direccion;
@@ -133,7 +111,7 @@ function renderizarTarjetasPedido(pedidos) {
 
 		// Acciones: ver detalle
 		const botonDetalle = tarjeta.querySelector('.btn-ver-detalle');
-		botonDetalle.addEventListener('click', function (e) {
+		botonDetalle.addEventListener('click', function(e) {
 			e.stopPropagation();
 			e.preventDefault();
 			const idPedido = this.dataset.pedidoId;
@@ -146,9 +124,7 @@ function renderizarTarjetasPedido(pedidos) {
 
 		// Selección de pedidos si están en estado 2
 		if (pedido.estadoPedido === 2) {
-			
 			tarjeta.addEventListener('click', () => {
-								
 				if (pedidosSeleccionados.has(pedido.id)) {
 					pedidosSeleccionados.delete(pedido.id);
 					tarjeta.classList.remove('seleccionado');
@@ -163,12 +139,6 @@ function renderizarTarjetasPedido(pedidos) {
 		contenedor.appendChild(tarjeta);
 	});
 }
-
-
-
-// ============================
-// CARGA DE PEDIDOS POR ESTADO
-// ============================
 
 async function cargarPedidosPorEstado(estado) {
 	try {
@@ -185,11 +155,6 @@ async function cargarPedidosPorEstado(estado) {
 async function cargarPedidosDisponibles() {
 	await cargarPedidosPorEstado(2);
 }
-
-
-// ============================
-// AUTENTICACIÓN DE DELIVERY
-// ============================
 
 function autenticarEmpleado() {
 	const id = document.getElementById("delivery-id").value.trim();
@@ -229,10 +194,17 @@ function autenticarEmpleado() {
 		});
 }
 
-
-// ============================
-// INICIALIZACIÓN DOM
-// ============================
+async function cargarPedidosPorDeliveryYEstado(deliveryId, estado) {
+	try {
+		const response = await fetch(`/mesalista/api/pedido/buscarPorDeliveryCustom/${deliveryId}/${estado}`);
+		if (!response.ok) throw new Error('Error al cargar pedidos');
+		const pedidos = await response.json();
+		renderizarTarjetasPedido(pedidos);
+	} catch (error) {
+		console.error(error);
+		alert('Error al obtener los pedidos');
+	}
+}
 
 document.addEventListener("DOMContentLoaded", () => {
 	const deliveryID = localStorage.getItem('id_de_empleado_delivery');
@@ -245,8 +217,10 @@ document.addEventListener("DOMContentLoaded", () => {
 		modal.style.display = "block";
 	}
 
+	// Login button event
 	document.getElementById("btn-delivery-login").addEventListener("click", autenticarEmpleado);
 
+	// Listar pedidos disponibles button
 	const btnListar = document.getElementById("btn-listar-pedidos");
 	if (btnListar) {
 		btnListar.addEventListener("click", e => {
@@ -255,25 +229,29 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
+	// Pedidos en tránsito button
 	const btnTransito = document.getElementById("btn-pedidos-transito");
 	if (btnTransito) {
 		btnTransito.addEventListener("click", e => {
 			e.preventDefault();
-			cargarPedidosPorEstado(3);
+
+			const deliveryId = localStorage.getItem('id_de_empleado_delivery');
+			if (!deliveryId) {
+				alert('No se encontró el ID del delivery. Por favor, inicie sesión nuevamente.');
+				return;
+			}
+
+			cargarPedidosPorDeliveryYEstado(deliveryId, 3);
+		});
+	}
+
+	// Logout button
+	const btnLogout = document.getElementById("btn-logout-delivery");
+	if (btnLogout) {
+		btnLogout.addEventListener("click", e => {
+			e.preventDefault();
+			localStorage.clear();
+			window.location.href = "/mesalista/entregas";
 		});
 	}
 });
-
-
-// ============================
-// LOGOUT
-// ============================
-
-const btnLogout = document.getElementById("btn-logout-delivery");
-if (btnLogout) {
-	btnLogout.addEventListener("click", e => {
-		e.preventDefault();
-		localStorage.clear();
-		window.location.href = "/mesalista/entregas";
-	});
-}
