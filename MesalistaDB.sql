@@ -23,7 +23,6 @@ CREATE TABLE estados (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
-DROP TABLE IF EXISTS tipo_producto;
 CREATE TABLE tipo_producto (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(20) NOT NULL,
@@ -31,7 +30,6 @@ CREATE TABLE tipo_producto (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
-DROP TABLE IF EXISTS productos;
 CREATE TABLE productos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100) NOT NULL,
@@ -45,7 +43,6 @@ CREATE TABLE productos (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
-DROP TABLE IF EXISTS empleados;
 CREATE TABLE empleados (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(100) NOT NULL,
@@ -63,7 +60,6 @@ CREATE TABLE empleados (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 /* extends empleados */
-DROP TABLE IF EXISTS deliveries;
 CREATE TABLE deliveries (
 	id INT UNSIGNED NOT NULL,
 	unidad VARCHAR(25) NOT NULL,
@@ -74,7 +70,6 @@ CREATE TABLE deliveries (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
-DROP TABLE IF EXISTS pedidos;
 CREATE TABLE pedidos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	cliente_id INT UNSIGNED NOT NULL,
@@ -82,10 +77,10 @@ CREATE TABLE pedidos (
 	empleado_id INT UNSIGNED NULL, -- Puede ser NULL al principio
 	estado_pedido TINYINT UNSIGNED NOT NULL,
 	direccion_entrega VARCHAR(200) NULL, -- Puede ser NULL al principio
+    delivery_id INT UNSIGNED DEFAULT NULL,
 	fecha_pedido TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 	creado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 	actualizado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	delivery_id INT UNSIGNED DEFAULT NULL,
 	PRIMARY KEY (id),
 	KEY cliente_id (cliente_id),
 	KEY empleado_id (empleado_id),
@@ -96,7 +91,6 @@ CREATE TABLE pedidos (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
-DROP TABLE IF EXISTS detalle_pedido;
 CREATE TABLE detalle_pedido (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	pedido_id INT UNSIGNED NOT NULL,

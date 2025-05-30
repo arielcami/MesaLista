@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/cliente")
 public class ClienteViewController {
 
-
     // Vista del formulario de registro de cliente
     @GetMapping("/registrar")
     public String vistaRegistroCliente() {

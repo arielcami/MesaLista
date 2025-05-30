@@ -245,6 +245,38 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
+	// Pedidos entregados
+	const btnEntregados = document.getElementById("btn-pedidos-entregados");
+	if (btnEntregados) {
+		btnEntregados.addEventListener("click", e => {
+			e.preventDefault();
+
+			const deliveryId = localStorage.getItem('id_de_empleado_delivery');
+
+			if (!deliveryId) {
+				alert('No se encontró el ID del delivery. Por favor, inicie sesión nuevamente.');
+				return;
+			}
+			cargarPedidosPorDeliveryYEstado(deliveryId, 4);
+		});
+	}
+
+	// Pedidos NO entregados
+	const btnNoEntregados = document.getElementById("btn-pedidos-no-entregados");
+	if (btnNoEntregados) {
+		btnNoEntregados.addEventListener("click", e => {
+			e.preventDefault();
+
+			const deliveryId = localStorage.getItem('id_de_empleado_delivery');
+
+			if (!deliveryId) {
+				alert('No se encontró el ID del delivery. Por favor, inicie sesión nuevamente.');
+				return;
+			}
+			cargarPedidosPorDeliveryYEstado(deliveryId, 5);
+		});
+	}
+
 	// Logout button
 	const btnLogout = document.getElementById("btn-logout-delivery");
 	if (btnLogout) {
