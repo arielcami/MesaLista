@@ -18,7 +18,7 @@ public class PedidoRestController {
 
 	@GetMapping
 	public List<PedidoEntity> findAll() {
-		return servicio.findAll();
+		return servicio.findAllByVisible();
 	}
 
 	// Este usamos para cambiar el estado del pedido

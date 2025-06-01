@@ -81,6 +81,7 @@ CREATE TABLE pedidos (
 	fecha_pedido TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 	creado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 	actualizado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    visible TINYINT(1) NOT NULL DEFAULT '1',
 	PRIMARY KEY (id),
 	KEY cliente_id (cliente_id),
 	KEY empleado_id (empleado_id),
@@ -106,6 +107,17 @@ CREATE TABLE detalle_pedido (
 	CONSTRAINT detalle_pedido_ibfk_1 FOREIGN KEY (pedido_id) REFERENCES pedidos (id),
 	CONSTRAINT detalle_pedido_ibfk_2 FOREIGN KEY (producto_id) REFERENCES productos (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+-- Events (JOB)
+CREATE EVENT IF NOT EXISTS ocultar_pedidos_antiguos
+ON SCHEDULE EVERY 1 HOUR DO UPDATE pedidos
+    SET visible = FALSE WHERE visible = TRUE
+    AND fecha_pedido < NOW() - INTERVAL 72 HOUR;
+-- Se necesita encender el Scheduler:
+SET GLOBAL event_scheduler = ON;
+
+
 
 
 -- Stored Procedures

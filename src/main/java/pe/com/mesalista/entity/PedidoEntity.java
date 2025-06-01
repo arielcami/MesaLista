@@ -48,6 +48,10 @@ public class PedidoEntity implements Serializable {
 
 	@Column(name = "fecha_pedido", nullable = false, updatable = false)
 	private LocalDateTime fechaPedido;
+	
+	@Column(name = "visible")
+	@JsonIgnore
+	private boolean visible;
 
 	@CreationTimestamp
 	@JsonIgnore

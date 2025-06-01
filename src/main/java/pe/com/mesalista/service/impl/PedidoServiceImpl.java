@@ -26,6 +26,11 @@ public class PedidoServiceImpl implements PedidoService {
     public List<PedidoEntity> findAll() {
         return pedidoRepository.findAll();
     }
+    
+    @Override
+	public List<PedidoEntity> findAllByVisible() {
+    	return pedidoRepository.findAllByVisible();
+	}
 
     @Override
     public List<PedidoEntity> findByEstadoPedido(Byte estadoPedido) {

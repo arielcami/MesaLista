@@ -6,6 +6,8 @@ import pe.com.mesalista.entity.PedidoEntity;
 public interface PedidoService {
 
     List<PedidoEntity> findAll();
+    
+    List<PedidoEntity> findAllByVisible();
 
     List<PedidoEntity> findByEstadoPedido(Byte estadoPedido);
 

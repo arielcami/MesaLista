@@ -11,12 +11,18 @@ import jakarta.transaction.Transactional;
 import pe.com.mesalista.entity.PedidoEntity;
 
 public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
-
+	
+	// Listar todos los que esten visibles
+	@Query("SELECT p FROM PedidoEntity p WHERE p.visible = true")
+	List<PedidoEntity> findAllByVisible();
+	
 	List<PedidoEntity> findByEstadoPedido(byte estadoPedido);
 
 	List<PedidoEntity> findByCliente_Id(Long clienteId);
-
-	@Query("SELECT p FROM PedidoEntity p WHERE p.delivery.id = :deliveryId AND p.estadoPedido = :estadoPedido")
+	
+	// Listar pedidos de acuerdo al ID del delivery y el estado del pedido
+	// SI SE REQUIERE LISTAR TODOS INCLUYENDO ANTIGUOS, ELIMINAR "AND p.visible = TRUE"
+	@Query("SELECT p FROM PedidoEntity p WHERE p.delivery.id = :deliveryId AND p.estadoPedido = :estadoPedido AND p.visible = TRUE")
 	List<PedidoEntity> buscarPorDeliveryYEstado(@Param("deliveryId") Long deliveryId,
 			@Param("estadoPedido") Byte estadoPedido);
 
@@ -35,7 +41,9 @@ public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
 	void confirmarPedido(@Param("p_pedido_id") Long pedidoId, @Param("p_empleado_id") Long empleadoId,
 			@Param("p_clave") String claveEmpleado, @Param("p_direccion_entrega") String direccionEntrega);
 
-	@Query("SELECT DISTINCT p FROM PedidoEntity p LEFT JOIN FETCH p.detalles WHERE p.estadoPedido = 1 ORDER BY p.fechaPedido ASC")
+	// Obtener los pedidos para mostrar en front de Cocina
+	// SI SE REQUIERE LISTAR TODOS INCLUYENDO ANTIGUOS, ELIMINAR "AND p.visible = TRUE"
+	@Query("SELECT DISTINCT p FROM PedidoEntity p LEFT JOIN FETCH p.detalles WHERE p.estadoPedido = 1 AND p.visible = TRUE ORDER BY p.fechaPedido ASC")
 	List<PedidoEntity> findPedidosParaCocina();
 
 	@Transactional
@@ -46,9 +54,7 @@ public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
 	@Modifying
 	@Transactional
 	@Query("UPDATE PedidoEntity p SET p.estadoPedido = :nuevoEstado WHERE p.id = :pedidoId AND p.delivery.id = :deliveryId")
-	void actualizarEstadoSiDeliveryCoincide(
-			@Param("pedidoId") Long pedidoId,
-			@Param("deliveryId") Long deliveryId, 
+	void actualizarEstadoSiDeliveryCoincide(@Param("pedidoId") Long pedidoId, @Param("deliveryId") Long deliveryId,
 			@Param("nuevoEstado") Byte nuevoEstado);
 
 }

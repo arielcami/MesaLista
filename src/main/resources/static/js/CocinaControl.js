@@ -1,7 +1,7 @@
 // CocinaControl.js
 import { inicializarFiltroPedidos } from './FiltrosPedidos.js';
 
-const API_URL = '/mesalista/api/pedido'; // Ajusta según tu API
+const API_URL = '/mesalista/api/pedido';
 
 function estadoPedidoTexto(codigo) {
 	const estados = {
