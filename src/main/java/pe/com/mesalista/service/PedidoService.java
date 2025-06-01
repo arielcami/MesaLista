@@ -28,7 +28,7 @@ public interface PedidoService {
     List<PedidoEntity> findPedidosParaCocina();
     
     void marcarPedidoEstado(Long pedidoId, Byte estado);
-
-
+    
+    void actualizarEstadoSiDeliveryCoincide(Long pedidoId, Long deliveryId, Byte nuevoEstado);
 
 }

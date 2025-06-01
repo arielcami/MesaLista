@@ -26,6 +26,13 @@ public class PedidoRestController {
 	public void marcarEstado(@PathVariable Long pedidoId, @RequestParam Byte estado) {
 		servicio.marcarPedidoEstado(pedidoId, estado);
 	}
+	
+	// Actualizar estado_pedido dependiendo del pedido_id y delivery_id - Vista Entregas
+	@PutMapping("/actualizarEstadoEnTransito/{pedidoId}/{deliveryId}/{nuevoEstado}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void marcarEstado(@PathVariable Long pedidoId, @PathVariable Long deliveryId,  @PathVariable Byte nuevoEstado) {
+	    servicio.actualizarEstadoSiDeliveryCoincide(pedidoId, deliveryId, nuevoEstado);
+	}
 
 	@GetMapping("/cocina")
 	public List<PedidoEntity> obtenerPedidosParaCocina() {
@@ -78,7 +85,7 @@ public class PedidoRestController {
 		return ResponseEntity.noContent().build();
 	}
 
-	// SP
+	// Stored Procedure
 	@PostMapping("/confirmar")
 	public ResponseEntity<String> confirmarPedido(@RequestParam Long pedidoId, @RequestParam Long empleadoId,
 			@RequestParam String clave, @RequestParam(required = false) String direccionEntrega) {

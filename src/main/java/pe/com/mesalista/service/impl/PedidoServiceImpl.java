@@ -98,6 +98,10 @@ public class PedidoServiceImpl implements PedidoService {
     public void marcarPedidoEstado(Long pedidoId, Byte estado) {
         pedidoRepository.setEstadoPedido(pedidoId, estado);
     }
-
-
+    
+    @Override
+    @Transactional
+    public void actualizarEstadoSiDeliveryCoincide(Long pedidoId, Long deliveryId, Byte nuevoEstado) {
+        pedidoRepository.actualizarEstadoSiDeliveryCoincide(pedidoId, deliveryId, nuevoEstado);
+    }
 }

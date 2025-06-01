@@ -100,21 +100,18 @@ function renderizarTarjetasPedido(pedidos) {
 		    </div>
 		`;
 
-		// Acciones: ver ruta
-		const botonRuta = tarjeta.querySelector('.btn-ver-ruta');
-		botonRuta.addEventListener('click', function(e) {
+		// Eventos de los enlaces
+		tarjeta.querySelector('.btn-ver-ruta').addEventListener('click', e => {
 			e.stopPropagation();
 			e.preventDefault();
-			const direccion = this.dataset.direccion;
+			const direccion = e.currentTarget.dataset.direccion;
 			window.open(`https://www.google.com/maps/search/?api=1&query=${direccion}`, '_blank');
 		});
 
-		// Acciones: ver detalle
-		const botonDetalle = tarjeta.querySelector('.btn-ver-detalle');
-		botonDetalle.addEventListener('click', function(e) {
+		tarjeta.querySelector('.btn-ver-detalle').addEventListener('click', e => {
 			e.stopPropagation();
 			e.preventDefault();
-			const idPedido = this.dataset.pedidoId;
+			const idPedido = e.currentTarget.dataset.pedidoId;
 			if (window.abrirModalDetallePedido) {
 				window.abrirModalDetallePedido(idPedido);
 			} else {
@@ -122,7 +119,18 @@ function renderizarTarjetasPedido(pedidos) {
 			}
 		});
 
-		// Selección de pedidos si están en estado 2
+		// En vez de botón, el click en toda la tarjeta abre el modal (solo para estado 3)
+		if (pedido.estadoPedido === 3) {
+			tarjeta.style.cursor = 'pointer';
+			tarjeta.addEventListener('click', () => {
+				const deliveryId = localStorage.getItem('id_de_empleado_delivery');
+				console.log(`[Pedido ${pedido.id}] Se abre el modal de acciones finales`);
+				MostrarModalAccionesPedidoDelivery(pedido.id, deliveryId);
+			});
+		}
+
+
+		// Selección para estado 2, si quieres dejarlo, sino elimina este bloque
 		if (pedido.estadoPedido === 2) {
 			tarjeta.addEventListener('click', () => {
 				if (pedidosSeleccionados.has(pedido.id)) {
@@ -229,6 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
+	
 	// Pedidos en tránsito button
 	const btnTransito = document.getElementById("btn-pedidos-transito");
 	if (btnTransito) {
@@ -245,6 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
+	
 	// Pedidos entregados
 	const btnEntregados = document.getElementById("btn-pedidos-entregados");
 	if (btnEntregados) {

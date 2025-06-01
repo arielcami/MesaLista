@@ -8,6 +8,7 @@
 <title>Entregas - MesaLista v1.0</title>
 <link rel="stylesheet" th:href="@{/css/Entregas.css}">
 <link rel="stylesheet" th:href="@{/css/PedidosEntrega.css}">
+<link rel="stylesheet" th:href="@{/css/EntregasAccionesFinales.css}">
 </head>
 <body>
 
@@ -25,7 +26,18 @@
 			<p id="delivery-auth-error" class="auth-error" style="display: none;">Credenciales inválidas o acceso denegado</p>
 		</div>
 	</div>
-
+	
+	<!-- Modal de Acciones de Pedido para Delivery -->
+	<div id="modal-acciones-pedido-delivery" class="modal-acciones-pedido" style="display: none;">
+		<div class="modal-acciones-pedido-contenido">
+			<h3>Acciones del Pedido</h3>
+			<button id="btn-pedido-entregado-pagado" class="btn-accion-pedido">Pedido Pagado y Entregado</button>
+			<button id="btn-pedido-no-entregado" class="btn-accion-pedido">No Entregado</button>
+			<button id="btn-reportar-incidente-pedido" class="btn-accion-pedido">Reportar Incidente</button>
+			<button id="btn-cerrar-modal-acciones-pedido" class="btn-accion-pedido btn-accion-cancelar">Atrás</button>
+		</div>
+	</div>
+	
 
 	<header class="top-buttons">
 		<a href="" id="btn-listar-pedidos" class="circle-btn">Listar</a> 
@@ -53,6 +65,7 @@
 		</div>
 	</div>	
 	
+	<script type="text/javascript" th:src="@{/js/EntregasAccionesFinales.js}"></script>
 	<script type="text/javascript" th:src="@{/js/DetallePedidoModalEntregas.js}"></script>
 	<script type="text/javascript" th:src="@{/js/Entregas.js}"></script>
 </body>
