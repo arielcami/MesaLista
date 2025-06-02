@@ -22,13 +22,11 @@ CREATE TABLE estados (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-
 CREATE TABLE tipo_producto (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(20) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
 
 CREATE TABLE productos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -41,7 +39,6 @@ CREATE TABLE productos (
 	PRIMARY KEY (id),
 	UNIQUE KEY nombre (nombre)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
 
 CREATE TABLE empleados (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -69,7 +66,6 @@ CREATE TABLE deliveries (
 	CONSTRAINT fk_delivery_empleado FOREIGN KEY (id) REFERENCES empleados (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-
 CREATE TABLE pedidos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	cliente_id INT UNSIGNED NOT NULL,
@@ -91,7 +87,6 @@ CREATE TABLE pedidos (
 	CONSTRAINT pedidos_ibfk_2 FOREIGN KEY (empleado_id) REFERENCES empleados (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-
 CREATE TABLE detalle_pedido (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	pedido_id INT UNSIGNED NOT NULL,
@@ -108,6 +103,26 @@ CREATE TABLE detalle_pedido (
 	CONSTRAINT detalle_pedido_ibfk_2 FOREIGN KEY (producto_id) REFERENCES productos (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+CREATE TABLE dias (
+    id TINYINT UNSIGNED PRIMARY KEY,
+    nombre VARCHAR(10) NOT NULL UNIQUE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+INSERT INTO dias (id, nombre) VALUES (1, 'Lunes'),(2, 'Martes'),(3, 'Miércoles'),(4, 'Jueves'),(5, 'Viernes'),(6, 'Sábado'),(7, 'Domingo');
+
+CREATE TABLE menu_del_dia (
+    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    producto_id INT UNSIGNED NOT NULL,
+    dia_id TINYINT UNSIGNED NOT NULL,
+    CONSTRAINT fk_menu_producto FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE,
+    CONSTRAINT fk_menu_dia FOREIGN KEY (dia_id) REFERENCES dias(id) ON DELETE CASCADE,
+    CONSTRAINT uq_producto_dia UNIQUE (producto_id, dia_id)
+);
+CREATE INDEX idx_dia_id ON menu_del_dia(dia_id);
+/* ========================= FIN ESTRUCTURA =========================== */
+
+
+/* ================= EVENTS, JOBS y STORED PROCEDURES ================= */
 
 -- Events (JOB)
 CREATE EVENT IF NOT EXISTS ocultar_pedidos_antiguos
@@ -116,8 +131,6 @@ ON SCHEDULE EVERY 1 HOUR DO UPDATE pedidos
     AND fecha_pedido < NOW() - INTERVAL 72 HOUR;
 -- Se necesita encender el Scheduler:
 SET GLOBAL event_scheduler = ON;
-
-
 
 
 -- Stored Procedures
@@ -265,7 +278,6 @@ BEGIN
 END$$
 
 DELIMITER ;
-
 
 
 
@@ -535,53 +547,55 @@ DELIMITER ;
 
 
 DELIMITER ;;
-CREATE DEFINER=root@localhost PROCEDURE adjustCantidadProducto(
-    IN p_pedido_id   INT UNSIGNED,
+
+CREATE DEFINER = root @localhost PROCEDURE adjustCantidadProducto (
+    IN p_pedido_id INT UNSIGNED,
     IN p_producto_id INT UNSIGNED,
-    IN p_delta       SMALLINT       -- ahora con signo: permite -32768 a +32767
+    IN p_delta SMALLINT
 )
 BEGIN
     DECLARE v_cantidad_actual INT DEFAULT 0;
     DECLARE v_nueva_cantidad INT;
-
-    -- 1) Leer la cantidad actual (solo en estado carrito)
-    SELECT cantidad
-      INTO v_cantidad_actual
-      FROM detalle_pedido
-     WHERE pedido_id   = p_pedido_id
-       AND producto_id = p_producto_id
-       AND estado      = 1
-     LIMIT 1;
-
-    -- 2) Calcular la nueva cantidad, evitando negativos
-    SET v_nueva_cantidad = GREATEST(v_cantidad_actual + p_delta, 0);
-
-    -- 3) Si la nueva cantidad es 0, baja lógica
-    IF v_nueva_cantidad = 0 THEN
-        UPDATE detalle_pedido
-           SET cantidad = 0,
-               estado   = 0
-         WHERE pedido_id   = p_pedido_id
-           AND producto_id = p_producto_id;
+    SELECT
+        cantidad INTO v_cantidad_actual
+    FROM
+        detalle_pedido
+    WHERE pedido_id = p_pedido_id
+        AND producto_id = p_producto_id
+        AND estado = 1
+    LIMIT 1;
+    SET v_nueva_cantidad = GREATEST (v_cantidad_actual + p_delta, 0);
+    IF v_nueva_cantidad = 0
+    THEN
+    UPDATE
+        detalle_pedido
+    SET
+        cantidad = 0,
+        estado = 0
+    WHERE pedido_id = p_pedido_id
+        AND producto_id = p_producto_id;
     ELSE
-        -- 4) Actualizar cantidad y mantener activo
-        UPDATE detalle_pedido
-           SET cantidad = v_nueva_cantidad,
-               estado   = 1
-         WHERE pedido_id   = p_pedido_id
-           AND producto_id = p_producto_id;
+    UPDATE
+        detalle_pedido
+    SET
+        cantidad = v_nueva_cantidad,
+        estado = 1
+    WHERE pedido_id = p_pedido_id
+        AND producto_id = p_producto_id;
     END IF;
-
-    -- 5) Recalcular el total del pedido según detalles activos
-    UPDATE pedidos
-       SET total = (
-            SELECT COALESCE(SUM(cantidad * precio_unitario), 0)
-              FROM detalle_pedido
-             WHERE pedido_id = p_pedido_id
-               AND estado    = 1
-       )
-     WHERE id = p_pedido_id;
+    UPDATE
+        pedidos
+    SET
+        total =
+        (SELECT
+            COALESCE (SUM (cantidad * precio_unitario), 0)
+        FROM
+            detalle_pedido
+        WHERE pedido_id = p_pedido_id
+            AND estado = 1)
+    WHERE id = p_pedido_id;
 END ;;
+
 DELIMITER ;
 
 
@@ -591,14 +605,12 @@ CREATE DEFINER=root@localhost PROCEDURE deleteProducto(
     IN p_producto_id  INT UNSIGNED
 )
 BEGIN
-    -- Marcar el detalle como eliminado (estado = 0)
     UPDATE detalle_pedido
        SET estado = 0
      WHERE pedido_id   = p_pedido_id
        AND producto_id = p_producto_id
        AND estado      = 1;
 
-    -- Recalcular el total del pedido, ignorando detalles con estado = 0
     UPDATE pedidos
        SET total = (
             SELECT COALESCE(SUM(cantidad * precio_unitario), 0)
@@ -617,14 +629,12 @@ CREATE DEFINER=root@localhost PROCEDURE enableProducto(
     IN p_producto_id  INT UNSIGNED
 )
 BEGIN
-    -- 1) Marcar el detalle como activo de nuevo (estado = 1)
     UPDATE detalle_pedido
        SET estado = 1
      WHERE pedido_id   = p_pedido_id
        AND producto_id = p_producto_id
        AND estado      = 0;
 
-    -- 2) Recalcular el total del pedido, contando sólo los detalles activos
     UPDATE pedidos
        SET total = (
             SELECT COALESCE(SUM(cantidad * precio_unitario), 0)
@@ -640,7 +650,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=root@localhost PROCEDURE updateEstadoPedido(
     IN p_pedido_id      INT UNSIGNED,
-    IN p_nuevo_estado   TINYINT UNSIGNED  -- acepta 0 a 255; en tu lógica usarás 0–5, etc.
+    IN p_nuevo_estado   TINYINT UNSIGNED 
 )
 BEGIN
     -- Verificar que el pedido exista
@@ -658,9 +668,7 @@ END ;;
 DELIMITER ;
 
 
-
-/* TRIGGERS */
-
+-- Triggers
 DELIMITER $$
 
 CREATE TRIGGER before_insert_empleados
@@ -690,11 +698,10 @@ BEGIN
 END$$
 
 DELIMITER ;
+/* =============== FIN EVENTS, JOBS y STORED PROCEDURES ================= */
 
 
-
-
--- DATA
+/* =============  DATA DE MUESTRA =============== */
 INSERT INTO clientes (nombre, telefono, documento, direccion) VALUES 
 ('Pedro Sánchez', '970555444', '55667788', 'Jr. Lima 234 Surco'), 
 ('Luis González', '981234567', '99001122', 'Jr. Pescadores 123 Surco'), 
@@ -732,15 +739,15 @@ INSERT INTO clientes (nombre, telefono, documento, direccion) VALUES
 ('Liliana María Mendoza', '950117233', '60010026', 'Jirón Júpiter 221 Surco');
 
 INSERT INTO empleados (nombre, telefono, documento, clave, direccion, nivel, estado) VALUES  
-('Admin', '000000000', '00000000', '94099409', '000000000000', 0, 1), 
-('Mariela Solorzano', '987654321', '41015448', '97099709', 'Jirón Las Gaviotas 122 Chorrillos', 1, 1), 
+('admin', 'admin', 'admin', 'admin', 'admin', 0, 1), 
+('Mariela Solorzano', '987654321', '123456', '97099709', 'Jirón Las Gaviotas 122 Chorrillos', 1, 1), 
 ('Andrea Mamani', '976543210', '87654321', '123456', 'Jirón Las Gaviotas 355 Chorrillos', 2, 1), 
 ('Carlos José Fernández', '965432109', '23456789', '123456', 'Av. Arequipa 789 Chorrillos', 3, 1), 
 ('Ana Torres', '954321098', '34567890', '123456', 'Calle La Paz 321 Chorrillos', 2, 1), 
 ('Luis Martínez', '943210987', '45678901', '123456', 'Av. Brasil 654 Surco', 3, 1), 
 ('Sofía Ruiz', '932109876', '56789012', '123456', 'Calle Los Pinos 987 Chorrillos', 4, 1), 
 ('Pedro Pablo Contreras', '951124055', '48452001', '123456', 'Jiron Las Gaviotas 88 Chorrillos', 4, 1), 
-('Takumi Fujiwara', '462150109', '50122144', '123456', 'Calle Huaylas 223 Surco', 3, 1), 
+('Takumi Sakamoto', '462150109', '50122144', '123456', 'Calle Huaylas 223 Surco', 3, 1), 
 ('Jorge Juan Negrete', '659501248', '95162840', '123456', 'Calle La Joya 2332,  Chorrillos', 4, 1);
 
 INSERT INTO deliveries (id, unidad, placa) VALUES  
