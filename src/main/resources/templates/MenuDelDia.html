@@ -1,55 +1,66 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Menú del Día - MesaLista v1.0</title>
+    <meta charset="UTF-8">
+    <title>Menú del Día - MesaLista v1.0</title>
 
-<link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
-<link rel="stylesheet" type="text/css" th:href="@{/css/MenuDelDia.css}" />
-<!--  link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />-->
-<link rel="stylesheet" type="text/css" th:href="@{/css/PopupCustom2Options.css}" />
-
-
+    <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/NavMenuDelDia.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/PopupCustom2Options.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/MenuDelDia.css}" />
 </head>
 
 <body>
-	
-	
-	
-	<main class="menu-del-dia-contenedor-principal">
-	
-		<h2 class="menu-del-dia__titulo">Menú del Día</h2>
-		
-		<!-- Pestañas para seleccionar el día -->
-		<nav class="menu-del-dia__tabs">
-			<ul class="menu-del-dia__tabs-lista">
-				<li class="menu-del-dia__tab-item menu-del-dia__tab-item--activo" data-dia="1">Lunes</li>
-				<li class="menu-del-dia__tab-item" data-dia="2">Martes</li>
-				<li class="menu-del-dia__tab-item" data-dia="3">Miércoles</li>
-				<li class="menu-del-dia__tab-item" data-dia="4">Jueves</li>
-				<li class="menu-del-dia__tab-item" data-dia="5">Viernes</li>
-				<li class="menu-del-dia__tab-item" data-dia="6">Sábado</li>
-				<li class="menu-del-dia__tab-item" data-dia="7">Domingo</li>
-			</ul>
-		</nav>
+    
+    <div class="barra-de-navegacion">
+        <nav class="nav-alternativo">
+            <!-- Enlace MesaLista con espacio a la derecha -->
+            <a href="/mesalista" class="nav-alternativo-link nav-alternativo-inicio">MesaLista</a>
+            <a th:href="@{/producto}" class="nav-alternativo-link">Productos</a>
+            <a th:href="@{/cliente}" class="nav-alternativo-link">Clientes</a>
+            <a th:href="@{/empleado}" class="nav-alternativo-link">Empleados</a>
+            <a th:href="@{/empleado/deliveries}" class="nav-alternativo-link">Deliveries</a>
+            <a th:href="@{/pedido/cocina}" class="nav-alternativo-link">Cocina</a>
+            <a th:href="@{/entregas}" class="nav-alternativo-link">Entregas</a>
+            <a th:href="@{/menudeldia}" class="nav-alternativo-link">Menú del día</a>
+        </nav>
+    </div>
+    
+    <main class="menu-del-dia-contenedor-principal">
+    
+        <h2 class="menu-del-dia__titulo">Menú del Día</h2>
+        
+        <!-- Pestañas para seleccionar el día -->
+        <nav class="menu-del-dia__tabs">
+            <ul class="menu-del-dia__tabs-lista">
+                <li class="menu-del-dia__tab-item menu-del-dia__tab-item--activo" data-dia="1">Lunes</li>
+                <li class="menu-del-dia__tab-item" data-dia="2">Martes</li>
+                <li class="menu-del-dia__tab-item" data-dia="3">Miércoles</li>
+                <li class="menu-del-dia__tab-item" data-dia="4">Jueves</li>
+                <li class="menu-del-dia__tab-item" data-dia="5">Viernes</li>
+                <li class="menu-del-dia__tab-item" data-dia="6">Sábado</li>
+                <li class="menu-del-dia__tab-item" data-dia="7">Domingo</li>
+            </ul>
+        </nav>
 
+        <!-- Lista de productos -->
+        <section id="menu-del-dia__productos-listado" class="menu-del-dia__productos-listado">
+        </section>
 
-		<!-- Lista de productos -->
-		<section id="menu-del-dia__productos-listado"
-			class="menu-del-dia__productos-listado">
-		</section>
+        <!-- Botones de acción -->
+        <div class="menu-del-dia__acciones">
+            <button id="menu-del-dia__btn-activar" class="menu-del-dia__boton menu-del-dia__boton--activar">Activar menú del día</button>
+        </div>
+    </main>
 
-		<!-- Botones de acción -->
-		<div class="menu-del-dia__acciones">
-			<button id="menu-del-dia__btn-guardar" class="menu-del-dia__boton menu-del-dia__boton--guardar">Guardar</button>
-			<button id="menu-del-dia__btn-activar" class="menu-del-dia__boton menu-del-dia__boton--activar">Activar menú del día</button>
-		</div>
-	</main>
-	
-	<!-- div th:replace="~{components/PopupCustom2Options :: popupCustom2Options}"></div> -->
-	<script th:src="@{/js/PopupCustom2Options.js}"></script>
-	<script th:src="@{/js/MenuDelDia.js}"></script>
-	
+    <!-- Sugerencias globales (aparecerán por encima de todo) -->
+    <ul id="menu-del-dia__sugerencias-global" class="menu-del-dia__sugerencias-global" style="display: none;"></ul>
+    
+    <!-- Popup Custom Fragment -->
+	<div th:replace="~{components/PopupCustom2Options :: popupCustom2Options}"></div>
 
+    <!-- Scripts -->
+    <script th:src="@{/js/PopupCustom2Options.js}"></script>
+    <script th:src="@{/js/MenuDelDia.js}"></script>
 </body>
 </html>

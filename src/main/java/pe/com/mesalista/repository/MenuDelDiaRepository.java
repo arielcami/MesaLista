@@ -1,6 +1,8 @@
 package pe.com.mesalista.repository;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import pe.com.mesalista.entity.MenuDelDiaEntity;
@@ -17,5 +19,12 @@ public interface MenuDelDiaRepository extends JpaRepository<MenuDelDiaEntity, Lo
 
     // Comprobar si un producto ya está asignado a un día (evita duplicación programáticamente)
     boolean existsByProducto_IdAndDia_Id(Long productoId, Byte diaId);
+    
+    
+    void deleteByProductoIdAndDiaId(Long productoId, Byte diaId);
+    
+    Optional<MenuDelDiaEntity> findByProductoIdAndDiaId(Long productoId, Byte diaId);
+
+
 
 }

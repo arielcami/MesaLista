@@ -3,6 +3,8 @@ package pe.com.mesalista.service.impl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
 import pe.com.mesalista.entity.MenuDelDiaEntity;
 import pe.com.mesalista.entity.DiaEntity;
 import pe.com.mesalista.repository.MenuDelDiaRepository;
@@ -33,4 +35,14 @@ public class MenuDelDiaServiceImpl implements MenuDelDiaService {
     public MenuDelDiaEntity guardar(MenuDelDiaEntity menuDelDiaEntity) {
         return repository.save(menuDelDiaEntity);
     }
+    
+    @Transactional
+    @Override
+    public void eliminarProductoDeDia(Long productoId, Byte diaId) {
+    	repository.deleteByProductoIdAndDiaId(productoId, diaId);
+    }
+
+
+    
+    
 }

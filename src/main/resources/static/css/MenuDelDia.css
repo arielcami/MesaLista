@@ -10,28 +10,31 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5; /* opcional, para contraste */
+    background-color: #f5f5f5;
     font-family: 'Yeseva One';
+    overflow-y: hidden;
+}
+
+html {
+	overflow-y: hidden;
 }
 
 main h2 {
-	font-family: 'Yeseva One';
-	font-size: 25px;
+    font-family: 'Yeseva One';
+    font-size: 25px;
 }
 
-/* Contenedor principal centrado */
 .menu-del-dia-contenedor-principal {
     max-width: 900px;
     background-color: #fff8e1;
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     font-family: 'Segoe UI', sans-serif;
-    
-    margin: 100px auto 50px auto;  /* Centrado horizontal y bajado verticalmente */
+
+    margin: 100px auto 50px auto;
     padding: 20px;
 }
 
-/* Título de la vista */
 .menu-del-dia__titulo {
     font-weight: normal;
     font-size: 30px;
@@ -40,13 +43,11 @@ main h2 {
     margin: 20px 0;
 }
 
-/* Contenedor de pestañas */
 .menu-del-dia__tabs {
     margin-bottom: 25px;
     border-bottom: 2px solid #ccc;
 }
 
-/* Lista de pestañas (ul) */
 .menu-del-dia__tabs-lista {
     list-style: none;
     display: flex;
@@ -56,7 +57,6 @@ main h2 {
     gap: 8px;
 }
 
-/* Cada pestaña (li) */
 .menu-del-dia__tab-item {
     padding: 10px 20px;
     cursor: pointer;
@@ -67,21 +67,14 @@ main h2 {
     transition: background-color 0.2s ease, color 0.2s ease;
     font-weight: bold;
     user-select: none;
+    font-family: 'Calibri';
+    font-size: 20px;
 }
 
-.menu-del-dia__tab-item {
-	font-family: 'Yeseva One';
-	font-size: 20px;
-	font-weight: normal;
-}
-
-
-/* Hover sobre pestañas */
 .menu-del-dia__tab-item:hover {
     background-color: #e0e0e0;
 }
 
-/* Pestaña activa */
 .menu-del-dia__tab-item--activo {
     background-color: #fff;
     color: #000;
@@ -89,20 +82,21 @@ main h2 {
     border-bottom: 2px solid #fff;
 }
 
-/* Listado de productos (contenedor) */
 .menu-del-dia__productos-listado {
-    margin: 7px 7px 20px 7px; /* top, right, bottom, left */
-    min-height: 200px;
+    margin: 7px 7px 20px 7px;
+    min-height: 400px;    /* más alto */
+    max-width: 1000px;    /* ancho mayor, o usa width */
+    width: 100%;          /* para que ocupe todo el contenedor padre */
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 10px; /* menos padding para dejar espacio */
+    padding: 10px;
     background-color: #fff;
-    overflow-x: auto; /* por si acaso el contenido se desborda */
     box-sizing: border-box;
+    overflow-y: visible; 
+    overflow-x: auto;
 }
 
 
-/* Acciones: botones de guardar y activar */
 .menu-del-dia__acciones {
     display: flex;
     justify-content: center;
@@ -120,15 +114,6 @@ main h2 {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.menu-del-dia__boton--guardar {
-    background-color: #4caf50;
-    color: white;
-}
-
-.menu-del-dia__boton--guardar:hover {
-    background-color: #449d48;
-}
-
 .menu-del-dia__boton--activar {
     background-color: #d4a500;
     color: white;
@@ -138,26 +123,31 @@ main h2 {
     background-color: #b89400;
 }
 
-
-
-/*Grid de productos*/
 .menu-del-dia__productos-grid {
     display: flex;
     justify-content: space-between;
     gap: 7px;
-    flex-wrap: nowrap; /* evita que bajen de línea */
+    flex-wrap: nowrap;
     margin-top: 7px;
-    overflow-x: auto; /* opcional: para scroll horizontal si no cabe */
+    overflow-x: hidden;
+    max-width: 100%; 
+    overflow: visible;
 }
 
 .menu-del-dia__categoria {
-    flex: 1 0 22%; /* cada columna toma al menos 22% del ancho */
-    min-width: 180px; /* evita que se achiquen demasiado */
+    flex: 0 0 22%;
+    min-width: 180px;
+    max-width: 25%;
     background-color: #fff8e1;
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 15px;
+    padding: 10px;
+    padding-bottom: 20px;
     box-sizing: border-box;
+    position: relative;
+    overflow: visible;
+    white-space: normal;
+    overflow-x: hidden;
 }
 
 .menu-del-dia__categoria h3 {
@@ -172,11 +162,92 @@ main h2 {
     list-style: none;
     padding-left: 0;
     margin: 0;
+    overflow-x: hidden;
 }
 
 .menu-del-dia__categoria li {
-	font-family: 'Arial';
+    font-family: 'Arial';
     margin: 4px 0;
     font-size: 16px;
     color: black;
+    cursor: pointer;
+    user-select: none;
+}
+
+.menu-del-dia__categoria li:hover {
+	background-color: #d6fff5;
+}
+
+/* Input de búsqueda */
+.menu-del-dia__input-busqueda {
+    width: 100%;
+    padding: 6px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    margin-top: 8px;
+    border-radius: 4px;
+    display: none; /* aseguramos que arranca oculto */
+}
+
+/* Lista de sugerencias */
+.menu-del-dia__sugerencias {
+  position: absolute;
+  z-index: 1000;
+  background-color: white;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Cada sugerencia */
+.menu-del-dia__sugerencia-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.menu-del-dia__sugerencia-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Mensaje de error */
+.menu-del-dia__error {
+    text-align: center;
+    color: red;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+.menu-del-dia__sugerencias-global {
+    position: absolute;
+    z-index: 9999;
+    background-color: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-family: 'Arial';
+    font-size: 14px;
+    width: 250px;
+}
+
+.menu-del-dia__sugerencias-global li {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.menu-del-dia__sugerencias-global li:hover {
+    background-color: #f0f0f0;
+}
+
+.menu-del-dia__lista-productos {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    word-wrap: break-word;
 }

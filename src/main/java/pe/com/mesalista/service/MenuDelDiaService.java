@@ -17,5 +17,8 @@ public interface MenuDelDiaService {
 
     // Guardar o asignar un producto a un día (por ejemplo, para agregar al menú)
     MenuDelDiaEntity guardar(MenuDelDiaEntity menuDelDiaEntity);
+    
+    void eliminarProductoDeDia(Long productoId, Byte diaId);
+
 
 }

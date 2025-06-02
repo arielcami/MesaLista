@@ -5,7 +5,8 @@
     font-style: normal;
 }
 
-nav {
+
+.nav-alternativo {
     position: fixed;
     top: 0;
     width: 100%;
@@ -17,7 +18,7 @@ nav {
     font-size: 30px;
 }
 
-.nav-link {
+.nav-alternativo-link {
     color: white;
     margin-right: 15px;
     text-decoration: none;
@@ -25,21 +26,11 @@ nav {
     transition: color 0.3s ease;
 }
 
-.nav-inicio {
-    margin-right: 120px;
+.nav-alternativo-inicio {
+    margin-right: 120px; /* Deja más espacio a la derecha para este enlace */
     margin-left: 20px;
 }
 
-
-.nav-link:hover {
-    color: #333;
+.nav-alternativo-link:hover {
+    color: #333; /* Color al pasar el ratón */
 }
-
-
-body {
-    font-family: 'Yeseva One';
-    margin: 0;
-    padding-top: 60px;
-}
-
-

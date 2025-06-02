@@ -16,14 +16,14 @@ public class ProductoRestController {
 
 	private final ProductoService productoService;
 
-	 @GetMapping 
-	 public List<ProductoEntity> findAll() { 
-		 return productoService.findAll(); 
-	 }
+	@GetMapping
+	public List<ProductoEntity> findAll() {
+		return productoService.findAll();
+	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ProductoEntity> findById(@PathVariable Long id) {
-	    return productoService.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+		return productoService.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
 	}
 
 	@PostMapping
@@ -36,6 +36,11 @@ public class ProductoRestController {
 		return productoService.update(id, producto).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
 	}
 
+	@PutMapping("/reset-estado")
+	public void resetearEstadoProductos() {
+		productoService.resetEstadoProductos();
+	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteProducto(@PathVariable Long id) {
 		return productoService.deleteById(id).map(p -> ResponseEntity.ok("Producto desactivado correctamente"))
@@ -46,18 +51,17 @@ public class ProductoRestController {
 	public List<ProductoEntity> findByEstadoTrue() {
 		return productoService.findByEstadoTrue();
 	}
-	
+
 	@GetMapping("/inactivos")
 	public List<ProductoEntity> findByEstadoFalse() {
 		return productoService.findByEstadoFalse();
 	}
 
-
 	@GetMapping("/buscar/{nombre}")
 	public List<ProductoEntity> findByNombreContaining(@PathVariable String nombre) {
 		return productoService.findByNombreContainingIgnoreCase(nombre);
 	}
-	
+
 	@GetMapping("/buscar-nombre-activo/{nombre}")
 	public List<ProductoEntity> findByNombreContainingIgnoreCaseAndEstadoTrue(@PathVariable String nombre) {
 		return productoService.findByNombreContainingIgnoreCaseAndEstadoTrue(nombre);
@@ -70,18 +74,23 @@ public class ProductoRestController {
 
 	@PutMapping("/{id}/estado")
 	public ResponseEntity<?> actualizarEstado(@PathVariable Long id, @RequestParam boolean estado) {
-	    Optional<ProductoEntity> resultado = productoService.actualizarEstado(id, estado);
+		Optional<ProductoEntity> resultado = productoService.actualizarEstado(id, estado);
 
-	    if (resultado.isPresent()) {
-	        return ResponseEntity.ok(resultado.get());
-	    } else {
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
-	    }
+		if (resultado.isPresent()) {
+			return ResponseEntity.ok(resultado.get());
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
+		}
+	}
+
+	@PutMapping("/{id}/activar")
+	public void activarProductoPorId(@PathVariable Integer id) {
+		productoService.activarProductoDelDia(id);
 	}
 
 	@GetMapping("/tipo/activo/{tipo}")
 	public List<ProductoEntity> findActivosByTipo(@PathVariable byte tipo) {
-	    return productoService.findByTipoProductoAndEstadoTrue(tipo);
+		return productoService.findByTipoProductoAndEstadoTrue(tipo);
 	}
 
 }

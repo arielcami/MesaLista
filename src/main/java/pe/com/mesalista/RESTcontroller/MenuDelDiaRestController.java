@@ -55,4 +55,15 @@ public class MenuDelDiaRestController {
         menuDelDiaService.eliminarPorDia(dia);
         return ResponseEntity.noContent().build();
     }
+    
+    // En MenuDelDiaRestController
+    @DeleteMapping("/{productoId}/{diaId}")
+    public ResponseEntity<Void> eliminarProductoDeDia(
+            @PathVariable Long productoId,
+            @PathVariable Byte diaId) {
+        menuDelDiaService.eliminarProductoDeDia(productoId, diaId);
+        return ResponseEntity.noContent().build();
+    }
+    
+    
 }

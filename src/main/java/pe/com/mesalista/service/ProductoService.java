@@ -30,5 +30,10 @@ public interface ProductoService {
 	Optional<ProductoEntity> actualizarEstado(Long id, boolean estado);
 
 	List<ProductoEntity> findByTipoProductoAndEstadoTrue(byte tipoProducto);
+	
+	void resetEstadoProductos();
+	
+	void activarProductoDelDia(Integer productoId);
+
 
 }

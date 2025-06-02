@@ -1,33 +1,34 @@
 function mostrarPopupConfirmacion(tipo, mensaje, onConfirm, onCancel) {
-    const modal = document.getElementById('popup-custom-modal');
-    const mensajeElem = document.getElementById('popup-message');
-    const iconoElem = document.getElementById('popup-icon');
-    const btnConfirmar = document.getElementById('popup-confirm-btn');
-    const btnCancelar = document.getElementById('popup-cancel-btn');
+	const modal = document.getElementById('popup-custom-modal');
+	const mensajeElem = document.getElementById('popup-message');
+	const iconoElem = document.getElementById('popup-icon');
+	const btnConfirmar = document.getElementById('popup-confirm-btn');
+	const btnCancelar = document.getElementById('popup-cancel-btn');
 
-    mensajeElem.textContent = mensaje;
-    iconoElem.style.backgroundImage = `url('/mesalista/img/${tipo.charAt(0).toUpperCase() + tipo.slice(1)}.png')`;
+	mensajeElem.textContent = mensaje;
 
-    modal.classList.remove('hidden');
+	// Normaliza el tipo y usa 'Warning' si no es uno conocido
+	const tiposValidos = ['Success', 'Error', 'Warning', 'Question'];
+	const tipoNormalizado = tipo.charAt(0).toUpperCase() + tipo.slice(1).toLowerCase();
+	const tipoFinal = tiposValidos.includes(tipoNormalizado) ? tipoNormalizado : 'Warning';
 
-    // Limpiar y volver a asociar eventos para evitar duplicados
-    const nuevoConfirmar = btnConfirmar.cloneNode(true);
-    const nuevoCancelar = btnCancelar.cloneNode(true);
+	iconoElem.style.backgroundImage = `url('/mesalista/img/${tipoFinal}.png')`;
 
-    btnConfirmar.parentNode.replaceChild(nuevoConfirmar, btnConfirmar);
-    btnCancelar.parentNode.replaceChild(nuevoCancelar, btnCancelar);
+	modal.classList.remove('hidden');
 
-    nuevoConfirmar.addEventListener('click', function () {
-        modal.classList.add('hidden');
-        if (typeof onConfirm === 'function') {
-            onConfirm();
-        }
-    });
+	const nuevoConfirmar = btnConfirmar.cloneNode(true);
+	const nuevoCancelar = btnCancelar.cloneNode(true);
 
-    nuevoCancelar.addEventListener('click', function () {
-        modal.classList.add('hidden');
-        if (typeof onCancel === 'function') {
-            onCancel();
-        }
-    });
+	btnConfirmar.parentNode.replaceChild(nuevoConfirmar, btnConfirmar);
+	btnCancelar.parentNode.replaceChild(nuevoCancelar, btnCancelar);
+
+	nuevoConfirmar.addEventListener('click', function() {
+		modal.classList.add('hidden');
+		if (typeof onConfirm === 'function') onConfirm();
+	});
+
+	nuevoCancelar.addEventListener('click', function() {
+		modal.classList.add('hidden');
+		if (typeof onCancel === 'function') onCancel();
+	});
 }

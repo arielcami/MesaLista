@@ -16,18 +16,6 @@ CREATE TABLE clientes (
 	UNIQUE KEY documento (documento)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-CREATE TABLE estados (
-	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(20) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
-CREATE TABLE tipo_producto (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(20) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
 CREATE TABLE productos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100) NOT NULL,
@@ -93,7 +81,7 @@ CREATE TABLE detalle_pedido (
 	producto_id INT UNSIGNED NOT NULL,
 	cantidad TINYINT UNSIGNED NOT NULL,
 	precio_unitario DECIMAL(10,2) NOT NULL,
-	estado TINYINT UNSIGNED NOT NULL DEFAULT 1, -- Numérico porque manejaremos hasta 8 estados
+	estado TINYINT UNSIGNED NOT NULL DEFAULT 1,
 	creado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 	actualizado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (id),
@@ -107,8 +95,6 @@ CREATE TABLE dias (
     id TINYINT UNSIGNED PRIMARY KEY,
     nombre VARCHAR(10) NOT NULL UNIQUE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
-INSERT INTO dias (id, nombre) VALUES (1, 'Lunes'),(2, 'Martes'),(3, 'Miércoles'),(4, 'Jueves'),(5, 'Viernes'),(6, 'Sábado'),(7, 'Domingo');
 
 CREATE TABLE menu_del_dia (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -702,6 +688,8 @@ DELIMITER ;
 
 
 /* =============  DATA DE MUESTRA =============== */
+INSERT INTO dias (id, nombre) VALUES (1, 'Lunes'),(2, 'Martes'),(3, 'Miércoles'),(4, 'Jueves'),(5, 'Viernes'),(6, 'Sábado'),(7, 'Domingo');
+
 INSERT INTO clientes (nombre, telefono, documento, direccion) VALUES 
 ('Pedro Sánchez', '970555444', '55667788', 'Jr. Lima 234 Surco'), 
 ('Luis González', '981234567', '99001122', 'Jr. Pescadores 123 Surco'), 
@@ -755,17 +743,6 @@ INSERT INTO deliveries (id, unidad, placa) VALUES
 (6, 'Moto', '3400-AE'), 
 (9, 'Mototaxi', 'TRU3-N0');
 
-INSERT INTO estados (nombre) VALUES  
-('Inactivo'),
-('En preparación'),
-('Preparado'),
-('En tránsito'),
-('Entregado'),
-('No entregado'),
-('Devuelto'),
-('Incidente'),
-('ERROR');
-
 INSERT INTO productos (nombre, tipo_producto, precio, estado) VALUES 
 ('Papa a la Huancaína', 1, 3.00, b'1'), 
 ('Causa de Pollo', 1, 3.00, b'1'), 
@@ -812,8 +789,13 @@ INSERT INTO productos (nombre, tipo_producto, precio, estado) VALUES
 ('Arroz con Leche', 4, 3.00, b'1'), 
 ('Crema Volteada', 4, 3.50, b'1');
 
-INSERT INTO tipo_producto (nombre) VALUES  
-('Entrada'),
-('Segundo'),
-('Bebida'),
-('Postre');
+INSERT INTO menu_del_dia (producto_id, dia_id) VALUES 
+('1','1'),('1','4'),('1','7'),('2','2'),('2','6'),('3','3'),('3','5'),('4','1'),('4','5'),('5','3'),('5','5'),('6','1'),('6','4'),
+('7','2'),('7','6'),('8','1'),('8','6'),('9','2'),('9','6'),('10','2'),('10','4'),('11','3'),('11','7'),('12','3'),('12','7'),('13','1'),
+('13','5'),('14','2'),('14','5'),('15','2'),('15','4'),('15','7'),('16','3'),('16','6'),('17','1'),('17','6'),('18','3'),('18','6'),
+('19','2'),('19','6'),('20','1'),('20','4'),('20','5'),('21','1'),('21','5'),('21','7'),('22','3'),('23','2'),('23','4'),('24','3'),
+('24','7'),('25','1'),('25','2'),('25','3'),('25','4'),('25','5'),('25','6'),('25','7'),('26','1'),('26','2'),('26','3'),('26','4'),
+('26','5'),('26','6'),('26','7'),('27','1'),('27','4'),('27','7'),('28','1'),('28','6'),('29','2'),('29','5'),('30','1'),('30','2'),
+('30','3'),('30','4'),('30','5'),('30','6'),('30','7'),('31','1'),('31','2'),('31','3'),('31','4'),('31','5'),('31','6'),('31','7'),
+('32','1'),('32','3'),('32','6'),('33','7'),('34','2'),('34','4'),('35','2'),('35','6'),('36','5'),('37','3'),('37','7'),('38','3'),
+('39','5'),('40','4'),('41','2'),('41','6'),('42','7'),('43','1'),('44','3'),('44','7');

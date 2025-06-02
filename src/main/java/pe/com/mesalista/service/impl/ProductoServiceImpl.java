@@ -3,6 +3,8 @@ package pe.com.mesalista.service.impl;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import pe.com.mesalista.entity.ProductoEntity;
 import pe.com.mesalista.repository.ProductoRepository;
@@ -19,6 +21,19 @@ public class ProductoServiceImpl implements ProductoService {
 		return productoRepository.findAll();
 	}
 
+	@Override
+	@Transactional
+	public void resetEstadoProductos() {
+	    productoRepository.resetEstadoProductos();
+	}
+
+	@Override
+	@Transactional
+	public void activarProductoDelDia(Integer productoId) {
+	    productoRepository.activarProductoDelDia(productoId);
+	}
+
+	
 	@Override
 	public Optional<ProductoEntity> findById(Long id) {
 		return productoRepository.findById(id);
