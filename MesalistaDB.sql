@@ -105,6 +105,19 @@ CREATE TABLE menu_del_dia (
     CONSTRAINT uq_producto_dia UNIQUE (producto_id, dia_id)
 );
 CREATE INDEX idx_dia_id ON menu_del_dia(dia_id);
+
+CREATE TABLE incidentes (
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	delivery_id INT UNSIGNED NOT NULL,
+	pedido_id INT UNSIGNED NOT NULL,
+	ubicacion VARCHAR(60),
+	estado TINYINT UNSIGNED NOT NULL DEFAULT 1,
+	incidente TEXT,
+	fecha TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (delivery_id) REFERENCES empleados (id),
+	FOREIGN KEY (pedido_id) REFERENCES pedidos (id)
+);
+
 /* ========================= FIN ESTRUCTURA =========================== */
 
 

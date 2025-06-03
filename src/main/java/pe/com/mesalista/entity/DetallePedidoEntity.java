@@ -42,7 +42,6 @@ public class DetallePedidoEntity implements Serializable {
     @Column(name = "estado", nullable = false)
     private byte estado;
 
-    // Campos para registro interno, ignorar.
     @CreationTimestamp
     @JsonIgnore
     @Column(name = "creado_en", updatable = false)
