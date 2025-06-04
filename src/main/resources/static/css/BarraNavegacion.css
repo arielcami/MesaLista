@@ -11,28 +11,28 @@ nav {
     width: 100%;
     background-color: #d4a500; /* Dorado */
     color: white;
-    padding: 13px;
+    padding: 0.7rem;
     font-family: 'Yeseva One';
     font-weight: normal;
-    font-size: 30px;
+    font-size: 1.7rem;
 }
 
 .nav-link {
     color: white;
     margin-right: 15px;
     text-decoration: none;
-    margin-right: 30px;
+    margin-right: 1%;
     transition: color 0.3s ease;
 }
 
 .nav-inicio {
-    margin-right: 120px;
-    margin-left: 20px;
+    margin-right: 3%;
+    margin-left: 1%;
 }
 
 
 .nav-link:hover {
-    color: #333;
+    color: black;
 }
 
 
