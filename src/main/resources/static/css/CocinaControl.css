@@ -23,6 +23,7 @@ body {
     text-align: center;         /* Centra el h1 */
 }
 
+
 .nav-dorada a {
     position: absolute;
     left: 20px;
@@ -40,6 +41,14 @@ body {
 
 .nav-dorada a:hover {
 	color: black;
+}
+
+
+.a-incidentes {
+	position: absolute;
+    left: 100px;
+    top: 50%;
+    margin-left: 25%;
 }
 
 .nav-dorada h1 {
