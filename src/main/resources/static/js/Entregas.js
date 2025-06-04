@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	
+
 	// Pedidos en tránsito button
 	const btnTransito = document.getElementById("btn-pedidos-transito");
 	if (btnTransito) {
@@ -254,7 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	
+
 	// Pedidos entregados
 	const btnEntregados = document.getElementById("btn-pedidos-entregados");
 	if (btnEntregados) {
@@ -274,17 +274,33 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Pedidos NO entregados
 	const btnNoEntregados = document.getElementById("btn-pedidos-no-entregados");
 	if (btnNoEntregados) {
-		btnNoEntregados.addEventListener("click", e => {
+
+		btnNoEntregados.addEventListener("click", async e => {
 			e.preventDefault();
-
 			const deliveryId = localStorage.getItem('id_de_empleado_delivery');
-
 			if (!deliveryId) {
 				alert('No se encontró el ID del delivery. Por favor, inicie sesión nuevamente.');
 				return;
 			}
-			cargarPedidosPorDeliveryYEstado(deliveryId, 5);
+
+			try {
+				const estadosFallidos = [5, 6, 7, 8];
+				let pedidosAcumulados = [];
+
+				for (const estado of estadosFallidos) {
+					const response = await fetch(`/mesalista/api/pedido/buscarPorDeliveryCustom/${deliveryId}/${estado}`);
+					if (!response.ok) throw new Error(`Error al cargar pedidos con estado ${estado}`);
+					const pedidos = await response.json();
+					pedidosAcumulados = pedidosAcumulados.concat(pedidos);
+				}
+
+				renderizarTarjetasPedido(pedidosAcumulados);
+			} catch (error) {
+				console.error(error);
+				alert('Error al obtener los pedidos fallidos');
+			}
 		});
+
 	}
 
 	// Logout button

@@ -23,30 +23,33 @@
 
 			<button id="btn-delivery-login">Ingresar</button>
 
-			<p id="delivery-auth-error" class="auth-error" style="display: none;">Credenciales inválidas o acceso denegado</p>
+			<p id="delivery-auth-error" class="auth-error" style="display: none;">Credenciales
+				inválidas o acceso denegado</p>
 		</div>
 	</div>
-	
+
 	<!-- Modal de Acciones de Pedido para Delivery -->
-	<div id="modal-acciones-pedido-delivery" class="modal-acciones-pedido" style="display: none;">
+	<div id="modal-acciones-pedido-delivery" class="modal-acciones-pedido"
+		style="display: none;">
 		<div class="modal-acciones-pedido-contenido">
 			<h3>Acciones del Pedido</h3>
-			<button id="btn-pedido-entregado-pagado" 		class="btn-accion-pedido-pagado">Pedido Pagado y Entregado</button>
-			<button id="btn-pedido-no-entregado" 			class="btn-accion-pedido-fallado">No Entregado</button>
-			<button id="btn-reportar-incidente-pedido" 		class="btn-accion-pedido-incidente">Reportar Incidente</button>
-			<button id="btn-cerrar-modal-acciones-pedido" 	class="btn-accion-pedido-atras">Atrás</button>
+			<button id="btn-pedido-entregado-pagado" class="btn-accion-pedido-pagado">Pedido Pagado y Entregado</button>
+			<button id="btn-pedido-no-entregado" class="btn-accion-pedido-fallado">No Entregado</button>
+			<button id="btn-reportar-incidente-pedido" class="btn-accion-pedido-incidente">Reportar Incidente</button>
+			<button id="btn-cerrar-modal-acciones-pedido" class="btn-accion-pedido-atras">Atrás</button>
 		</div>
 	</div>
-	
+
 
 	<header class="top-buttons">
 		<a href="" id="btn-listar-pedidos" class="circle-btn">Listar</a> 
-		<a href="" id="btn-pedidos-transito" class="circle-btn">En tránsito</a> 
+		<a href="" id="btn-pedidos-transito" class="circle-btn">En tránsito</a>
 		<a href="" id="btn-pedidos-entregados" class="circle-btn">Hechos</a> 
-		<a href=""	id="btn-pedidos-no-entregados" class="circle-btn">Fallidos</a> 
+		<a href="" id="btn-pedidos-no-entregados" class="circle-btn">Fallidos</a>
 	</header>
-	
-	<a href="#" id="btn-logout-delivery" class="circle-btn-cerrarsesion">Cerrar Sesión</a>
+
+	<a href="#" id="btn-logout-delivery" class="circle-btn-cerrarsesion">Cerrar
+		Sesión</a>
 
 	<main class="entregas-main-wrapper">
 		<p class="texto-intro-entregas">Pedidos disponibles para entregar:</p>
@@ -56,15 +59,36 @@
 			<!-- Aquí se insertarán las tarjetas dinámicamente -->
 		</div>
 	</main>
-	
+
 	<!-- Modal de Detalle de Pedido -->
-	<div id="modal-detalle-pedido-entrega" class="modal" style="display:none;">
+	<div id="modal-detalle-pedido-entrega" class="modal"
+		style="display: none;">
 		<div class="modal-content">
 			<span id="modal-detalle-pedido-entrega-close" class="modal-close">&times;</span>
 			<div id="detalle-pedido-lista"></div>
 		</div>
-	</div>	
+	</div>
+
+
+	<!-- Modal para Reportar Incidente -->
+	<div id="modal-reportar-incidente" class="modal" style="display: none;">
+	  <div class="modal-content-incidente">
+	    <h3>Reportar Incidente</h3>
+	    <label for="input-ubicacion">Dirección actual:</label>
+	    <input type="text" id="input-ubicacion" placeholder="Ej: Av. Siempre Viva 123" />
+	    <label for="input-incidente">Descripción del incidente:</label>
+	    <textarea id="input-incidente" rows="4" placeholder="Describe el problema..."></textarea>
 	
+	    <div class="botones-container">
+	      <button id="btn-enviar-incidente">Enviar Reporte</button>
+	      <button id="btn-cerrar-incidente">Cancelar</button>
+	    </div>
+	
+	    <p id="mensaje-error-incidente" style="color: red; display: none; margin-top: 10px;"></p>
+	  </div>
+	</div>
+
+
 	<script type="text/javascript" th:src="@{/js/EntregasAccionesFinales.js}"></script>
 	<script type="text/javascript" th:src="@{/js/DetallePedidoModalEntregas.js}"></script>
 	<script type="text/javascript" th:src="@{/js/Entregas.js}"></script>
