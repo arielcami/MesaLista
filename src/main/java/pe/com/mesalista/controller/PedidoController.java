@@ -15,6 +15,11 @@ public class PedidoController {
 		return "Cocina";
 	}
 	
+	@GetMapping("/incidente")
+	public String mostrarIncidentes() {
+		return "Incidentes";
+	}
+	
 	@GetMapping("/cocina/control")
 	public String controlDePedidos() {
 		return "CocinaPedidosControl";

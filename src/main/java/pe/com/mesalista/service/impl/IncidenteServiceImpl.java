@@ -16,17 +16,28 @@ public class IncidenteServiceImpl implements IncidenteService {
 
 	@Autowired
 	private IncidenteRepository incidenteRepository;
+	
+	@Override
+	public List<IncidenteEntity> findAll() {
+	    return incidenteRepository.findAll();
+	}
 
 	@Override
 	public IncidenteEntity registrar(IncidenteEntity incidente) {
-	    Long deliveryId = incidente.getDelivery().getId();
-	    LocalDateTime tiempoLimite = LocalDateTime.now().minusMinutes(15);
+		Long deliveryId = incidente.getDelivery().getId();
+		LocalDateTime tiempoLimite = LocalDateTime.now().minusMinutes(15);
 
-	    if (incidenteRepository.existsByDeliveryIdAndFechaAfter(deliveryId, tiempoLimite)) {
-	        throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "Solo puede registrar un incidente cada 15 minutos.");
-	    }
+		if (incidenteRepository.existsByDeliveryIdAndFechaAfter(deliveryId, tiempoLimite)) {
+			throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS,
+					"Solo puede registrar un incidente cada 15 minutos.");
+		}
 
-	    return incidenteRepository.save(incidente);
+		return incidenteRepository.save(incidente);
+	}
+
+	@Override
+	public List<IncidenteEntity> buscarPorNombreDelivery(String nombre) {
+		return incidenteRepository.findByDeliveryNombreContainingIgnoreCase(nombre);
 	}
 
 	@Override
@@ -56,5 +67,4 @@ public class IncidenteServiceImpl implements IncidenteService {
 	public Optional<IncidenteEntity> findById(Long incidenteId) {
 		return incidenteRepository.findById(incidenteId);
 	}
-
 }

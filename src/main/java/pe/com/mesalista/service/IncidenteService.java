@@ -5,7 +5,9 @@ import java.util.Optional;
 import pe.com.mesalista.entity.IncidenteEntity;
 
 public interface IncidenteService {
-
+	
+	List<IncidenteEntity> findAll();
+	
     IncidenteEntity registrar(IncidenteEntity incidente);
 
     List<IncidenteEntity> listarPorEstado(byte estado);
@@ -13,9 +15,11 @@ public interface IncidenteService {
     List<IncidenteEntity> listarPorDelivery(Long deliveryId);
 
     List<IncidenteEntity> listarPorPedido(Long pedidoId);
-    
+
     Optional<IncidenteEntity> findById(Long incidenteId);
-	
+
     void actualizarEstado(Long incidenteId, byte nuevoEstado);
+
+    List<IncidenteEntity> buscarPorNombreDelivery(String nombre);
 
 }

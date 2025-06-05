@@ -9,56 +9,56 @@ body {
     font-family: sans-serif;
     background-color: #fff6cf;
     margin: 0;
+    padding-top: 70px; 
 }
+
 
 .nav-dorada {
     position: fixed;
     top: 0;
     width: 100%;
     background-color: #d4a500;
-    padding: 13px 0;
-    z-index: 1000;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: relative;         /* Para posicionar el <a> dentro */
-    text-align: center;         /* Centra el h1 */
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Yeseva One';
+    font-size: 28px;
+    height: 60px;
 }
 
-
-.nav-dorada a {
+/* Links alineados a la izquierda */
+.nav-links {
     position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 27px;
+    left: 2rem;
+    display: flex;
+    gap: 40px;
+}
+
+/* Enlaces */
+.nav-links a {
     color: white;
     text-decoration: none;
-    font-family: 'Yeseva One';
-    color: white;
     font-size: 28px;
     font-weight: normal;
     transition: color 0.3s ease;
+    font-family: 'Yeseva One';
 }
 
-.nav-dorada a:hover {
-	color: black;
+.nav-links a:hover {
+    color: black;
 }
 
-
-.a-incidentes {
-	position: absolute;
-    left: 100px;
-    top: 50%;
-    margin-left: 25%;
-}
-
+/* Título centrado */
 .nav-dorada h1 {
     margin: 0;
-    font-family: 'Yeseva One';
     color: white;
     font-size: 30px;
     font-weight: normal;
-    display: inline-block;
+    text-align: center;
 }
+
 
 
 .pedido-container {

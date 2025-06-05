@@ -11,10 +11,15 @@
 
 	<!-- Barra de navegación -->
 	<nav class="nav-dorada">
-		<a th:href="@{/pedido/cocina}">Pedidos en Preparación</a>
-		<a href="#" class="a-incidentes">Incidentes</a>
+		<div class="nav-links">
+			<a th:href="@{/pedido/cocina}">Pantalla en Cocina</a>
+			<a th:href="@{/pedido/incidente}">Incidentes</a>
+		</div>
+	
 		<h1>Control de pedidos</h1>
 	</nav>
+
+
 	
 	<!-- Modal de acciones para pedidos en preparación -->
 	<div id="modal-acciones" class="modal-acciones hidden">

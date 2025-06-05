@@ -1,0 +1,225 @@
+@font-face {
+	font-family: 'Yeseva One';
+	src: url('/mesalista/fonts/yeseva-one.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+body {
+	font-family: sans-serif;
+	background-color: #fff6cf;
+	margin: 0;
+	padding-top: 70px; /* Para dejar espacio al nav fijo */
+}
+
+/* === NAV === */
+.nav-dorada {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	background-color: #d4a500;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'Yeseva One';
+	font-size: 28px;
+	height: 60px;
+}
+
+.nav-links {
+	position: absolute;
+	left: 2rem;
+	display: flex;
+	gap: 40px;
+}
+
+.nav-links a {
+	color: white;
+	text-decoration: none;
+	font-size: 28px;
+	font-weight: normal;
+	transition: color 0.3s ease;
+	font-family: 'Yeseva One';
+}
+
+.nav-links a:hover {
+	color: black;
+}
+
+.nav-dorada h1 {
+	margin: 0;
+	color: white;
+	font-size: 30px;
+	font-weight: normal;
+	text-align: center;
+}
+
+/* === FORMULARIO DE BÚSQUEDA === */
+#busqueda-form {
+	padding: 20px;
+	background-color: #fff6cf;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	align-items: center;
+	justify-content: center;
+}
+
+#busqueda-form input,
+#busqueda-form select {
+	padding: 10px;
+	font-size: 16px;
+	width: 220px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+#busqueda-form button {
+	padding: 10px 20px;
+	font-size: 22px;
+	background-color: #d4a500;
+	color: white;
+	border: none;
+	border-radius: 25px;
+	cursor: pointer;
+	font-family: 'Yeseva One';
+	transition: color 0.3s ease;
+}
+
+#busqueda-form button:hover {
+	color: black;
+}
+
+/* === TABLA DE RESULTADOS === */
+.incidentes-lista {
+	padding: 20px;
+}
+
+.incidentes-lista h2 {
+	font-family: 'Yeseva One';
+	color: #333;
+	margin-bottom: 15px;
+	text-align: center;
+	font-weight: normal;
+}
+
+.incidentes-lista table {
+	width: 100%;
+	border-collapse: collapse;
+	background-color: white;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	border-radius: 6px;
+	overflow: hidden;
+}
+
+.incidentes-lista th {
+	background-color: #f2f2f2;
+	color: #333;
+	padding: 12px;
+	text-align: left;
+	font-weight: bold;
+	border-bottom: 2px solid #ccc;
+}
+
+.incidentes-lista td {
+	padding: 10px;
+	border-bottom: 1px solid #ddd;
+}
+
+.incidentes-lista tr {
+	user-select: none;
+	transition: background-color 0.2s ease;
+}
+
+.incidentes-lista tr:hover {
+	background-color: #b0ebff
+}
+
+
+/* Botones Editar y Eliminar */
+.incidentes-lista td button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  padding: 0;
+}
+
+.incidentes-lista td button:hover {
+  transform: scale(1.2);
+}
+
+/* === Modal de edicion ==== */
+.modal-editar-container {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;	
+  background-color: rgba(0,0,0,0.4);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Contenido del modal */
+.modal-editar-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  font-family: sans-serif;
+}
+
+/* Botón para cerrar */
+#modal-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Label del select */
+.modal-editar-content label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Select de estados */
+#estadoSelect {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Botón Guardar */
+.modal-editar-content button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.modal-editar-content button[type="submit"]:hover {
+  background-color: #0056b3;
+}

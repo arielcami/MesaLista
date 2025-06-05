@@ -21,7 +21,7 @@ public interface IncidenteRepository extends JpaRepository<IncidenteEntity, Long
     List<IncidenteEntity> findByDeliveryIdAndFechaAfter(Long deliveryId, LocalDateTime fecha);
     
     boolean existsByDeliveryIdAndFechaAfter(Long deliveryId, LocalDateTime fecha);
-
+    
+    List<IncidenteEntity> findByDeliveryNombreContainingIgnoreCase(String nombre);
 
 }
-

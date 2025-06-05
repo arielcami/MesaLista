@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Incidentes - MesaLista v1.0</title>
+<link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/Incidentes.css}" />
+</head>
+<body>
+
+	<!-- Barra de navegación -->
+	<nav class="nav-dorada">
+		<div class="nav-links">
+			<a th:href="@{/pedido/cocina/control}">Control de Pedidos</a> <a
+				th:href="@{/pedido/cocina}">Pantalla en Cocina</a>
+		</div>
+		<h1>Incidentes</h1>
+	</nav>
+
+	<!-- Espaciador para que el nav no tape contenido -->
+	<div style="height: 20px;"></div>
+
+	<!-- Formulario de búsqueda -->
+	<form id="busqueda-form">
+	    <input type="number" name="deliveryId" id="deliveryId" placeholder="ID de Delivery"> 
+	    <input type="text" name="deliveryNombre" id="deliveryNombre" placeholder="Nombre de Delivery"> 
+	    <input type="number" name="pedidoId" id="pedidoId" placeholder="ID de Pedido"> 
+	    <input type="number" name="incidenteId" id="incidenteId" placeholder="ID de Incidente">
+	    <select name="estado" id="estadoBusqueda">
+	        <option value="">-- Buscar por Estado --</option>
+	        <option value="0">Inactivo</option>
+	        <option value="1">Activo</option>
+	        <option value="2">Atendido</option>
+	        <option value="3">No procede</option>
+	    </select>
+	    <button type="submit">Buscar Incidente</button>
+	</form>
+
+	<!-- Resultados -->
+	<section class="incidentes-lista">
+		<h2>Todos los Incidentes</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>ID Pedido</th>
+					<th>ID Delivery</th>
+					<th>Nombre</th>
+					<th>Ubicación</th>
+					<th>Incidente</th>
+					<th>Fecha</th>
+					<th>Estado</th>
+					<th>Accciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="incidente : ${incidentes}">
+					<td th:text="${incidente.id}"></td>
+					<td th:text="${incidente.pedidoId}"></td>
+					<td th:text="${incidente.deliveryId}"></td>
+					<td th:text="${incidente.nombreDelivery}"></td> 
+					<td th:text="${incidente.ubicacion}"></td>
+					<td th:text="${incidente.incidente}"></td>
+					<td th:text="${#dates.format(incidente.fecha, 'dd/MM/yyyy HH:mm')}"></td>
+					<td th:text="${incidente.estado}"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<!-- Modal para editar estado de incidente -->
+	<div id="modal-editar" class="modal-editar-container">
+	    <div class="modal-editar-content">
+	        <button id="modal-close" title="Cerrar">×</button>
+	        
+	        <h2>Editar Estado</h2>
+	
+	        <form id="form-editar">
+	            <!-- Incidente ID oculto -->
+	            <input type="hidden" id="incidenteIdEditar" name="incidenteId">
+	
+	            <label for="estadoSelect">Estado:</label>
+	            <select id="estadoSelect" name="estado" required>
+	                <option value="0">Inactivo</option>
+	                <option value="1">Activo</option>
+	                <option value="2">Atendido</option>
+	                <option value="3">No procede</option>
+	            </select>
+	
+	            <button type="submit">Guardar</button>
+	        </form>
+	    </div>
+	</div>
+
+<script th:src="@{/js/incidentes.js}"></script>
+
+</body>
+</html>
