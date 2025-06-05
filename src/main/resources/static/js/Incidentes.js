@@ -87,10 +87,9 @@ function estadoTexto(estado) {
 	}
 }
 
-// Variable global para almacenar todos los incidentes cargados para referencia
+// Variable global para almacenar todos los incidentes cargados
 let incidentesDatos = [];
 
-// Función para buscar incidentes con el filtro nuevo de estado incluido
 function buscarIncidentes() {
 	const deliveryId = document.getElementById('deliveryId').value.trim();
 	const deliveryNombre = document.getElementById('deliveryNombre').value.trim();
@@ -111,7 +110,7 @@ function buscarIncidentes() {
 	} else if (estado !== "") {
 		url = `/mesalista/api/incidente/estado/${estado}`;
 	} else {
-		alert("Debes ingresar al menos un campo para buscar.");
+		mostrarPopupConfirmacion("Warning", "Debes ingresar al menos un campo para buscar.");
 		return;
 	}
 
@@ -127,7 +126,7 @@ function buscarIncidentes() {
 		})
 		.catch(error => {
 			console.error(error);
-			alert("No se encontraron resultados o hubo un error.");
+			mostrarPopupConfirmacion("Error", "No se encontraron resultados o hubo un error.");
 			limpiarTabla();
 		});
 }
@@ -144,62 +143,57 @@ function cargarIncidentesNoResueltos() {
 		})
 		.catch(error => {
 			console.error(error);
-			alert("No se pudieron cargar los incidentes no resueltos.");
+			mostrarPopupConfirmacion("Error", "No se pudieron cargar los incidentes no resueltos.");
 		});
 }
 
-// Función para abrir el modal y cargar los datos del incidente
 function editarIncidente(id) {
 	const incidente = incidentesDatos.find(i => i.id === id);
 	if (!incidente) {
-		alert("Incidente no encontrado");
+		mostrarPopupConfirmacion("Error", "Incidente no encontrado.");
 		return;
 	}
 
-	// Mostrar modal
 	const modal = document.getElementById('modal-editar');
 	modal.style.display = 'flex';
 
-	// Rellenar campos del modal
 	document.getElementById('incidenteIdEditar').value = incidente.id;
 	document.getElementById('estadoSelect').value = incidente.estado;
 }
 
-// Cerrar modal al click en la X
 document.getElementById('modal-close').addEventListener('click', () => {
 	document.getElementById('modal-editar').style.display = 'none';
 });
 
-// Cerrar modal si se hace click fuera del contenido
 window.addEventListener('click', (e) => {
 	if (e.target.classList.contains('modal-editar-container')) {
 		document.getElementById('modal-editar').style.display = 'none';
 	}
 });
 
-// Manejar submit del formulario del modal para actualizar estado
 document.getElementById('form-editar').addEventListener('submit', (e) => {
 	e.preventDefault();
 
 	const id = document.getElementById("incidenteIdEditar").value;
 	const estado = document.getElementById("estadoSelect").value;
 
-	fetch(`/mesalista/api/incidente/${id}/estado/${estado}`, {
-		method: "PATCH"
-	})
-	.then(response => {
-		if (!response.ok) throw new Error("Error al actualizar el estado");
-		// Ocultar modal y recargar incidentes
-		document.getElementById("modal-editar").style.display = "none";
-		cargarIncidentesNoResueltos();
-	})
-	.catch(error => {
-		console.error(error);
-		alert("Hubo un error al actualizar el estado.");
+	mostrarPopupConfirmacion("Question", "¿Deseas guardar los cambios?", () => {
+		fetch(`/mesalista/api/incidente/${id}/estado/${estado}`, {
+			method: "PATCH"
+		})
+			.then(response => {
+				if (!response.ok) throw new Error("Error al actualizar el estado");
+				document.getElementById("modal-editar").style.display = "none";
+				cargarIncidentesNoResueltos();
+				mostrarPopupConfirmacion("Success", "El estado del incidente fue actualizado correctamente.");
+			})
+			.catch(error => {
+				console.error(error);
+				mostrarPopupConfirmacion("Error", "Hubo un error al actualizar el estado.");
+			});
 	});
 });
 
-// Setup inicial
 document.addEventListener("DOMContentLoaded", () => {
 	cargarIncidentesNoResueltos();
 

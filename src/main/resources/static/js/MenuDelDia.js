@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
 	const tabs = document.querySelectorAll(".menu-del-dia__tab-item");
 	const contenedor = document.getElementById("menu-del-dia__productos-listado");
 
@@ -12,10 +12,10 @@ document.addEventListener("DOMContentLoaded", function () {
 	function mostrarError(mensaje) {
 		mostrarPopupConfirmacion("error", mensaje, null, null);
 	}
-	
+
 	function mostrarSuccess(mensaje) {
-			mostrarPopupConfirmacion("success", mensaje, null, null);
-		}
+		mostrarPopupConfirmacion("success", mensaje, null, null);
+	}
 
 	tabs.forEach(tab => {
 		tab.addEventListener("click", () => {
@@ -52,29 +52,39 @@ document.addEventListener("DOMContentLoaded", function () {
 							: `<li class="menu-del-dia__producto-vacio">No hay productos aún</li>`;
 
 						return `
-							<div class="menu-del-dia__categoria" data-tipo="${tipo}">
-								<h3>${nombreCategoria}</h3>
-								<ul class="menu-del-dia__lista-productos">${items}</ul>
-								<input type="text" class="menu-del-dia__input-busqueda" placeholder="Agregar producto..." style="display:none;">
-							</div>
-						`;
+							  <div class="menu-del-dia__categoria" data-tipo="${tipo}">
+							    <h3>${nombreCategoria}</h3>
+							    <ul class="menu-del-dia__lista-productos">${items}</ul>
+							    <button class="menu-del-dia__btn-agregar" title="Agregar producto">+</button>
+							    <input type="text" class="menu-del-dia__input-busqueda" placeholder="Agregar producto..." style="display:none;">
+							  </div>
+							`;
+
 					}).join("");
 
 					contenedor.innerHTML = `<div class="menu-del-dia__productos-grid">${html}</div>`;
 
 					document.querySelectorAll(".menu-del-dia__categoria").forEach(categoria => {
 						const input = categoria.querySelector(".menu-del-dia__input-busqueda");
+						
+						const btnAgregar = categoria.querySelector(".menu-del-dia__btn-agregar");
+						btnAgregar.addEventListener("click", (e) => {
+						  e.stopPropagation(); // para que no burbujee si tienes otros listeners
+						  
+						  // Ocultar otros inputs abiertos
+						  document.querySelectorAll(".menu-del-dia__input-busqueda").forEach(inp => {
+						    if (inp !== input) inp.style.display = "none";
+						  });
 
-						categoria.addEventListener("click", (e) => {
-							if (e.target.tagName.toLowerCase() === "input") return;
-
-							document.querySelectorAll(".menu-del-dia__input-busqueda").forEach(inp => {
-								if (inp !== input) inp.style.display = "none";
-							});
-
-							input.style.display = input.style.display === "none" ? "block" : "none";
-							if (input.style.display === "block") input.focus();
+						  if (input.style.display === "block") {
+						    input.style.display = "none";
+						  } else {
+						    input.style.display = "block";
+						    input.focus();
+						  }
 						});
+						
+						
 					});
 
 					document.querySelectorAll('.menu-del-dia__categoria').forEach(categoriaDiv => {

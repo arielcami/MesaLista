@@ -5,6 +5,7 @@
 <title>Incidentes - MesaLista v1.0</title>
 <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/Incidentes.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/PopupCustom2Options.css}" />
 </head>
 <body>
 
@@ -92,8 +93,13 @@
 	        </form>
 	    </div>
 	</div>
+	
+	<!-- Popup Custom Fragment -->
+	<div th:replace="~{components/PopupCustom2Options :: popupCustom2Options}"></div>
 
-<script th:src="@{/js/incidentes.js}"></script>
+
+<script th:src="@{/js/PopupCustom2Options.js}"></script>
+<script th:src="@{/js/Incidentes.js}"></script>
 
 </body>
 </html>
