@@ -254,32 +254,26 @@ main h2 {
     word-wrap: break-word;
 }
 
-
-
-
 .menu-del-dia__btn-agregar {
     align-self: center;          
-    margin-top: 10px;         
-    width: 25px;
-    height: 25px;
+    width: 22px;
+    height: 22px;
     background-color: #64d27c; 
     border-radius: 50%;          
     border: none;   
     color: white;
     font-weight: bold;
-    font-size: 18px; 
+    font-size: 20px; 
     cursor: pointer;
     user-select: none;
     opacity: 0;
-    transition: opacity 0.3s ease;
-    box-shadow: none;  
-
+    transition: background-color 0.3s ease;
+    box-shadow: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: normal;
+    line-height: 1;
 }
-
 
 .menu-del-dia__categoria:hover .menu-del-dia__btn-agregar {
     opacity: 1;

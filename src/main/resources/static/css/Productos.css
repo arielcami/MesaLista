@@ -2,9 +2,9 @@ body {
 	margin-bottom: 100px;
 }
 main h2 {
-    font-size: 40px;
+    font-size: 35px;
     text-align: left;
-    margin-top: 100px;
+    margin-top: 25px;
     margin-left: 100px;
     color:  #8d8c8e;
     font-weight: normal;
@@ -20,6 +20,7 @@ main h2 {
     border-collapse: collapse;
     font-family: 'Arial';
     font-size: 20px;
+    user-select: none;
 }
 
 .tabla-productos th {
@@ -42,29 +43,23 @@ main h2 {
     border: none;
 }
 
-.btn-editar, .btn-eliminar {
+.btn-editar {
     padding: 5px 10px;
     margin: 0 3px;
     font-size: 14px;
     cursor: pointer;
     border: none;
     border-radius: 5px;
-}
-
-.btn-editar {
     background-color: #007bff;
     color: white;
+    transition: background-color 0.2s ease;
 }
 
-.btn-eliminar {
-    background-color: #dc3545;
-    color: white;
+.btn-editar:hover {
+	background-color: #002cc4;
 }
 
-
-/* POPUP */
-/* Estilos para el popup de edición */
-.popup-overlay {
+.productos-popup-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -74,16 +69,20 @@ main h2 {
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Asegura que el popup esté por encima de otros elementos */
+    z-index: 1000;
+}
+
+.hidden {
+    display: none !important;
 }
 
 .popup-content {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
-    width: 350px; /* Ajusta el tamaño del popup según el contenido */
+    width: 350px;
     text-align: center;
-    box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+    box-sizing: border-box;
     position: relative;
 }
 
@@ -96,7 +95,7 @@ main h2 {
     border-radius: 5px;
     box-sizing: border-box;
     font-family: 'Consolas';
-    font-size: 16px; /* Ajusta el tamaño de la fuente según tus necesidades */
+    font-size: 16px;
 }
 
 .popup-content button {
@@ -107,7 +106,7 @@ main h2 {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    width: 100%; /* Hacer que el botón ocupe todo el ancho */
+    width: 100%;
     margin-top: 10px;
 }
 
@@ -125,26 +124,24 @@ main h2 {
     right: 10px;
 }
 
-/* Cambiar el color de la X cuando se pasa el ratón */
 .popup-close:hover {
-    color: darkred; /* Color más oscuro cuando se hace hover */
+    color: darkred;
 }
-
 
 .entradadetexto {
     font-family: 'Consolas';
     font-size: 20px;
 }
 
-/* Asegúrate de que el popup sea responsivo */
+
 @media (max-width: 500px) {
     .popup-content {
-        width: 90%; /* El popup ocupa un 90% del ancho en pantallas pequeñas */
+        width: 90%;
     }
 
     .popup-content input,
     .popup-content select {
-        font-size: 14px; /* Ajustar tamaño de fuente en pantallas pequeñas */
+        font-size: 14px;
     }
 }
 
@@ -152,7 +149,7 @@ main h2 {
 .estado-td {
     text-align: center;
     display: flex;
-    align-items: center; /* Alinea los elementos verticalmente */
+    align-items: center;
     justify-content: center;
 }
 
@@ -167,7 +164,7 @@ main h2 {
 .estado-btn {
     width: 23px;
     height: 23px;
-    margin-left: 10px; /* Espacio entre el texto y la imagen */
+    margin-left: 10px;
     cursor: pointer;
 }
 
@@ -178,7 +175,7 @@ main h2 {
 .estado-td span {
     font-size: 18px;
     font-weight: bold;
-    margin-right: 8px; /* Espacio entre el texto y la imagen */
+    margin-right: 8px;
 }
 
 
@@ -205,8 +202,6 @@ main h2 {
 .btn-filtro:hover {
     background-color: #0056b3;
 }
-
-
 
 /* FILTRO BOTONES */
 .filtro-botones {

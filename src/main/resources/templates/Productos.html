@@ -12,14 +12,18 @@
 
 <link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
 <link rel="stylesheet" th:href="@{/css/Productos.css}" />
+<link rel="stylesheet" th:href="@{/css/PopupCustom2Options.css}" />
 </head>
 <body>
 
 	<!-- Incluir barra de navegación -->
-	<div th:replace="components/BarraNavegacion :: barra-nav"></div>
+	<div th:replace="~{components/BarraNavegacion :: barra-nav}"></div>
+	
+	<!-- Popup Custom Fragment -->
+	<div th:replace="~{components/PopupCustom2Options :: popupCustom2Options}"></div>
 	
 	<!-- Popup de Creación -->
-	<div id="create-popup-overlay" class="popup-overlay">
+	<div id="create-popup-overlay" class="popup-overlay productos-popup-overlay hidden">
 	    <div class="popup-content">
 	        <h3>Nuevo Producto</h3>
 	        <span id="create-close-btn" class="popup-close">❌</span>
@@ -46,7 +50,7 @@
 	
 
 	<!-- Popup de Edición -->
-	<div id="edit-popup-overlay" class="popup-overlay">
+	<div id="edit-popup-overlay" class="popup-overlay productos-popup-overlay hidden">
 		<div class="popup-content">
 
 			<h3>Editar Producto</h3>
@@ -135,7 +139,8 @@
 		</div>
 	</main>
 
-<script th:src="@{/js/productos.js}" defer></script>
+<script th:src="@{/js/PopupCustom2Options.js}" defer></script>
+<script th:src="@{/js/Productos.js}" defer></script>
 <script th:src="@{/js/CrearProducto.js}" defer></script>
 
 </body>

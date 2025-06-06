@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     const result = await response.json();
                    
                     if (result.created) {
-                        mostrarPopupConfirmacion("success", result.msg, () => {
+                        mostrarPopupConfirmacion("success", result.msg + " " + cliente.nombre, () => {
                             form.reset();
                         }, null);
                     } else {

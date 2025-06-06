@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				renderTabla(productos);
 			})
 			.catch(error => {
-				alert(error.message);
+				mostrarPopupConfirmacion("Error", error.message);
 			});
 	}
 
@@ -122,8 +122,8 @@ document.addEventListener("DOMContentLoaded", function() {
 					fetchAndRenderProductos(urlActual);
 				})
 				.catch(err => {
-					console.error(err);
-					alert("Error al cambiar el estado del producto.");
+					// console.error(err);
+					mostrarPopupConfirmacion("Error", "Error al cambiar el estado del producto.");
 				});
 		});
 	}
@@ -151,19 +151,19 @@ document.addEventListener("DOMContentLoaded", function() {
 					estadoInput.classList.add(producto.estado ? 'estado-activo' : 'estado-inactivo');
 
 					const popupOverlay = document.getElementById('edit-popup-overlay');
-					popupOverlay.style.display = 'flex';
+					popupOverlay.classList.remove('hidden');
 
 					
 					// Cerrar el Modal
 					document.addEventListener("click", function(e) {
 						if (e.target.id === 'edit-close-btn' || e.target === popupOverlay) {
-							popupOverlay.style.display = 'none';
+							popupOverlay.classList.add('hidden');
 						}
 					});
 
 					document.addEventListener("keydown", function(e) {
 						if (e.key === 'Escape') {
-							popupOverlay.style.display = 'none';
+							popupOverlay.classList.add('hidden');
 						}
 					});
 
@@ -197,19 +197,19 @@ document.addEventListener("DOMContentLoaded", function() {
 								return response.json();
 							})
 							.then(() => {
-								popupOverlay.style.display = 'none';
+								popupOverlay.classList.add('hidden');
 								fetchAndRenderProductos(urlActual);
 							})
 							.catch(err => {
-								console.error(err);
-								alert("No se pudo actualizar el producto.");
+								// console.error(err);
+								mostrarPopupConfirmacion("Error", "No se pudo actualizar el producto.");
 							});
 					};
 
 					form.addEventListener("submit", submitHandler);
 				})
 				.catch(() => {
-					alert("No se pudo obtener el producto.");
+					mostrarPopupConfirmacion("Error", "No se pudo obtener el producto.");
 				});
 		});
 	}

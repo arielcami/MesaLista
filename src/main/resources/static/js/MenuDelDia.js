@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
 							  <div class="menu-del-dia__categoria" data-tipo="${tipo}">
 							    <h3>${nombreCategoria}</h3>
 							    <ul class="menu-del-dia__lista-productos">${items}</ul>
-							    <button class="menu-del-dia__btn-agregar" title="Agregar producto">+</button>
+							    <button class="menu-del-dia__btn-agregar" title="Añadir producto">+</button>
 							    <input type="text" class="menu-del-dia__input-busqueda" placeholder="Agregar producto..." style="display:none;">
 							  </div>
 							`;
