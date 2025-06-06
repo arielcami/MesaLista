@@ -3,9 +3,9 @@ body {
 }
 
 main h2 {
-    font-size: 40px;
+    font-size: 35px;
     text-align: left;
-    margin-top: 100px;
+    margin-top: 25px;
     margin-left: 100px;
     color: #8d8c8e;
     font-weight: normal;
@@ -247,8 +247,14 @@ main h2 {
     text-decoration: none;
 }
 
+
+#edit-popup-overlay,
+#success-popup-overlay {
+  display: none;
+}
+
 /* Animación para mostrar el popup */
 .popup-overlay.show {
-    display: flex; /* Mostrar cuando tenga la clase .show */
+    display: flex !important;
 }
 

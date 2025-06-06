@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	const btnTodos = document.getElementById('btn-todos');
 	const btnNuevoCliente = document.getElementById('btn-nuevo-cliente');
 
-	// Manejo del popup de edición
+	// Elementos de edición
 	const editPopupOverlay = document.getElementById('edit-popup-overlay');
 	const editCloseBtn = document.getElementById('edit-close-btn');
 	const editClientForm = document.getElementById('edit-client-form');
@@ -13,13 +13,17 @@ document.addEventListener("DOMContentLoaded", () => {
 	const editDocumento = document.getElementById('edit-documento');
 	const editDireccion = document.getElementById('edit-direccion');
 
-	const clientesTableBody = document.querySelector('.tabla-clientes tbody'); // Referencia al tbody de la tabla
+	const clientesTableBody = document.querySelector('.tabla-clientes tbody');
 
-
-	// Función para cargar la lista de clientes
+	// Cargar clientes
 	window.cargarClientes = (url) => {
 		fetch(url)
-			.then(response => response.json())
+			.then(response => {
+				if (!response.ok) {
+					throw new Error("Error al obtener clientes.");
+				}
+				return response.json();
+			})
 			.then(clientes => {
 				clientesTableBody.innerHTML = '';
 				clientes.forEach(cliente => {
@@ -33,45 +37,52 @@ document.addEventListener("DOMContentLoaded", () => {
 				        <td><button class="btn-editar" data-id="${cliente.id}">Editar</button></td>`;
 					clientesTableBody.appendChild(row);
 				});
-				window.agregarEventosEdicion();
+				agregarEventosEdicion();
 			})
 			.catch(err => {
-				console.error('Error al obtener los clientes:', err);
-				alert('No se pudieron cargar los clientes');
+				mostrarPopupConfirmacion("error", "No se pudieron cargar los clientes.");
+				// console.error(err);
 			});
 	};
 
-	// Cargar todos los clientes al iniciar
+	// Cargar al iniciar
 	cargarClientes('/mesalista/api/cliente');
 
-	// Función para agregar eventos de edición
-	window.agregarEventosEdicion = () => {
+	// Función para editar clientes
+	function agregarEventosEdicion() {
 		const btnEditar = document.querySelectorAll('.btn-editar');
 		btnEditar.forEach(btn => {
 			btn.addEventListener('click', (e) => {
 				const clienteId = e.target.getAttribute('data-id');
 				fetch(`/mesalista/api/cliente/${clienteId}`)
-					.then(response => response.json())
+					.then(response => {
+						if (!response.ok) {
+							throw new Error("No se pudo obtener el cliente.");
+						}
+						return response.json();
+					})
 					.then(cliente => {
 						editNombre.value = cliente.nombre;
 						editTelefono.value = cliente.telefono;
 						editDocumento.value = cliente.documento;
 						editDireccion.value = cliente.direccion;
 						editClientForm.setAttribute('data-id', cliente.id);
-						editPopupOverlay.style.display = 'flex';
+						editPopupOverlay.classList.add('show');
 					})
-					.catch(err => console.error('Error al obtener cliente:', err));
+					.catch(err => {
+						mostrarPopupConfirmacion("error", "Error al obtener cliente.");
+						// console.error(err);
+					});
 			});
 		});
-	};
-
-	// Exportar la función para que sea accesible globalmente
+	}
 	window.agregarEventosEdicion = agregarEventosEdicion;
 
-	// Enviar los cambios del cliente
+	// Guardar cambios
 	editClientForm.addEventListener('submit', (e) => {
 		e.preventDefault();
 		const clienteId = editClientForm.getAttribute('data-id');
+
 		const updatedCliente = {
 			id: clienteId,
 			nombre: editNombre.value,
@@ -80,7 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			direccion: editDireccion.value
 		};
 
-		// Enviar la solicitud PUT para actualizar el cliente
 		fetch(`/mesalista/api/cliente/${clienteId}`, {
 			method: 'PUT',
 			headers: {
@@ -88,38 +98,33 @@ document.addEventListener("DOMContentLoaded", () => {
 			},
 			body: JSON.stringify(updatedCliente),
 		})
-			.then(response => response.json())
+			.then(response => {
+				if (!response.ok) {
+					throw new Error("Error al actualizar cliente.");
+				}
+				return response.json();
+			})
 			.then(data => {
-				//alert("Cliente actualizado exitosamente");
-				// Cerrar el popup
-				editPopupOverlay.style.display = 'none';
-				// Recargar la página o actualizar la tabla de clientes
-				cargarClientes('/mesalista/api/cliente');
+				editPopupOverlay.classList.remove('show');
+				mostrarPopupConfirmacion("success", "Cliente actualizado correctamente.", () => {
+					cargarClientes('/mesalista/api/cliente');
+				});
 			})
 			.catch(err => {
-				console.error('Error al actualizar cliente:', err);
-				alert('No se pudo actualizar el cliente');
+				// console.error('Error al actualizar cliente:', err);
+				mostrarPopupConfirmacion("error", "No se pudo actualizar el cliente.");
 			});
 	});
 
-	// Cerrar boton
+	// Cierre del popup de edición
 	document.addEventListener('click', function(e) {
-		// Cerrar al hacer clic en el botón "Cerrar"
 		if (e.target.id === 'edit-close-btn') {
-			editPopupOverlay.style.display = 'none';
-		}
-
-		// Cerrar al hacer clic fuera del formulario (clic en el overlay)
-		if (e.target === editPopupOverlay) {
-			editPopupOverlay.style.display = 'none';
+			editPopupOverlay.classList.remove('show');
 		}
 	});
-
 	document.addEventListener('keydown', function(e) {
-		// Cerrar al presionar la tecla Escape
 		if (e.key === 'Escape') {
-			editPopupOverlay.style.display = 'none';
+			editPopupOverlay.classList.remove('show');
 		}
 	});
-
 });

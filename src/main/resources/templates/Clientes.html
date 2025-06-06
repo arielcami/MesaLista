@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
     <link rel="stylesheet" th:href="@{/css/Clientes.css}" />
     <link rel="stylesheet" th:href="@{/css/cliente-paginacion.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/PopupCustom2Options.css}" />
 </head>
 <body>
 
@@ -20,12 +21,15 @@
             
             <!-- Botones de acción -->
             <div class="popup-buttons">
+            
                 <a href=# class="btn-tomar-pedido">
                     <button type="button" class="btn-action">Tomar Pedido</button>
                 </a>
+                
                 <a th:href="@{/cliente/registrar}" class="btn-registrar-otro">
                     <button type="button" class="btn-action">Registrar Otro Cliente</button>
                 </a>
+                
             </div>
         </div>
     </div>
@@ -71,9 +75,11 @@
         <!-- NUEVO: Filtros y Paginación -->
         <div class="filtros-paginacion">
             <input type="text" id="input-buscar-nombre" placeholder="Buscar cliente por nombre..." />
+            
             <div id="paginacion-controls">
                 <!-- Aquí se agregarán los botones de paginación -->
             </div>
+            
             <a th:href="@{/cliente}" class="btn-mostrartodos">Mostar todos</a>
         </div>
 
@@ -111,7 +117,12 @@
         </div>
     </main>
 
-    <script th:src="@{/js/clientes.js}" defer></script>
+	<!-- Fragmento -->
+	<div th:replace="~{components/PopupCustom2Options :: popupCustom2Options}"></div>
+
+
+	<script th:src="@{/js/PopupCustom2Options.js}"></script>
+    <script th:src="@{/js/Clientes.js}" defer></script>
     <script th:src="@{/js/cliente-paginacion.js}" defer></script>
     
 </body>
