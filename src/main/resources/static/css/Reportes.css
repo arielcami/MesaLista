@@ -1,0 +1,137 @@
+/* Fuente local Yeseva One */
+@font-face {
+    font-family: 'Yeseva One';
+    src: url('/mesalista/fonts/yeseva-one.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Modal de autenticación */
+.modal-auth-block {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-auth-content {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    width: 320px;
+    max-width: 90%;
+}
+
+.modal-auth-content h2 {
+    font-family: 'Yeseva One', serif;
+    font-size: 26px;
+    margin-bottom: 25px;
+    color: #8d8c8e;
+    font-weight: normal;
+}
+
+.modal-auth-content input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    font-family: Consolas, monospace;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.modal-auth-content button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    font-family: 'Yeseva One', serif;
+    font-size: 28px;
+    background-color: #d4a500;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-auth-content button:hover {
+    color: black;
+}
+
+#btn-auth-regresar {
+    background-color: #d4a500;
+}
+
+.auth-error {
+    color: red;
+    font-size: 14px;
+    margin-top: 12px;
+    display: none;
+}
+
+/* ========== Estilos para la vista de reportes ========== */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+#contenido-reportes {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+}
+
+#contenido-reportes h1 {
+    font-family: 'Yeseva One', serif;
+    text-align: center;
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Dropdown */
+#reportes-dropdown {
+    display: block;
+    margin: 0 auto 30px auto;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-family: Arial, sans-serif;
+    background-color: #fafafa;
+    width: 100%;
+    max-width: 350px;
+}
+
+/* Contenedor de gráficos */
+#reportes-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+canvas {
+    max-width: 800px;
+    width: 100%;
+    height: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

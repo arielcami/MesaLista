@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Reportes - MesaLista v1.0</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
+    <link rel="stylesheet" th:href="@{/css/Reportes.css}" />
+</head>
+<body>
+    <!-- Modal de Autenticación -->
+    <div id="auth-modal-unico" class="modal-auth-block">
+        <div class="modal-auth-content">
+            <h2>Autenticación requerida</h2>
+            <input type="text" id="auth-id" placeholder="ID de empleado" autocomplete="off" />
+            <input type="password" id="auth-clave" placeholder="Clave" autocomplete="off" />
+            <button id="btn-auth-login">Validar</button>
+            <button id="btn-auth-regresar">Atrás</button>
+            <p id="auth-error" class="auth-error" style="display: none;"></p>
+        </div>
+    </div>
+
+    <!-- Contenido principal (oculto hasta login exitoso) -->
+    <div id="contenido-reportes"  style="display: none;">
+        <h1>Reportes MesaLista</h1>
+
+        <!-- Aquí el JS inyectará el dropdown y el canvas del reporte -->
+    </div>
+    <!-- Script principal -->
+    <script th:src="@{/js/Reportes.js}"></script>
+</body>
+</html>

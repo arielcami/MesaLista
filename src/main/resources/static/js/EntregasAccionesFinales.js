@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			});
 
 			if (response.ok) {
-				console.log('[Incidente] Reportado correctamente. Ahora se actualizará el estado del pedido...');
+				// console.log('[Incidente] Reportado correctamente. Ahora se actualizará el estado del pedido...');
 
 				// Marcar el pedido con estado 6 (Incidente)
 				const actualizarEstado = await fetch(`/mesalista/api/pedido/marcarEstado/${pedidoId}?estado=6`, {
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				btn.textContent = 'Enviar Reporte';
 			}
 		} catch (error) {
-			console.error('Error al enviar incidente:', error);
+			// console.error('Error al enviar incidente:', error);
 			alert('Error al enviar el incidente. Intenta más tarde.');
 			btn.disabled = false;
 			btn.textContent = 'Enviar Reporte';

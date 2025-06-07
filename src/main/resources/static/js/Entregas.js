@@ -124,7 +124,7 @@ function renderizarTarjetasPedido(pedidos) {
 			tarjeta.style.cursor = 'pointer';
 			tarjeta.addEventListener('click', () => {
 				const deliveryId = localStorage.getItem('id_de_empleado_delivery');
-				console.log(`[Pedido ${pedido.id}] Se abre el modal de acciones finales`);
+				// console.log(`[Pedido ${pedido.id}] Se abre el modal de acciones finales`);
 				MostrarModalAccionesPedidoDelivery(pedido.id, deliveryId);
 			});
 		}

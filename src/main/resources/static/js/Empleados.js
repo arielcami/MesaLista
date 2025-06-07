@@ -257,8 +257,6 @@ function autenticarEmpleado() {
 	    errorMsg.textContent = "Error al autenticar";
 	    errorMsg.style.display = "block";
 	});
-
-
 }
 
 document.addEventListener("DOMContentLoaded", () => {
