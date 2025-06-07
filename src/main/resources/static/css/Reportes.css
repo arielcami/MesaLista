@@ -135,3 +135,34 @@ canvas {
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+
+/*EXPORTAR BOTONES*/
+#acciones-reportes {
+  margin-top: 20px;
+  text-align: right; /* Alinea el contenido a la derecha */
+  padding: 5px;
+}
+
+#acciones-reportes button {
+	font-family: Arial;
+	font-weight: normal;
+	background-color: white;
+	border: 1px solid #c4c4c4;
+	color: #333;
+	padding: 8px 12px;
+	margin-left: 10px;
+	font-size: 15px;
+	border-radius: 25px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+#acciones-reportes button:hover {
+  background-color: #99d3ff;
+}
+
+#acciones-reportes button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.5);
+}
