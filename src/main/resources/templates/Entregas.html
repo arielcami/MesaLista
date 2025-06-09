@@ -17,10 +17,11 @@
 		<div class="modal-auth-content">
 			<h2>Login</h2>
 
-			<input type="text" id="delivery-id" placeholder="ID de Delivery"
-				autocomplete="off" /> <input type="password" id="delivery-clave"
-				placeholder="Clave" autocomplete="off" />
-
+			<input type="text" id="delivery-id" placeholder="ID de Delivery" autocomplete="off" /> 
+			<input type="password" id="delivery-clave" placeholder="Clave" autocomplete="off" />
+			
+			<a th:href="@{/recuperar}" id="link-olvido-clave" class="link-olvido-clave">Olvidé mi clave...</a>
+			
 			<button id="btn-delivery-login">Ingresar</button>
 
 			<p id="delivery-auth-error" class="auth-error" style="display: none;">Credenciales

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Recuperar Contraseña - MesaLista v1.0</title>
+
+<link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/RecuperarClave.css}" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+
+<body>
+	<main class="container">
+		<h1>Recuperar Contraseña</h1>
+		<form action="/recuperar" method="post" novalidate>
+
+			<div class="form-group">
+				<label for="idEmpleado">ID de Empleado</label> <input type="number"
+					id="idEmpleado" name="idEmpleado" required min="1" />
+			</div>
+
+			<div class="form-group">
+				<label for="nombre">Nombre completo</label> <input type="text"
+					id="nombre" name="nombre" required maxlength="100" />
+			</div>
+
+			<div class="form-group">
+				<label for="telefono">Teléfono</label> <input type="text"
+					id="telefono" name="telefono" required maxlength="16" />
+			</div>
+
+			<div class="form-group">
+				<label for="documento">Documento</label> <input type="text"
+					id="documento" name="documento" required maxlength="12" />
+			</div>
+
+			<div class="form-group">
+				<label for="nuevaClave">Nueva contraseña</label> <input
+					type="password" id="nuevaClave" name="nuevaClave" required
+					minlength="6" />
+			</div>
+
+			<div class="form-group">
+				<label for="confirmarClave">Confirmar contraseña</label> <input
+					type="password" id="confirmarClave" name="confirmarClave" required
+					minlength="6" />
+			</div>
+
+			<button type="submit">Actualizar Contraseña</button>
+		</form>
+
+		<!-- Mensaje estático o vacío, sin lógica -->
+		<div class="mensaje" style="display: none;">
+			<p></p>
+		</div>
+	</main>
+
+	<script type="text/javascript" th:src="@{/js/RecuperarClave.js}"></script>
+</body>
+</html>

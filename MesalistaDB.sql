@@ -667,6 +667,55 @@ END ;;
 DELIMITER ;
 
 
+-- Cambiar clave de usuario
+DELIMITER $$
+
+CREATE PROCEDURE sp_restablecer_clave (
+    IN p_id_empleado INT UNSIGNED,
+    IN p_nombre VARCHAR(100),
+    IN p_telefono VARCHAR(16),
+    IN p_documento VARCHAR(12),
+    IN p_nueva_clave VARCHAR(100),
+    OUT p_exito BOOLEAN,
+    OUT p_mensaje VARCHAR(255)
+)
+BEGIN
+    DECLARE v_salt VARCHAR(64);
+    DECLARE v_clave_hash VARCHAR(64);
+    DECLARE v_existe INT DEFAULT 0;
+
+    -- Verificar si el empleado existe y los datos coinciden
+    SELECT COUNT(*) INTO v_existe
+    FROM empleados
+    WHERE id = p_id_empleado
+      AND nombre = p_nombre
+      AND telefono = p_telefono
+      AND documento = p_documento;
+
+    IF v_existe = 0 THEN
+        -- Datos incorrectos
+        SET p_exito = FALSE;
+        SET p_mensaje = 'Los datos ingresados no coinciden con ningún empleado.';
+    ELSE
+        -- Generar salt y hash de nueva clave
+        SET v_salt = SUBSTRING(MD5(RAND()), 1, 16);
+        SET v_clave_hash = SHA2(CONCAT(p_nueva_clave, v_salt), 256);
+        
+        -- Actualizar clave y salt
+        UPDATE empleados
+        SET clave = v_clave_hash,
+            salt = v_salt
+        WHERE id = p_id_empleado;
+
+        SET p_exito = TRUE;
+        SET p_mensaje = 'Contraseña actualizada exitosamente.';
+    END IF;
+END$$
+
+DELIMITER ;
+
+
+
 -- Triggers
 DELIMITER $$
 

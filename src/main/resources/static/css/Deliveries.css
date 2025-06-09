@@ -333,3 +333,18 @@ main h2 {
 .popup-close:hover {
     color: darkred;
 }
+
+
+#link-olvido-clave {
+  font-size: 0.9em;
+  color: #007bff;      /* azul típico de links */
+  text-decoration: underline;
+  cursor: pointer;
+  display: inline-block;
+  margin: 10px;
+}
+
+#link-olvido-clave:hover {
+  color: #0056b3;      /* azul más oscuro al pasar el mouse */
+  text-decoration: none;
+}

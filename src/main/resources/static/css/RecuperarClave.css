@@ -1,0 +1,116 @@
+@font-face {
+    font-family: 'Yeseva One';
+    src: url('/mesalista/fonts/yeseva-one.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/* Box sizing global para mejor control de tamaños */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 400px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 30px 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden; /* evita desbordes */
+}
+
+h1 {
+    text-align: center;
+    color: #343a40;
+    margin-bottom: 25px;
+    font-weight: 600;
+    font-size: 1.8rem;
+}
+
+.form-group {
+    margin-bottom: 18px;
+    text-align: left; /* etiquetas alineadas a la izquierda */
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.95rem;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"] {
+    width: 100%;
+    max-width: 100%; /* que no exceda el ancho del contenedor */
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 1.5px solid #ced4da;
+    border-radius: 5px;
+    transition: border-color 0.2s ease-in-out;
+    box-sizing: border-box; /* para incluir padding en ancho total */
+    display: block;
+    margin: 0 auto; /* centra horizontalmente si no ocupa 100% */
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+button[type="submit"] {
+	font-family: Yeseva One;
+    width: 100%;
+    background-color: #d4a500;
+    color: white;
+    font-weight: normal;
+    padding: 4px 4px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.7rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    color: black;
+}
+
+.error {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+.mensaje {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+    border-radius: 6px;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* Responsive */
+
+@media (max-width: 480px) {
+    .container {
+        margin: 20px 15px;
+        padding: 20px 15px;
+    }
+}
