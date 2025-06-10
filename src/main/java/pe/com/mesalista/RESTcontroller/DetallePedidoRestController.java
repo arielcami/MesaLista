@@ -1,10 +1,14 @@
 package pe.com.mesalista.RESTcontroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import pe.com.mesalista.entity.DetallePedidoEntity;
 import pe.com.mesalista.service.DetallePedidoService;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/detallepedido")
@@ -36,6 +40,18 @@ public class DetallePedidoRestController {
 	public List<DetallePedidoEntity> findByPedidoIdAndProductoId(@PathVariable Long pedidoId,
 			@PathVariable Long productoId) {
 		return servicio.findByPedidoIdAndProductoId(pedidoId, productoId);
+	}
+	
+	
+	@PatchMapping("/comentario/{id}")
+	public DetallePedidoEntity actualizarComentario(@PathVariable Long id, @RequestBody Map<String, String> body) {
+		String nuevoComentario = body.get("comentario");
+		DetallePedidoEntity detalle = servicio.findById(id);
+		if (detalle != null) {
+			detalle.setComentario(nuevoComentario);
+			return servicio.save(detalle); // Se actualiza solo el campo cambiado gracias a JPA (dirty checking)
+		}
+		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Detalle no encontrado");
 	}
 
 	// Obtener detalle de pedido por ID

@@ -77,12 +77,12 @@ function renderPedidos(pedidos) {
             <p><strong>Atendido por:</strong> ${pedido.empleado ? pedido.empleado.nombre : 'No asignado'}</p>
 			<p><strong>Entregado por:</strong> ${pedido.delivery?.nombre ?? 'No asignado'}</p>
 
-            ${detallesOrdenados.map(detalle => `
-                <div class="detalle-item">
-                    <p>${detalle.cantidad} × ${detalle.producto.nombre}</p>
-                </div>
-            `).join('')}
-        `;
+			${detallesOrdenados.map(detalle => `
+			                <div class="detalle-item">
+			                    <p>${detalle.cantidad} × ${detalle.producto.nombre}${detalle.comentario ? `  (${detalle.comentario})` : ''}</p>
+			                </div>
+			            `).join('')}
+			        `;
 
 		card.addEventListener('click', () => {
 			mostrarModal(pedido);

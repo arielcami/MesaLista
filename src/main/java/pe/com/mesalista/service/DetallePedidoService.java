@@ -33,6 +33,8 @@ public interface DetallePedidoService {
 	
 	// Buscar todos los detalles activos (estado = 1) de un pedido específico
 	List<DetallePedidoEntity> findActivosByPedidoId(Long pedidoId);
+	
+	DetallePedidoEntity actualizarComentario(Long detalleId, String nuevoComentario);
 
 	
 }

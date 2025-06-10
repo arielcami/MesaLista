@@ -65,25 +65,25 @@ function renderPedidos(pedidos) {
     pedidos.forEach(pedido => {
         // Ordenar detalles según tipoProducto: segundos (2), entradas (1), bebidas (3), postres (4)
         const prioridad = [2, 1, 3, 4];
-		const detallesOrdenados = pedido.detalles
-		    .filter(detalle => detalle.cantidad > 0)
-		    .sort((a, b) => {
-		        return prioridad.indexOf(a.producto.tipoProducto) - prioridad.indexOf(b.producto.tipoProducto);
-		    });
+        const detallesOrdenados = pedido.detalles
+            .filter(detalle => detalle.cantidad > 0)
+            .sort((a, b) => {
+                return prioridad.indexOf(a.producto.tipoProducto) - prioridad.indexOf(b.producto.tipoProducto);
+            });
 
         const card = document.createElement('div');
         card.className = 'pedido-card';
 
         card.innerHTML = `
             <h2>Pedido #${pedido.id}</h2>
-			<p><strong>Cliente:</strong> ${pedido.cliente?.nombre ?? 'Sin nombre'} - ${pedido.cliente?.documento ?? 'Sin documento'}</p>
-			<p><strong>Teléfono:</strong> ${formatTelefono(pedido.cliente.telefono)}</p>
-			<p><strong>Dirección:</strong> ${pedido.direccionEntrega ? pedido.direccionEntrega : 'No especificada'}</p>
+            <p><strong>Cliente:</strong> ${pedido.cliente?.nombre ?? 'Sin nombre'} - ${pedido.cliente?.documento ?? 'Sin documento'}</p>
+            <p><strong>Teléfono:</strong> ${formatTelefono(pedido.cliente.telefono)}</p>
+            <p><strong>Dirección:</strong> ${pedido.direccionEntrega ? pedido.direccionEntrega : 'No especificada'}</p>
             <p><strong>Hora del pedido:</strong> ${formatHora(pedido.fechaPedido)}</p>
-			<p><strong>Atendido por:</strong> ${pedido.empleado?.nombre ?? 'Sin asignar'}</p>
+            <p><strong>Atendido por:</strong> ${pedido.empleado?.nombre ?? 'Sin asignar'}</p>
             ${detallesOrdenados.map(detalle => `
                 <div class="detalle-item">
-                    <p>${detalle.cantidad} × ${detalle.producto.nombre}</p>
+                    <p>${detalle.cantidad} × ${detalle.producto.nombre}${detalle.comentario ? `  (${detalle.comentario})` : ''}</p>
                 </div>
             `).join('')}
         `;
@@ -91,6 +91,7 @@ function renderPedidos(pedidos) {
         container.appendChild(card);
     });
 }
+
 
 function actualizarReloj() {
     const reloj = document.getElementById('reloj');

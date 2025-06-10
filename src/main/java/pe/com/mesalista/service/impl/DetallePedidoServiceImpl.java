@@ -21,6 +21,18 @@ public class DetallePedidoServiceImpl implements DetallePedidoService {
 	}
 
 	@Override
+	public DetallePedidoEntity actualizarComentario(Long detalleId, String nuevoComentario) {
+		Optional<DetallePedidoEntity> detalleOpt = detallePedidoRepository.findById(detalleId);
+		if (detalleOpt.isPresent()) {
+			DetallePedidoEntity detalle = detalleOpt.get();
+			detalle.setComentario(nuevoComentario);
+			return detallePedidoRepository.save(detalle);
+		}
+		return null;
+	}
+	
+	
+	@Override
 	public List<DetallePedidoEntity> findByPedidoId(Long pedidoId) {
 		return detallePedidoRepository.findByPedidoId(pedidoId);
 	}

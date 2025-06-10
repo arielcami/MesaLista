@@ -41,6 +41,9 @@ public class DetallePedidoEntity implements Serializable {
 
     @Column(name = "estado", nullable = false)
     private byte estado;
+    
+    @Column(name = "comentario", nullable = true)
+    private String comentario;    
 
     @CreationTimestamp
     @JsonIgnore
