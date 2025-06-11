@@ -97,4 +97,29 @@ public class EmpleadoRestController {
 	public EmpleadoEntity enable(@PathVariable Long id) {
 		return servicio.enable(id);
 	}
+	
+	@PostMapping("/restablecer-clave")
+	public ResponseEntity<Map<String, Object>> restablecerClave(@RequestBody Map<String, Object> payload) {
+	    try {
+	        int id = ((Number) payload.get("id")).intValue();
+	        String nombre = (String) payload.get("nombre");
+	        String telefono = (String) payload.get("telefono");
+	        String documento = (String) payload.get("documento");
+	        String nuevaClave = (String) payload.get("nuevaClave");
+
+	        Map<String, Object> resultado = servicio.restablecerClave(id, nombre, telefono, documento, nuevaClave);
+	        return ResponseEntity.ok(resultado);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.badRequest().body(Map.of(
+	            "p_exito", false,
+	            "p_mensaje", "Error al procesar la solicitud"
+	        ));
+	    }
+	}
+
+		
+	
+	
 }
