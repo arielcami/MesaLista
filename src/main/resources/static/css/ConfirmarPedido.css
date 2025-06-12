@@ -224,25 +224,22 @@ h3 {
     background-color: #45a049;
 }
 
-a.agregar-comentario,
+/* Estilos comunes a los íconos de editar y eliminar */
 a.editar-comentario,
 a.eliminar-comentario {
     font-size: 14px;
     cursor: pointer;
     text-decoration: none;
-    margin-left: 20px;
     transition: transform 0.2s ease;
     display: inline-block;
+    margin-left: 10px;
 }
 
-a.agregar-comentario:active,
 a.editar-comentario:active,
 a.eliminar-comentario:active {
     transform: scale(0.95);
 }
 
-
-a.agregar-comentario,
 a.editar-comentario {
     color: #007BFF;
 }
@@ -251,9 +248,36 @@ a.eliminar-comentario {
     color: #c82333;
 }
 
-a.agregar-comentario:hover,
 a.editar-comentario:hover,
 a.eliminar-comentario:hover {
     text-decoration: none;
     transform: scale(1.15);
+}
+
+button.agregar-comentario {
+	background-color: #5ed15a;
+	color: white;
+	border: none;
+	border-radius: 50%;
+	width: 28px;
+	height: 28px;
+	font-size: 20px;
+	line-height: 15px;
+	text-align: center;
+	cursor: pointer;
+	padding: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: transform 0.2s ease, background-color 0.2s ease;
+	margin-left: 5px;
+}
+
+button.agregar-comentario:hover {
+	background-color: #408f3d;
+	transform: scale(1.1);
+}
+
+button.agregar-comentario:active {
+	transform: scale(0.95);
 }

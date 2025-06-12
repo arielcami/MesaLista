@@ -67,7 +67,7 @@
 						<th>Documento</th>
 						<th>Dirección</th>
 					</tr>
-					<tr th:each="cliente, stat : ${clientes}" th:if="${stat.index < 8}"	class="tabla-clientes-rows">
+					<tr th:each="cliente, stat : ${clientes}" th:if="${stat.index < 12}"	class="tabla-clientes-rows">
 						<td><input type="radio" name="clienteSeleccionado" th:value="${cliente.id}" /></td>
 						<td th:text="${cliente.nombre}">Nombre</td>
 						<td th:text="${cliente.documento}">Documento</td>

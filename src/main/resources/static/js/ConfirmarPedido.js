@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 						? `<span>${escapeHtml(comentarioTexto)}</span> 
                <a href="#" class="editar-comentario" data-id="${detalle.id}" style="margin-left: 5px;">✏️</a> 
                <a href="#" class="eliminar-comentario" data-id="${detalle.id}" style="color:red; margin-left: 5px;">❌</a>`
-						: `<a href="#" class="agregar-comentario" data-id="${detalle.id}">+</a>`;
+						: `<button type="button" class="agregar-comentario" data-id="${detalle.id}">+</button>`;
 
 					fila.innerHTML = `
             <td style="width: 90px;">${detalle.cantidad}</td>
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <a href="#" class="eliminar-comentario" data-id="${detalleId}" style="color:red; margin-left: 5px;">❌</a>
       `;
 		} else {
-			cell.innerHTML = `<a href="#" class="agregar-comentario" data-id="${detalleId}">+</a>`;
+			cell.innerHTML = `<button type="button" class="agregar-comentario" data-id="${detalleId}">+</button>`;
 		}
 	}
 
@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			// Listener para cerrar el campo al hacer click afuera, con debounce para evitar cierre prematuro
 			const clickFueraHandler = (e) => {
-				if (peticionEnCurso) return; // si hay petición, no cerrar
+				if (peticionEnCurso) return;
 
 				if (!cell.contains(e.target)) {
 					document.removeEventListener("click", clickFueraHandler);
@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			};
 			setTimeout(() => {
 				document.addEventListener("click", clickFueraHandler);
-			}, 150); // aumento a 150 ms para evitar cierre inmediato por este mismo click
+			}, 150);
 		}
 	});
 
