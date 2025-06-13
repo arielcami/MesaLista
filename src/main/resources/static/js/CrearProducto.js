@@ -23,21 +23,28 @@ document.addEventListener("DOMContentLoaded", () => {
 		const nombre = document.getElementById('create-nombre').value;
 		const precio = parseFloat(document.getElementById('create-precio').value);
 		const tipo = parseInt(document.getElementById('create-tipo').value);
+		const imagenInput = document.getElementById('create-imagen');
+		const imagenFile = imagenInput.files[0];
 
 		const nuevoProducto = {
 			nombre: nombre,
 			precio: precio,
 			tipoProducto: tipo,
-			estado: true // Por defecto, el producto estará activo
+			estado: true
 		};
 
-		// Enviar la solicitud POST para crear el nuevo producto
+		const formData = new FormData();
+		formData.append("producto", new Blob([JSON.stringify(nuevoProducto)], {
+			type: "application/json"
+		}));
+
+		if (imagenFile) {
+			formData.append("imagen", imagenFile);
+		}
+
 		fetch(`/mesalista/api/producto`, {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(nuevoProducto)
+			body: formData
 		})
 			.then(response => {
 				if (!response.ok) {
@@ -47,22 +54,20 @@ document.addEventListener("DOMContentLoaded", () => {
 			})
 			.then(productoCreado => {
 				createPopupOverlay.classList.add('hidden');
-				   mostrarPopupConfirmacion(
-				       "success",
-				       "Producto creado exitosamente: " + productoCreado.nombre,
-				       () => {
-				           window.location.reload();
-				       }
-				   );
+				mostrarPopupConfirmacion(
+					"success",
+					"Producto creado exitosamente: " + productoCreado.nombre,
+					() => {
+						window.location.reload();
+					}
+				);
 			})
 			.catch(err => {
 				createPopupOverlay.classList.add('hidden');
 				mostrarPopupConfirmacion(
 					"error",
-					"No se pudo crear el producto. Revisa que no lo estés duplicando.",
-					() => {
-						// Solo cerrar popup al confirmar error
-					}
+					"No se pudo crear el producto. Verifica los datos.",
+					() => { }
 				);
 			});
 	});

@@ -97,6 +97,9 @@ function cargarProductosPorTipo(tipo, tituloCategoria = "Productos") {
 			contenedor.innerHTML = "";
 
 			data.forEach(producto => {
+				
+				//console.log(producto)
+				
 				const item = document.createElement("div");
 				item.classList.add("producto-item");
 				item.id = `producto-${producto.id}`;
@@ -104,13 +107,20 @@ function cargarProductosPorTipo(tipo, tituloCategoria = "Productos") {
 				let cantidad = cantidadesPorTipo[producto.id] || 0;
 
 				item.innerHTML = `
-					<h4>${producto.nombre}</h4>
-					<span>S/ ${producto.precio.toFixed(2)}</span>
-					<div class="cantidad-container">
-						<button class="restar-cantidad">-</button>
-						<span class="cantidad">${cantidad}</span>
-					</div>
+				    <h4>${producto.nombre}</h4>
+				    <span>S/ ${producto.precio.toFixed(2)}</span>
+				    <div class="cantidad-container">
+				        <button class="restar-cantidad">-</button>
+				        <span class="cantidad">${cantidad}</span>
+				    </div>
 				`;
+
+				if (producto.imagenUrl) {
+					item.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.3)), url('/mesalista/${producto.imagenUrl}')`;
+					item.style.backgroundSize = 'cover';
+					item.style.backgroundPosition = 'center';
+					item.style.backgroundRepeat = 'no-repeat';
+				}
 
 				const cantidadSpan = item.querySelector('.cantidad');
 				const restarBtn = item.querySelector('.restar-cantidad');

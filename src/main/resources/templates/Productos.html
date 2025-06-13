@@ -7,9 +7,6 @@
 
 <title>Listado de Productos</title>
 
-<!-- CSS general -->
-<!-- Link al archivo CSS de la barra de navegación -->
-
 <link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
 <link rel="stylesheet" th:href="@{/css/Productos.css}" />
 <link rel="stylesheet" th:href="@{/css/PopupCustom2Options.css}" />
@@ -21,6 +18,15 @@
 	
 	<!-- Popup Custom Fragment -->
 	<div th:replace="~{components/PopupCustom2Options :: popupCustom2Options}"></div>
+	
+	<!-- Modal de la imagen del producto -->
+	<div id="imagen-modal-overlay" class="imagen-actual-producto hidden">
+		<div class="imagen-modal-contenido">
+			<span id="cerrar-imagen-modal" class="cerrar">&times;</span>
+			<img id="imagen-producto-preview" src="" alt="Imagen del producto" />
+		</div>
+	</div>
+	
 	
 	<!-- Popup de Creación -->
 	<div id="create-popup-overlay" class="popup-overlay productos-popup-overlay hidden">
@@ -42,7 +48,10 @@
 	                <option value="3">Bebida</option>
 	                <option value="4">Postre</option>
 	            </select>
-	
+	            
+	            <label for="create-imagen">Imagen del Producto:</label>
+				<input type="file" id="create-imagen" accept="image/*" />
+	            
 	            <button type="submit">Crear Producto</button>
 	        </form>
 	    </div>
@@ -74,6 +83,9 @@
 				
 				<label for="edit-estado">Estado:</label>
 				<input type="text" id="edit-estado" class="estado-texto" disabled />
+				
+				<label for="edit-imagen">Imagen del producto:</label>
+				<input type="file" id="edit-imagen" name="imagen" accept="image/*">
 
 				<button type="submit">Guardar cambios</button>
 			</form>
@@ -82,7 +94,6 @@
 
 	<main>
 		<h2>Listado de Productos</h2>
-
 
 		<div class="filtro-botones">
 		    <button id="btn-todos">Mostrar Todos</button>

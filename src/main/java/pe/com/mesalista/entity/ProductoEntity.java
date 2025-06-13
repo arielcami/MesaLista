@@ -43,5 +43,8 @@ public class ProductoEntity implements Serializable {
 	@JsonIgnore
 	@Column(name = "actualizado_en")
 	private LocalDateTime actualizadoEn;
+	
+	@Column(name = "imagen_url", length = 255)
+	private String imagenUrl;
 
 }

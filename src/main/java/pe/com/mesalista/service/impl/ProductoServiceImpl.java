@@ -46,12 +46,19 @@ public class ProductoServiceImpl implements ProductoService {
 
 	@Override
 	public Optional<ProductoEntity> update(Long id, ProductoEntity producto) {
-	    ProductoEntity p = productoRepository.findById(id).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-	    p.setNombre(producto.getNombre());
-	    p.setTipoProducto(producto.getTipoProducto());
-	    p.setPrecio(producto.getPrecio());
-	    p.setEstado(producto.isEstado());
-	    return Optional.of(productoRepository.save(p));
+	    return productoRepository.findById(id).map(p -> {
+	        p.setNombre(producto.getNombre());
+	        p.setTipoProducto(producto.getTipoProducto());
+	        p.setPrecio(producto.getPrecio());
+	        p.setEstado(producto.isEstado());
+
+	        // Solo actualiza imagen si se recibió una nueva
+	        if (producto.getImagenUrl() != null) {
+	            p.setImagenUrl(producto.getImagenUrl());
+	        }
+
+	        return productoRepository.save(p);
+	    });
 	}
 
 
@@ -83,7 +90,7 @@ public class ProductoServiceImpl implements ProductoService {
 	public List<ProductoEntity> findByNombreContainingIgnoreCaseAndEstadoTrue(String nombre) {
 		return productoRepository.findByNombreContainingIgnoreCaseAndEstadoTrue(nombre);
 	}
-	
+
 	
 	@Override
 	public List<ProductoEntity> findByTipoProducto(byte tipoProducto) {
