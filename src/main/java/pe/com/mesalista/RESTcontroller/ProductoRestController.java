@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,8 @@ public class ProductoRestController {
 
 	@GetMapping
 	public List<ProductoEntity> findAll() {
-		return productoService.findAll();
+		return productoService.findAll().stream().sorted(Comparator.comparingInt(ProductoEntity::getTipoProducto))
+				.toList();
 	}
 
 	@GetMapping("/{id}")
@@ -80,7 +82,7 @@ public class ProductoRestController {
 
 			// Manejar imagen nueva
 			if (imagen != null && !imagen.isEmpty()) {
-				
+
 				// Eliminar imagen anterior si existe
 				String imagenAnterior = existente.getImagenUrl();
 				if (imagenAnterior != null && !imagenAnterior.isBlank()) {
@@ -129,12 +131,14 @@ public class ProductoRestController {
 
 	@GetMapping("/activos")
 	public List<ProductoEntity> findByEstadoTrue() {
-		return productoService.findByEstadoTrue();
+		return productoService.findByEstadoTrue().stream()
+				.sorted(Comparator.comparingInt(ProductoEntity::getTipoProducto)).toList();
 	}
 
 	@GetMapping("/inactivos")
 	public List<ProductoEntity> findByEstadoFalse() {
-		return productoService.findByEstadoFalse();
+		return productoService.findByEstadoFalse().stream()
+				.sorted(Comparator.comparingInt(ProductoEntity::getTipoProducto)).toList();
 	}
 
 	@GetMapping("/buscar/{nombre}")
@@ -162,16 +166,16 @@ public class ProductoRestController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
 		}
 	}
-	
+
 	@PatchMapping("/{id}/estado")
 	public ResponseEntity<?> parcharEstadoProducto(@PathVariable Long id, @RequestParam boolean estado) {
-	    Optional<ProductoEntity> resultado = productoService.actualizarEstado(id, estado);
+		Optional<ProductoEntity> resultado = productoService.actualizarEstado(id, estado);
 
-	    if (resultado.isPresent()) {
-	        return ResponseEntity.ok(resultado.get());
-	    } else {
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
-	    }
+		if (resultado.isPresent()) {
+			return ResponseEntity.ok(resultado.get());
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
+		}
 	}
 
 	@PutMapping("/{id}/activar")

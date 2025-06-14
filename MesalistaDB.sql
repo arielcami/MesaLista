@@ -820,7 +820,9 @@ INSERT INTO productos (nombre, tipo_producto, precio, estado, imagen_url) VALUES
 ('Sopa de mote', 1, 2.50, 1, 'img-realtime/1749819153011_sopamote.png'), 
 ('Picarones', 4, 8.00, 1, 'img-realtime/1749844894914_picarones.png'), 
 ('Pollo Broaster', 2, 9.00, 1, 'img-realtime/1749820046499_broaster.png'), 
-('Pollo Saltado', 2, 9.50, 1, 'img-realtime/1749775712607_pollosaltado.png');
+('Pollo Saltado', 2, 9.50, 1, 'img-realtime/1749775712607_pollosaltado.png'),
+('Alitas Broaster', 1, 3.00, 1, 'img-realtime/1749875397783_alitasBroaster.jpg'),
+('Bistek a lo Pobre', 2, 10, 1, 'img-realtime/1749875679090_bistek.jpg');
 
 INSERT INTO clientes (nombre, telefono, documento, direccion) VALUES 
 ('Pedro Sánchez Haylas', '970555444', '55667788', 'Jr. Lima 234 Surco'), 
