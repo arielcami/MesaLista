@@ -1,0 +1,45 @@
+/* Asegura que html y body ocupen toda la altura de la ventana */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Centrado vertical y horizontal */
+main {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    background-color: #f9f9f9; /* opcional, mejora visual */
+}
+
+/* Contenedor centrado */
+.contenido-error {
+    white-space: nowrap;
+    overflow: auto;
+    text-align: center;
+    color: gray;
+}
+
+.contenido-error h1 {
+	font-size: 38px;
+}
+.contenido-error p {
+	font-size: 22px;
+}
+
+.contenido-error h1,
+.contenido-error p {
+    white-space: nowrap;
+    overflow: auto;
+    font-weight: normal;
+}
+
+/* Imagen responsive */
+.contenido-error img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+}

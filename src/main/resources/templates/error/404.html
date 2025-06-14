@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Página no encontrada! - MesaLista v1.0</title>
+
+    <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/Error404.css}" />
+</head>
+
+<body>
+
+    <div th:replace="~{components/BarraNavegacion :: barra-nav}"></div>
+    
+    <main>
+		<div class="contenido-error">
+			<img th:src="@{/img/404.jpg}" alt="Error 404" />
+			<h1>No se encontró esa página</h1>
+			<p>La página a la que intentó acceder no existe o está en otra ruta.</p>
+		</div>
+	</main>
+
+</body>
+</html>
