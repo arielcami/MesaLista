@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -160,6 +161,17 @@ public class ProductoRestController {
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
 		}
+	}
+	
+	@PatchMapping("/{id}/estado")
+	public ResponseEntity<?> parcharEstadoProducto(@PathVariable Long id, @RequestParam boolean estado) {
+	    Optional<ProductoEntity> resultado = productoService.actualizarEstado(id, estado);
+
+	    if (resultado.isPresent()) {
+	        return ResponseEntity.ok(resultado.get());
+	    } else {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
+	    }
 	}
 
 	@PutMapping("/{id}/activar")

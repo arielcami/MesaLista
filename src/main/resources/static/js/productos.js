@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// Cargar todos los productos al iniciar
 	fetchAndRenderProductos(urlActual);
-	
+
 	cerrarImagenModal.addEventListener("click", () => {
 		imagenModal.classList.add("hidden");
 		document.getElementById("imagen-producto-preview").src = "";
@@ -138,24 +138,9 @@ document.addEventListener("DOMContentLoaded", function() {
 		btn.addEventListener("click", () => {
 			const id = btn.getAttribute("data-id");
 
-			fetch(`/mesalista/api/producto/${id}`)
-				.then(response => response.json())
-				.then(producto => {
-					const productoActualizado = {
-						nombre: producto.nombre,
-						precio: producto.precio,
-						tipoProducto: producto.tipoProducto,
-						estado: nuevoEstado
-					};
-
-					return fetch(`/mesalista/api/producto/${id}`, {
-						method: "PUT",
-						headers: {
-							"Content-Type": "application/json"
-						},
-						body: JSON.stringify(productoActualizado)
-					});
-				})
+			fetch(`/mesalista/api/producto/${id}/estado?estado=${nuevoEstado}`, {
+				method: "PATCH"
+			})
 				.then(response => {
 					if (!response.ok) throw new Error("No se pudo cambiar el estado.");
 					return response.json();
@@ -164,6 +149,7 @@ document.addEventListener("DOMContentLoaded", function() {
 					fetchAndRenderProductos(urlActual);
 				})
 				.catch(err => {
+					console.log(err);
 					mostrarPopupConfirmacion("Error", "Error al cambiar el estado del producto.");
 				});
 		});
