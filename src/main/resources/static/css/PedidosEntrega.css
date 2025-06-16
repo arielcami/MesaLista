@@ -76,9 +76,10 @@ a.btn-ver-detalle:active {
 }
 
 .detalle-item {
+	user-select: none;
 	display: flex;
 	justify-content: space-between;
-	font-size: 15px;
+	font-size: 0.90rem;
 }
 
 .detalle-izquierda {

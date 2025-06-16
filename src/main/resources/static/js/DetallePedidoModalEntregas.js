@@ -28,9 +28,13 @@ window.abrirModalDetallePedido = function(idPedido) {
 
 				const total = item.cantidad * item.precioUnitario;
 				totalPedido += total;
+
+				const comentarioHTML = item.comentario 
+					? `<span style="color: #999; font-style: italic; font-size: 0.76rem;"> (${item.comentario})</span>` 
+					: '';
 				htmlDetalle += `
 					<div class="detalle-item">
-						<div class="detalle-izquierda">${item.cantidad} × ${item.producto?.nombre ?? 'N/D'}</div>
+						<div class="detalle-izquierda">${item.cantidad} × ${item.producto?.nombre}${comentarioHTML}</div>
 						<div class="detalle-derecha">S/ ${total.toFixed(2)}</div>
 					</div>
 				`;
