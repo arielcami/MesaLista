@@ -831,7 +831,7 @@ INSERT INTO clientes (nombre, telefono, documento, direccion) VALUES
 ('Andrea Rojas Mamani', '984321654', '46129948', 'Av. Jorge Chávez 450 Surco'), 
 ('Carlos Raúl Montenegro', '991876543', '10010011', 'Calle San Marcos 567 Chorrillos'), 
 ('Mariana Ignacia Paredes Tello', '972345678', '10010012', 'Jr. Los Álamos 321 Surco'), 
-('Ricardo Levi Linares Alvarado', '989543210', '10010013', 'Av. El Sol 890Chorrillos'), 
+('Ricardo Levi Linares Alvarado', '989543210', '10010013', 'Av. El Sol 890 Chorrillos'), 
 ('Rosa Gabriela Herrera Torres', '998112233', '10010014', 'Calle Santa Rosa 768 Surco'), 
 ('Fernando Nicolás Salas Higuera', '987654320', '10010015', 'Jr. Huaylas 222 Surco'), 
 ('Lucía Herrera Henríquez', '986543210', '10010016', 'Av. Caminos del Inca 987 Surco'), 
