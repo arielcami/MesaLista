@@ -1,0 +1,108 @@
+/* Oculto por defecto */
+#modal-guarnicion {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Activar modal con clase 'activo' */
+#modal-guarnicion.activo {
+    display: flex;
+}
+
+/* Contenido del modal */
+.modal-guarnicion-contenido {
+    background-color: #fff;
+    width: 50vw;
+    max-width: 900px;
+    height: 700px;
+    border: 1px white solid;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Cabecera del modal */
+#titulo-modal-guarnicion {
+    background-color: #d4a500;
+    color: black;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    margin: 0;
+    padding: 6px 20px;
+}
+
+/* Botón cerrar */
+#cerrar-modal-guarnicion {
+    position: absolute;
+    top: 0px;
+    right: 15px;
+    font-size: 32px;
+    font-weight: bold;
+    color: #ff0000;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Contenedor de productos */
+#contenedor-guarnicion {
+    padding: 15px;
+    overflow-y: auto;
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    align-content: start;
+}
+
+/* Estilo individual de producto (si usas alguno dentro) */
+#contenedor-guarnicion .producto-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 0px;
+    border-radius: 8px;
+    font-family: 'Consolas', monospace;
+    text-align: center;
+    user-select: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+#contenedor-guarnicion .producto-item:hover {
+   	border-color: #d4a500; 
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
+}
+
+
+.contenedor-botones-pedido {
+    display: flex;
+    flex-direction: column; /* Esto es lo que asegura la disposición vertical */
+    align-items: center;
+    gap: 15px; /* Espacio entre los botones */
+    margin-top: 80px;
+}
+
+.btn-agregar-guarnicion {
+	font-family: Yeseva One;
+	font-size: 20px;
+	padding: 5px 15px;
+	background-color: #d4a500;
+	color: white;
+	transition: color 0.2s ease;
+	border: none;
+	border-radius: 20px;
+	
+}
+
+.btn-agregar-guarnicion:hover {
+	color: black;
+}

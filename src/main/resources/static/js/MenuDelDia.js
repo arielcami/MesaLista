@@ -6,7 +6,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		1: 'Entradas',
 		2: 'Fondos',
 		3: 'Bebidas',
-		4: 'Postres'
+		4: 'Postres',
+		5: 'Guarniciones'
 	};
 
 	function mostrarError(mensaje) {
@@ -33,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				.then(data => {
 					if (!Array.isArray(data)) throw new Error("La respuesta no es un array");
 
-					const categorias = { 1: [], 2: [], 3: [], 4: [] };
+					const categorias = { 1: [], 2: [], 3: [], 4: [], 5: [] };
 
 					data.forEach(item => {
 						const producto = item.producto;

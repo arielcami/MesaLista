@@ -8,6 +8,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/TomarPedido.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/ModalCargarProductoTipo.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/PopupCustom.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/ModalGuarnicion.css}" />
+    
 </head>
 
 <body>
@@ -71,12 +73,23 @@
 		            <p>Postres</p>
 		        </div>
 		    </div>
-		    
-		    <button class="btn-siguiente" id="confirmar-pedido">Siguiente</button>
-
+		   	
+		   	<div class="contenedor-botones-pedido">
+				<button class="btn-siguiente" id="confirmar-pedido">Siguiente</button>
+				<button id="btn-agregar-guarnicion" class="btn-agregar-guarnicion">Agregar guarnición</button>
+			</div>
 		</section>
 		
 	</main>
+	
+	<div id="modal-guarnicion" class="modal-guarnicion oculto">
+	    <div class="modal-guarnicion-contenido">
+	        <span id="cerrar-modal-guarnicion" class="cerrar">&times;</span>
+	        <h2 id="titulo-modal-guarnicion">Guarniciones</h2>
+	        <div id="contenedor-guarnicion" class="contenedor-productos"></div>
+	    </div>
+	</div>
+
 	
 	<script type="text/javascript" th:src="@{/js/PopupCustom.js}"></script>
     <script type="text/javascript" th:src="@{/js/TomarPedido.js}"></script>

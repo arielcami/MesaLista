@@ -23,12 +23,11 @@ main h2 {
 }
 
 .menu-del-dia-contenedor-principal {
-    max-width: 900px;
+    max-width: 1400px;
     background-color: #fff8e1;
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     font-family: 'Segoe UI', sans-serif;
-
     margin: 100px auto 50px auto;
     padding: 20px;
 }
@@ -83,7 +82,7 @@ main h2 {
 .menu-del-dia__productos-listado {
     margin: 7px 7px 20px 7px;
     min-height: 400px;    /* más alto */
-    max-width: 1000px;    /* ancho mayor, o usa width */
+    max-width: 1385px;    /* ancho mayor, o usa width */
     width: 100%;          /* para que ocupe todo el contenedor padre */
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -133,9 +132,9 @@ main h2 {
 }
 
 .menu-del-dia__categoria {
-    flex: 0 0 22%;
-    min-width: 180px;
-    max-width: 25%;
+    flex: 0 0 25%;
+    min-width: 100px;
+    max-width: 18%;
     background-color: #fff8e1;
     border: 1px solid #ddd;
     border-radius: 8px;

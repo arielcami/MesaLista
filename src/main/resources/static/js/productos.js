@@ -130,6 +130,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			case 2: return "Segundo";
 			case 3: return "Bebida";
 			case 4: return "Postre";
+			case 5: return "Guarnición";
 			default: return "Desconocido";
 		}
 	}

@@ -1,3 +1,15 @@
+function getNombreTipoProducto(tipoProducto) {
+	switch (tipoProducto) {
+		case 1: return "Entrada";
+		case 2: return "Segundo";
+		case 3: return "Bebida";
+		case 4: return "Postre";
+		case 5: return "Guarnición";
+		default: return "Desconocido";
+	}
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
 	const params = new URLSearchParams(window.location.search);
 	const pedidoId = params.get("pedidoId");
@@ -34,14 +46,15 @@ document.addEventListener("DOMContentLoaded", () => {
 						: `<button type="button" class="agregar-comentario" data-id="${detalle.id}">+</button>`;
 
 					fila.innerHTML = `
-            <td style="width: 90px;">${detalle.cantidad}</td>
-            <td>${escapeHtml(detalle.producto.nombre)}</td>
-            <td>S/ ${detalle.precioUnitario.toFixed(2)}</td>
-            <td>S/ ${subtotal.toFixed(2)}</td>
-            <td class="comentario-cell" data-id="${detalle.id}">
-                ${comentarioHTML}
-            </td>
-          `;
+					<td style="font-size: 15px;">${getNombreTipoProducto(detalle.producto.tipoProducto)}</td>
+		            <td style="width: 55px;">${detalle.cantidad}</td>
+		            <td>${escapeHtml(detalle.producto.nombre)}</td>
+		            <td>S/ ${detalle.precioUnitario.toFixed(2)}</td>
+		            <td>S/ ${subtotal.toFixed(2)}</td>
+		            <td class="comentario-cell" data-id="${detalle.id}">
+		                ${comentarioHTML}
+		            </td>
+		          `;
 					tbody.appendChild(fila);
 				});
 
