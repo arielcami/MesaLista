@@ -9,8 +9,7 @@ const estadosPedido = {
     5: 'No entregado',
     6: 'Incidente',
     7: 'Devuelto',
-    8: 'ERROR',
-	9: 'Para consumir en el local'
+    8: 'ERROR'
 };
 
 let listaPedidosCompleta = [];

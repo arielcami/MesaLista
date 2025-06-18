@@ -758,6 +758,130 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+-- SP Temporal, crear 30 pedidos aleatorios
+DELIMITER $$
+
+USE `mesalista_db`$$
+
+DROP PROCEDURE IF EXISTS `seed_pedidos`$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `seed_pedidos`()
+BEGIN
+  DECLARE i INT DEFAULT 1;
+  DECLARE j INT;
+  DECLARE pid INT;
+  DECLARE num_items INT;
+  DECLARE cid INT;
+  DECLARE st TINYINT UNSIGNED;
+  DECLARE pl BIT;
+  DECLARE did INT;
+  DECLARE emp_id INT;
+  DECLARE address VARCHAR(200);
+  DECLARE total DECIMAL(10,2);
+  DECLARE qty TINYINT UNSIGNED;
+  DECLARE price DECIMAL(10,2);
+  DECLARE prod_id INT;
+  DECLARE has_deliveries INT;
+  DECLARE has_products INT;
+
+  -- Contar registros existentes
+  SELECT COUNT(*) INTO has_deliveries FROM deliveries;
+  SELECT COUNT(*) INTO has_products   FROM productos;
+
+  WHILE i <= 30 DO
+    -- Cliente aleatorio 1–87
+    SET cid = FLOOR(1 + RAND() * 87);
+
+    -- DESPACHADOR: siempre uno de {3,5,11,13,15,17,19}
+    SELECT id INTO emp_id
+      FROM (
+        SELECT 3  AS id UNION ALL
+        SELECT 5       UNION ALL
+        SELECT 11      UNION ALL
+        SELECT 13      UNION ALL
+        SELECT 15      UNION ALL
+        SELECT 17      UNION ALL
+        SELECT 19
+      ) AS disp
+      ORDER BY RAND()
+      LIMIT 1;
+
+    -- DECIDIR SI ES DELIVERY (30% prob.), sólo si hay repartidores cargados
+    IF has_deliveries > 0 AND RAND() < 0.3 THEN
+      SET pl = b'1';
+      SET address = CONCAT('Av. Falsa ', FLOOR(1 + RAND() * 100), ' #', FLOOR(1 + RAND() * 1000));
+      -- Repartidor: aleatorio de {4,6,9,13}
+      SELECT id INTO did
+        FROM (
+          SELECT 4  AS id UNION ALL
+          SELECT 6       UNION ALL
+          SELECT 9       UNION ALL
+          SELECT 13
+        ) AS del
+        ORDER BY RAND()
+        LIMIT 1;
+    ELSE
+      SET pl = b'0';
+      SET address = NULL;
+      SET did = NULL;
+    END IF;
+
+    -- Estado: 85% = 4 (Entregado); resto uniformemente en {5,6,7}
+    SET st = IF(RAND() < 0.85,
+               4,
+               ELT(FLOOR(1 + RAND() * 3), 5, 6, 7)
+             );
+
+    -- Cantidad de ítems: 4–6
+    SET num_items = FLOOR(4 + RAND() * 3);
+
+    -- Insertar pedido con total temporal = 0
+    INSERT INTO pedidos
+      (cliente_id, total, empleado_id, estado_pedido, direccion_entrega, para_llevar, delivery_id)
+    VALUES
+      (cid, 0.00, emp_id, st, address, pl, did);
+
+    SET pid = LAST_INSERT_ID();
+    SET total = 0.00;
+
+    -- Detalles de pedido
+    SET j = 1;
+    WHILE j <= num_items DO
+      SET qty   = FLOOR(1 + RAND() * 3);
+      SET price = ROUND(RAND() * 45 + 5, 2);
+
+      IF has_products > 0 THEN
+        SELECT id INTO prod_id
+          FROM productos
+          ORDER BY RAND()
+          LIMIT 1;
+      ELSE
+        SET prod_id = NULL;
+      END IF;
+
+      IF prod_id IS NOT NULL THEN
+        INSERT INTO detalle_pedido
+          (pedido_id, producto_id, cantidad, precio_unitario)
+        VALUES
+          (pid, prod_id, qty, price);
+        SET total = total + (qty * price);
+      END IF;
+
+      SET j = j + 1;
+    END WHILE;
+
+    -- Actualizar total real
+    UPDATE pedidos
+      SET total = ROUND(total, 2)
+    WHERE id = pid;
+
+    SET i = i + 1;
+  END WHILE;
+END$$
+
+DELIMITER ;
 /* =============== FIN EVENTS, JOBS y STORED PROCEDURES ================= */
 
 
