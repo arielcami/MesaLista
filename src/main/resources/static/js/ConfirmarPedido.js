@@ -1,3 +1,4 @@
+
 function getNombreTipoProducto(tipoProducto) {
 	switch (tipoProducto) {
 		case 1: return "Entrada";
@@ -242,6 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		const empleadoId = empleadoIdInput.value;
 		const claveEmpleado = claveEmpleadoInput.value;
 		const direccionEntrega = direccionEntregaInput.value || "";
+		const paraLlevar = document.getElementById("modoCheckbox").checked;
 
 		if (!pedidoId || !empleadoId || !claveEmpleado) {
 			mostrarPopupConfirmacion("warning", "Faltan datos necesarios: Pedido, Empleado o Clave.", null);
@@ -252,6 +254,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		formData.append("pedidoId", pedidoId);
 		formData.append("empleadoId", empleadoId);
 		formData.append("clave", claveEmpleado);
+		formData.append("paraLlevar", paraLlevar.toString());
+
 		if (direccionEntrega.trim()) {
 			formData.append("direccionEntrega", direccionEntrega);
 		}
@@ -263,21 +267,21 @@ document.addEventListener("DOMContentLoaded", () => {
 			},
 			body: formData.toString()
 		})
-			.then(async response => {
-				if (!response.ok) {
-					const errorText = await response.text();
-					throw new Error(errorText);
-				}
-				return response.text();
-			})
-			.then(message => {
-				mostrarPopupConfirmacion("success", message, () => {
-					window.location.href = "/mesalista";
-				});
-			})
-			.catch(err => {
-				mostrarPopupConfirmacion("error", "Error: " + err.message, null);
+		.then(async response => {
+			if (!response.ok) {
+				const errorText = await response.text();
+				throw new Error(errorText);
+			}
+			return response.text();
+		})
+		.then(message => {
+			mostrarPopupConfirmacion("success", message, () => {
+				window.location.href = "/mesalista";
 			});
+		})
+		.catch(err => {
+			mostrarPopupConfirmacion("error", "Error: " + err.message, null);
+		});
 	});
 });
 

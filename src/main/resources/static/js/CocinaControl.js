@@ -70,9 +70,10 @@ function renderPedidos(pedidos) {
 
 		card.innerHTML = `
             <h2>Pedido #${pedido.id} - ${estadoPedidoTexto(pedido.estadoPedido)}</h2>
+			<p><strong>Modo:</strong> ${pedido.paraLlevar ? 'Para llevar' : 'Consumir aquí'}</p>
             <p><strong>Cliente:</strong> ${pedido.cliente.nombre} - ${pedido.cliente.documento}</p>
             <p><strong>Teléfono:</strong> ${formatTelefono(pedido.cliente.telefono)}</p>
-            <p><strong>Dirección:</strong> ${pedido.direccionEntrega ?? 'No registrada'}</p>
+            <p><strong>Dirección:</strong> ${pedido.direccionEntrega ?? 'Consumir aquí'}</p>
             <p><strong>Hora del pedido:</strong> ${formatHora(pedido.fechaPedido)}</p>
             <p><strong>Atendido por:</strong> ${pedido.empleado ? pedido.empleado.nombre : 'No asignado'}</p>
 			<p><strong>Entregado por:</strong> ${pedido.delivery?.nombre ?? 'No asignado'}</p>

@@ -61,6 +61,7 @@ CREATE TABLE pedidos (
 	total DECIMAL(10,2) NOT NULL,
 	empleado_id INT UNSIGNED NULL, -- Puede ser NULL al principio
 	estado_pedido TINYINT UNSIGNED NOT NULL,
+    para_llevar BIT(1) NOT NULL DEFAULT b'0',
 	direccion_entrega VARCHAR(200) NULL, -- Puede ser NULL al principio
     delivery_id INT UNSIGNED DEFAULT NULL,
 	fecha_pedido TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
@@ -293,7 +294,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `confirmarPedido`(
     IN p_pedido_id INT,
     IN p_empleado_id INT,
     IN p_clave VARCHAR(100),
-    IN p_direccion_entrega VARCHAR(200)
+    IN p_direccion_entrega VARCHAR(200),
+    IN p_para_llevar BOOLEAN
 )
 BEGIN
     DECLARE v_cliente_id INT;
@@ -315,12 +317,11 @@ BEGIN
     SELECT COUNT(1) INTO v_empleado_existente
     FROM empleados
     WHERE id = p_empleado_id;
-
     IF v_empleado_existente = 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El empleado no existe';
     END IF;
 
-    -- Obtener estado, nivel, salt y clave (válido porque ya verificamos que el empleado existe)
+    -- Obtener estado, nivel, salt y clave
     SELECT estado, nivel, salt, clave
     INTO v_estado, v_empleado_nivel, v_salt, v_clave_almacenada
     FROM empleados
@@ -331,32 +332,31 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Empleado restringido';
     END IF;
 
-    -- Validar que el empleado no sea de nivel 3 (Delivery)
+    -- Validar nivel del empleado
     IF v_empleado_nivel = 3 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El personal de delivery no puede confirmar pedidos';
     END IF;
 
-    -- Validar clave usando hash + salt
+    -- Validar clave
     SET v_hash_clave = SHA2(CONCAT(p_clave, v_salt), 256);
     IF v_hash_clave <> v_clave_almacenada THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Credenciales inválidas';
     END IF;
 
-    -- Obtener cliente_id del pedido
+    -- Obtener cliente del pedido
     SELECT cliente_id INTO v_cliente_id
     FROM pedidos
     WHERE id = p_pedido_id;
 
-    -- Verificar si el cliente existe
+    -- Validar cliente
     SELECT COUNT(1) INTO v_cliente_existente
     FROM clientes
     WHERE id = v_cliente_id;
-
     IF v_cliente_existente = 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El cliente no existe';
     END IF;
 
-    -- Si no se proporcionó dirección de entrega, usar la del cliente
+    -- Obtener direccion del cliente si no se proporciono
     IF p_direccion_entrega IS NULL OR p_direccion_entrega = '' THEN
         SELECT direccion INTO v_direccion_cliente
         FROM clientes
@@ -365,18 +365,31 @@ BEGIN
         SET v_direccion_cliente = p_direccion_entrega;
     END IF;
 
-    -- Verificar si el pedido ya ha sido confirmado
+    -- Verificar si ya fue confirmado
     IF EXISTS (SELECT 1 FROM pedidos WHERE id = p_pedido_id AND estado_pedido = 1) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El pedido ya ha sido confirmado';
     END IF;
 
-    -- Confirmar el pedido
-    UPDATE pedidos
-    SET
-        empleado_id = p_empleado_id,
-        direccion_entrega = v_direccion_cliente,
-        estado_pedido = 1
-    WHERE id = p_pedido_id;
+    -- Confirmar pedido con logica para llevar / local
+    IF p_para_llevar THEN
+        -- Para llevar
+        UPDATE pedidos
+        SET
+            empleado_id = p_empleado_id,
+            direccion_entrega = v_direccion_cliente,
+            estado_pedido = 1,
+            para_llevar = b'1'
+        WHERE id = p_pedido_id;
+    ELSE
+        -- Para consumir en local
+        UPDATE pedidos
+        SET
+            empleado_id = p_empleado_id,
+            direccion_entrega = NULL,
+            estado_pedido = 1,
+            para_llevar = b'0'
+        WHERE id = p_pedido_id;
+    END IF;
 
     COMMIT;
 END$$

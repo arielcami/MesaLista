@@ -42,6 +42,9 @@ public class PedidoEntity implements Serializable {
 
 	@Column(name = "estado_pedido", nullable = false)
 	private byte estadoPedido;
+	
+	@Column(name = "para_llevar")
+	private boolean paraLlevar;
 
 	@Column(name = "direccion_entrega", length = 200, nullable = false)
 	private String direccionEntrega;

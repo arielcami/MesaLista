@@ -75,10 +75,10 @@ function renderPedidos(pedidos) {
         card.className = 'pedido-card';
 
         card.innerHTML = `
-            <h2>Pedido #${pedido.id}</h2>
+            <h2>Pedido #${pedido.id} - ${pedido.paraLlevar ? 'Para llevar' : 'Consumir aquí'}</h2>
             <p><strong>Cliente:</strong> ${pedido.cliente?.nombre ?? 'Sin nombre'} - ${pedido.cliente?.documento ?? 'Sin documento'}</p>
             <p><strong>Teléfono:</strong> ${formatTelefono(pedido.cliente.telefono)}</p>
-            <p><strong>Dirección:</strong> ${pedido.direccionEntrega ? pedido.direccionEntrega : 'No especificada'}</p>
+            <p><strong>Dirección:</strong> ${pedido.direccionEntrega ? pedido.direccionEntrega : 'Consumir aquí'}</p>
             <p><strong>Hora del pedido:</strong> ${formatHora(pedido.fechaPedido)}</p>
             <p><strong>Atendido por:</strong> ${pedido.empleado?.nombre ?? 'Sin asignar'}</p>
             ${detallesOrdenados.map(detalle => `

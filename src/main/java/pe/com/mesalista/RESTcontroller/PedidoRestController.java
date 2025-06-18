@@ -87,35 +87,39 @@ public class PedidoRestController {
 
 	// Stored Procedure
 	@PostMapping("/confirmar")
-	public ResponseEntity<String> confirmarPedido(@RequestParam Long pedidoId, @RequestParam Long empleadoId,
-			@RequestParam String clave, @RequestParam(required = false) String direccionEntrega) {
+	public ResponseEntity<String> confirmarPedido(
+	        @RequestParam Long pedidoId,
+	        @RequestParam Long empleadoId,
+	        @RequestParam String clave,
+	        @RequestParam(required = false) String direccionEntrega,
+	        @RequestParam boolean paraLlevar) {
 
-		try {
-			servicio.confirmarPedido(pedidoId, empleadoId, clave, direccionEntrega);
-			return ResponseEntity.ok("Pedido confirmado correctamente.");
-		} catch (Exception e) {
-			String mensajeLimpio = "Error al confirmar el pedido.";
-			String sqlState = null;
+	    try {
+	        servicio.confirmarPedido(pedidoId, empleadoId, clave, direccionEntrega, paraLlevar);
+	        return ResponseEntity.ok("Pedido confirmado correctamente.");
+	    } catch (Exception e) {
+	        String mensajeLimpio = "Error al confirmar el pedido.";
+	        String sqlState = null;
 
-			// Buscar si hay una SQLException en la causa
-			Throwable causa = e;
-			while (causa != null) {
-				if (causa instanceof SQLException sqlEx) {
-					mensajeLimpio = sqlEx.getMessage();
-					sqlState = sqlEx.getSQLState();
-					break;
-				}
-				causa = causa.getCause();
-			}
+	        // Buscar si hay una SQLException en la causa
+	        Throwable causa = e;
+	        while (causa != null) {
+	            if (causa instanceof SQLException sqlEx) {
+	                mensajeLimpio = sqlEx.getMessage();
+	                sqlState = sqlEx.getSQLState();
+	                break;
+	            }
+	            causa = causa.getCause();
+	        }
 
-			// Si es un error esperado (SIGNAL SQLSTATE '45000'), devolver 400 (Bad Request)
-			if ("45000".equals(sqlState)) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensajeLimpio);
-			}
+	        // Si es un error esperado (SIGNAL SQLSTATE '45000'), devolver 400 (Bad Request)
+	        if ("45000".equals(sqlState)) {
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensajeLimpio);
+	        }
 
-			// Si es otro tipo de error, devolver 500
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mensajeLimpio);
-		}
+	        // Si es otro tipo de error, devolver 500
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mensajeLimpio);
+	    }
 	}
 
 }

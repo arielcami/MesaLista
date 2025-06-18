@@ -2,7 +2,6 @@ package pe.com.mesalista.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import jakarta.transaction.Transactional;
 import pe.com.mesalista.entity.DeliveryEntity;
 import pe.com.mesalista.entity.PedidoEntity;
@@ -32,6 +31,7 @@ public class PedidoServiceImpl implements PedidoService {
     	return pedidoRepository.findAllByVisible();
 	}
 
+    // Recientemente modificado en el repository para que filtre por paraLlevar = TRUE
     @Override
     public List<PedidoEntity> findByEstadoPedido(Byte estadoPedido) {
         return pedidoRepository.findByEstadoPedido(estadoPedido);
@@ -85,11 +85,11 @@ public class PedidoServiceImpl implements PedidoService {
     	
     // SP
     @Override
-    public void confirmarPedido(Long pedidoId, Long empleadoId, String clave, String direccionEntrega) {
+    public void confirmarPedido(Long pedidoId, Long empleadoId, String clave, String direccionEntrega, boolean paraLlevar) {
         if (direccionEntrega == null || direccionEntrega.trim().isEmpty()) {
             direccionEntrega = null;
         }
-        pedidoRepository.confirmarPedido(pedidoId, empleadoId, clave, direccionEntrega);
+        pedidoRepository.confirmarPedido(pedidoId, empleadoId, clave, direccionEntrega, paraLlevar);
     }
 
 
@@ -101,7 +101,23 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     @Transactional
     public void marcarPedidoEstado(Long pedidoId, Byte estado) {
-        pedidoRepository.setEstadoPedido(pedidoId, estado);
+        PedidoEntity pedido = pedidoRepository.findById(pedidoId)
+            .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+
+        // Caso 1: Para llevar -> aceptar cualquier estado
+        if (pedido.isParaLlevar()) {
+            pedidoRepository.setEstadoPedido(pedidoId, estado);
+            return;
+        }
+
+        // Caso 2: Para consumo local
+        if (pedido.getEstadoPedido() == 1) {
+            // Está en cocina -> forzar a entregado
+            pedidoRepository.setEstadoPedido(pedidoId, (byte) 4);
+        } else {
+            // Ya no está en cocina -> permitir cambio libre de estado
+            pedidoRepository.setEstadoPedido(pedidoId, estado);
+        }
     }
     
     @Override

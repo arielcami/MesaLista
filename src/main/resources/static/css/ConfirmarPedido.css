@@ -281,3 +281,42 @@ button.agregar-comentario:hover {
 button.agregar-comentario:active {
 	transform: scale(0.95);
 }
+
+
+
+
+
+
+
+/* Estilo base para el contenedor del checkbox */
+.contenedor-input-checkbox {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding-top: 5px;
+}
+
+/* Ajuste visual del checkbox */
+.contenedor-input-checkbox input[type="checkbox"] {
+	width: 18px;
+	height: 18px;
+	cursor: pointer;
+}
+
+/* Etiqueta alineada y estilizada */
+.contenedor-input-checkbox label {
+	font-size: 20px;
+	color: #797979;
+	cursor: pointer;
+	user-select: none;
+}
+
+
+
+
+
+
+
+
+
+

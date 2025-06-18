@@ -5,8 +5,8 @@
 <title>Confirmar Pedido - MesaLista v1.0</title>
 
 <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
-<link rel="stylesheet" type="text/css" th:href="@{/css/ConfirmarPedido.css}"/>
-<link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/css/ConfirmarPedido.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/PopupCustom.css}" />
 
 </head>
@@ -14,19 +14,19 @@
 <body>
 	<!-- Incluir barra de navegación -->
 	<div th:replace="~{components/BarraNavegacion :: barra-nav}"></div>
-		
+
 	<div id="popup-custom-modal" class="popup-overlay hidden">
-	  <div class="popup-content" style="font-family: 'Yeseva One', serif;">
-	    <div id="popup-icon" class="popup-icon"></div>
-	    <p id="popup-message" class="popup-message">¿Estás seguro?</p>
-	    <div style="margin-top: 25px;">
-	      <button id="popup-confirm-btn" class="popup-button">Ok</button>
-	      <button id="popup-cancel-btn" class="popup-button" style="background-color: #c22317;">Cerrar</button>
-	    </div>
-	  </div>
+		<div class="popup-content" style="font-family: 'Yeseva One', serif;">
+			<div id="popup-icon" class="popup-icon"></div>
+			<p id="popup-message" class="popup-message">¿Estás seguro?</p>
+			<div style="margin-top: 25px;">
+				<button id="popup-confirm-btn" class="popup-button">Ok</button>
+				<button id="popup-cancel-btn" class="popup-button" style="background-color: #c22317;">Cerrar</button>
+			</div>
+		</div>
 	</div>
 
-	
+
 
 	<main>
 		<h2>Confirmar Pedido</h2>
@@ -52,44 +52,52 @@
 		</div>
 
 		<div class="total-container">
-			<span>Total del Pedido: <strong id="total-pedido"> S/0.00</strong></span>
+			<span>Total del Pedido: <strong id="total-pedido">S/0.00</strong></span>
 		</div>
 
-		<!-- Campo para ingresar el ID de empleado -->
 		<div class="contenedor-centrado-campos">
-		    <!-- Campo para ingresar el ID de empleado -->
-		    <div class="grupo-formulario">
-		        <div class="grupo-flexible">
-		            <label for="empleado-id">ID del Empleado:</label>
-		            <div class="contenedor-input">
-		                <input type="number" id="empleado-id" class="campo-numero" placeholder="ID" required />
-		            </div>
-		        </div>
-		    </div>
-		    
-		        <!-- Campo para ingresar la clave del empleado -->
-		    <div class="grupo-formulario">
-		        <div class="grupo-flexible">
-		            <label for="empleado-clave">Clave del Empleado:</label>
-		            <div class="contenedor-input">
-		                <input type="password" id="empleado-clave" class="campo-texto-clave" placeholder="Clave" required />
-		            </div>
-		        </div>
-		    </div>
-		
-		    <!-- Campo opcional para ingresar la dirección de entrega -->
-		    <div class="grupo-formulario">
-		        <div class="grupo-flexible">
-		            <label for="direccion-entrega">Dirección de Entrega (opcional):</label>
-		            <div class="contenedor-input">
-		                <input type="text" id="direccion-entrega" class="campo-texto" placeholder="Ingrese la dirección de entrega (opcional)" />
-		            </div>
-		        </div>
-		    </div>
+			<!-- Campo para ingresar el ID de empleado -->
+			<div class="grupo-formulario">
+				<div class="grupo-flexible">
+					<label for="empleado-id">ID del Empleado:</label>
+					<div class="contenedor-input">
+						<input type="number" id="empleado-id" class="campo-numero" placeholder="ID" required />
+					</div>
+				</div>
+			</div>
+
+			<!-- Campo para ingresar la clave del empleado -->
+			<div class="grupo-formulario">
+				<div class="grupo-flexible">
+					<label for="empleado-clave">Clave del Empleado:</label>
+					<div class="contenedor-input">
+						<input type="password" id="empleado-clave" class="campo-texto-clave" placeholder="Clave" required />
+					</div>
+				</div>
+			</div>
+
+			<!-- Campo opcional para ingresar la dirección de entrega -->
+			<div class="grupo-formulario">
+				<div class="grupo-flexible">
+					<label for="direccion-entrega">Dirección de Entrega	(opcional):</label>
+					<div class="contenedor-input">
+						<input type="text" id="direccion-entrega" class="campo-texto" placeholder="Ingrese la dirección de entrega (opcional)" />
+					</div>
+				</div>
+			</div>
+
+			<div class="grupo-formulario">
+			  <div class="grupo-flexible">
+			    <label>&nbsp;</label>
+			    <div class="contenedor-input contenedor-input-checkbox">
+			      <input type="checkbox" id="modoCheckbox">
+			      <label for="modoCheckbox">👜 Para llevar</label>
+			      <input type="hidden" name="modo" id="modoInput" value="local">
+			    </div>
+			  </div>
+			</div>
+			
 		</div>
-
-
-
 
 		<div class="button-container">
 			<button id="btn-regresar" class="btn-regresar">Regresar</button>
@@ -98,7 +106,7 @@
 		</div>
 
 	</main>
-	<script type="text/javascript" th:src="@{/js/PopupCustomConfirmarPedido.js}"></script>
+		<script type="text/javascript" th:src="@{/js/PopupCustomConfirmarPedido.js}"></script>
 	<script type="text/javascript" th:src="@{/js/ConfirmarPedido.js}"></script>
 </body>
 </html>
