@@ -1,140 +1,104 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Buscar Cliente - MesaLista v1.0</title>
+    <meta charset="UTF-8">
+    <title>Buscar Cliente - MesaLista v1.0</title>
 
-<link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
-
-<!-- Link al archivo CSS de la barra de navegación -->
-<link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
-
-<!-- Link al archivo CSS para la página de inicio -->
-<link rel="stylesheet" type="text/css" th:href="@{/css/Inicio.css}" />
-<link rel="stylesheet" type="text/css" th:href="@{/css/PopupCustom2Options.css}" />
-<link rel="stylesheet" type="text/css" th:href="@{/css/PedidosIncompletos.css}" />
-
-
+    <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/Inicio.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/PopupCustom2Options.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/PedidosIncompletos.css}"/>
 </head>
 
 <body>
 
-	<!-- Incluir barra de navegación -->
-	<div th:replace="~{components/BarraNavegacion :: barra-nav}"></div>
+    <div th:replace="~{components/BarraNavegacion :: barra-nav}"></div>
+    <div th:replace="~{components/PopupCustom2Options :: popupCustom2Options}"></div>
+    
+    <!-- Modal Pedidos Incompletos -->
+	<div id="modalPedidosIncompletos" class="modal-pedidos-incompletos" style="display: none;">
+	   <div class="modal-pedidos-incompletos-content">
+	       <span class="close-modal-pedidos-incompletos" id="cerrarModalPedidosIncompletos">&times;</span>
+	       <h3>Pedidos Incompletos</h3>
+	       <div id="listaPedidosIncompletos">
+	           <!-- Aquí se insertará dinámicamente la lista -->
+	        </div>
+	    </div>
+	</div>
+
+   <main>
+	    <h2>Buscar Cliente</h2>
 	
-	<!-- Popup Custom Fragment -->
-	<div th:replace="~{components/PopupCustom2Options :: popupCustom2Options}"></div>
-
-	<main>
-		<h2>Buscar Cliente</h2>
-
-		<div class="contenido-flex">
-			<!-- Formulario -->
-			<form id="buscarClienteForm" th:action="@{/cliente/buscar}" method="get" onsubmit="return validarFormulario()" class="buscar-cliente-form">
-				<div class="form-group">
-					<div class="grupo-flex">
-						<label for="nombre">Por Nombre:</label>
-						<div class="cajon-dorado">
-							<input type="text" id="nombre" name="nombre" class="input-text" />
-						</div>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<div class="grupo-flex">
-						<label for="documento">Por Documento:</label>
-						<div class="cajon-dorado">
-							<input type="text" id="documento" name="documento"
-								class="input-text" />
-						</div>
-					</div>
-				</div>
-
-				<div class="form-group botones-accion">
-					<div>
-						<button type="submit" class="btn-submit">Buscar</button>
-						<button type="button" class="btn-submit-3" onclick="window.location.href='/mesalista/cliente/registrar'">
-						    Registrar Nuevo Cliente
-						</button>
-					</div>
-					<div>
-						<button type="button" class="btn-submit-4" id="btnPedidosIncompletos">Pedidos Incompletos</button>
-					</div>
-				</div>
-			</form>
-
-			<!-- Modal para mostrar pedidos incompletos -->
-			<div id="modalPedidosIncompletos" class="modal-pedidos-incompletos" style="display: none;">
-				<div class="modal-pedidos-incompletos-content">
-					<span class="close-modal-pedidos-incompletos" id="cerrarModalPedidosIncompletos">&times;</span>
-					<h3>Pedidos Incompletos</h3>
-					<div id="listaPedidosIncompletos">
-						<!-- Aquí se insertará dinámicamente la lista -->
-					</div>
-				</div>
-			</div>
-
-			<!-- Tabla de resultados -->
-			<div class="tabla-container" th:if="${clientes}">
-				<table border="1" class="tabla-clientes">
-					<tr>
-						<th>Seleccionar</th>
-						<th>Nombre</th>
-						<th>Documento</th>
-						<th>Dirección</th>
-					</tr>
-					<tr th:each="cliente, stat : ${clientes}" th:if="${stat.index < 12}"	class="tabla-clientes-rows">
-						<td><input type="radio" name="clienteSeleccionado" th:value="${cliente.id}" /></td>
-						<td th:text="${cliente.nombre}">Nombre</td>
-						<td th:text="${cliente.documento}">Documento</td>
-						<td th:text="${cliente.direccion}">Dirección</td>
-					</tr>
-				</table>
-
-				<div class="button-container">
-					<button class="btn-submit-2" id="btnTomarPedido" style="display: none;">Tomar Pedido</button>
-				</div>
-
-				<script>
-			        const radios = document.querySelectorAll('input[name="clienteSeleccionado"]');
-			        const btnTomarPedido = document.getElementById('btnTomarPedido');
-			        let clienteSeleccionadoId = null;
-			
-			        if (btnTomarPedido && radios.length > 0) {
-			            radios.forEach(radio => {
-			                radio.addEventListener('change', function () {
-			                    clienteSeleccionadoId = this.value;
-			                    btnTomarPedido.style.display = 'inline-block';
-			                });
-			            });
-			
-			            btnTomarPedido.addEventListener('click', function () {
-			                if (clienteSeleccionadoId) {
-			                	localStorage.clear();
-			                    window.location.href = '/mesalista/cliente/pedido/nuevo/' + clienteSeleccionadoId;
-			                } else {
-			                	mostrarPopupConfirmacion("warning", "Por favor, selecciona un cliente.");
-			                }
-			            });
-			        }
-			    </script>
-
-			</div>
-		</div>
+	    <div class="contenido-principal">
+	        
+	        <!-- Panel Izquierdo: Búsqueda y Botones -->
+	        <div class="panel-izquierdo">
+	            <form id="buscarClienteForm" th:action="@{/cliente/buscar}" method="get" onsubmit="return validarFormulario()" class="buscar-cliente-form">
+	                <div class="form-group">
+	                    <div class="grupo-flex">
+	                        <label for="nombre">Por Nombre:</label>
+	                        <div class="cajon-dorado">
+	                            <input type="text" id="nombre" name="nombre" class="input-text" />
+	                        </div>
+	                    </div>
+	                </div>
+	
+	                <div class="form-group">
+	                    <div class="grupo-flex">
+	                        <label for="documento">Por Documento:</label>
+	                        <div class="cajon-dorado">
+	                            <input type="text" id="documento" name="documento" class="input-text" />
+	                        </div>
+	                    </div>
+	                </div>
+	
+	                <div class="form-group botones-accion">
+	                    <div class="necesito-cetrar-estos-botones">
+	                        <button type="submit" class="btn-submit">Buscar</button>
+	                        <button type="button" class="btn-submit-3" onclick="window.location.href='/mesalista/cliente/registrar'">Registrar Nuevo Cliente</button>
+	                        <button type="button" class="btn-submit-4" id="btnPedidosIncompletos">Pedidos Incompletos</button>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+	
+	        <!-- Panel Derecho: Tabla de resultados -->
+	        <div class="panel-derecho" th:if="${clientes}">
+	            <div class="tabla-container">
+	                <table border="1" class="tabla-clientes">
+	                    <tr>
+	                        <th>Seleccionar</th>
+	                        <th>Nombre</th>
+	                        <th>Documento</th>
+	                        <th>Dirección</th>
+	                    </tr>
+	                    <tr th:each="cliente, stat : ${clientes}" th:if="${stat.index < 13}" class="tabla-clientes-rows">
+	                        <td><input type="radio" name="clienteSeleccionado" th:value="${cliente.id}" /></td>
+	                        <td th:text="${cliente.nombre}">Nombre</td>
+	                        <td th:text="${cliente.documento}">Documento</td>
+	                        <td th:text="${cliente.direccion}">Dirección</td>
+	                    </tr>
+	                </table>
+	
+	                <div class="button-container">
+	                    <button class="btn-submit-2" id="btnTomarPedido" style="display: none;">Tomar Pedido</button>
+	                </div>
+	            </div>
+	        </div>
+	
+	    </div>
 	</main>
 
-	<script type="text/javascript" th:src="@{/js/PopupCustom2Options.js}"></script>
-	<script type="text/javascript" th:src="@{/js/Inicio.js}"></script>
-	<script type="text/javascript" th:src="@{/js/PedidosIncompletos.js}"></script>
+    <script type="text/javascript" th:src="@{/js/PopupCustom2Options.js}"></script>
+    <script type="text/javascript" th:src="@{/js/Inicio.js}"></script>
+    <script type="text/javascript" th:src="@{/js/PedidosIncompletos.js}"></script>
 
-	<script th:inline="javascript">
-	/*<![CDATA[*/
-	var sinResultados = /*[[${sinResultados} ?: false]]*/false;
-	if (sinResultados) {
-		mostrarPopupConfirmacion("error","No se encontraron resultados con los criterios de búsqueda.");
-	}
-	/*]]>*/
-	</script>
-	
+    <script th:inline="javascript">
+	    /*<![CDATA[*/
+	    window._sinResultados = /*[[${sinResultados} ?: false]]*/false;
+	    /*]]>*/
+    </script>
+
 </body>
 </html>

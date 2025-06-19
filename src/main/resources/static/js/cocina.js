@@ -63,8 +63,8 @@ function renderPedidos(pedidos) {
     container.innerHTML = ''; // limpia contenido actual
 
     pedidos.forEach(pedido => {
-        // Ordenar detalles según tipoProducto: segundos (2), entradas (1), bebidas (3), postres (4)
-        const prioridad = [2, 1, 3, 4];
+        // Ordenar detalles según tipoProducto: segundos (2), entradas (1), bebidas (3), postres (4), guarnición (5)
+        const prioridad = [2, 1, 3, 4, 5];
         const detallesOrdenados = pedido.detalles
             .filter(detalle => detalle.cantidad > 0)
             .sort((a, b) => {

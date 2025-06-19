@@ -5,6 +5,7 @@
     font-style: normal;
 }
 
+/* Estilos aplicados solo dentro de la barra de navegación */
 nav {
     position: fixed;
     top: 0;
@@ -18,6 +19,7 @@ nav {
     z-index: 1000;
 }
 
+/* Enlaces dentro de la barra de navegación */
 .nav-link {
     color: white;
     margin-right: clamp(8px, 1.5vw, 20px);
@@ -26,17 +28,23 @@ nav {
     transition: color 0.3s ease;
 }
 
+/* Logo o enlace de inicio */
 .nav-inicio {
     margin-right: clamp(20px, 3vw, 40px);
     margin-left: clamp(8px, 1vw, 20px);
 }
 
+/* Hover en enlaces */
 .nav-link:hover {
     color: black;
 }
 
+/* Asegura que el body no tenga margen, pero sin imponer tipografía o padding global */
 body {
-    font-family: 'Yeseva One';
     margin: 0;
+}
+
+/* Si necesitas espacio por el nav fijo, aplícalo solo al main */
+main {
     padding-top: clamp(40px, 4vw, 70px);
 }

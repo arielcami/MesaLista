@@ -18,7 +18,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		{ tipo: 1, nombre: "Entradas" },
 		{ tipo: 2, nombre: "Segundos" },
 		{ tipo: 3, nombre: "Bebidas" },
-		{ tipo: 4, nombre: "Postres" }
+		{ tipo: 4, nombre: "Postres" },
+		{ tipo: 5, nombre: "Guarnicion" },
 	];
 
 	let categoriaActualIndex = 0;

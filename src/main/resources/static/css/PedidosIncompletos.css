@@ -8,23 +8,26 @@
     z-index: 1001;
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vw;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.4);
 }
 
 /* Contenido del modal */
 .modal-pedidos-incompletos-content {
-    background-color: #fefefe;
+    background-color: #ffffff;
     margin: 5% auto;
     padding: 20px 30px;
     border: 1px solid #888;
-    width: 60%;
+    width: 85%;
     max-height: 70%;
     overflow-y: auto;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    width: 60vw;
+    max-width: 80vw;
+    min-width: 40vw;
 }
 
 /* Botón para cerrar el modal */

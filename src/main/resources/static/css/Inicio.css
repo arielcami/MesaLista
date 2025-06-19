@@ -1,11 +1,24 @@
+/* ==== Tipografía === */
+@font-face {
+    font-family: 'Yeseva One';
+    src: url('../fonts/yeseva-one.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     background-color: #ffffff;
     font-family: 'Yeseva One';
     margin: 0;
     padding: 0;
-    padding-top: 4vw;
 }
 
+main {
+    padding: 1.5vw;
+    padding-top: 3.3vw;
+}
+
+/* ==== Encabezado principal ==== */
 h2 {
     font-size: 1.77vw;
     text-align: left;
@@ -15,29 +28,23 @@ h2 {
     font-weight: normal;
 }
 
-p {
-    text-align: center;
-    font-size: 1.2em;
-    margin-top: 1.04vw;
-    color: #555;
+/* ==== Estructura en columnas ==== */
+.contenido-principal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 3vw;
+    flex-wrap: nowrap; /* 🚫 NO permitir que se salte de línea */
 }
 
-main {
-    padding: 1.04vw;
-}
-
-@font-face {
-    font-family: 'Yeseva One';
-    src: url('../fonts/yeseva-one.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+/* ==== Panel izquierdo: búsqueda ==== */
+.panel-izquierdo {
+    flex: 0 0 42%;
+    max-width: 42vw;
 }
 
 .buscar-cliente-form {
-    max-width: 18.75vw;
-    margin: 0 auto;
-    margin-left: 2.6vw;
-    padding: 1.04vw;
     font-size: 1.04vw;
     color: #8d8c8e;
 }
@@ -46,9 +53,18 @@ main {
     margin-bottom: 0.52vw;
 }
 
-.form-group:last-child {
-    display: block;
-    justify-content: center;
+.grupo-flex {
+    display: flex;
+    align-items: center;
+    gap: 0.52vw;
+}
+
+.grupo-flex label {
+    width: 7.29vw;
+    margin-right: 2.6vw;
+    font-size: 1.25vw;
+    color: #8d8c8e;
+    white-space: nowrap;
 }
 
 .input-text {
@@ -60,23 +76,22 @@ main {
     font-family: 'Consolas';
 }
 
-.btn-submit {
-    width: 10.42vw;
+.cajon-dorado {
     background-color: #d4a500;
-    color: white;
-    padding: 0.52vw 1.04vw;
-    border: none;
-    border-radius: 1.72vw;
-    cursor: pointer;
-    font-size: 1.46vw;
-    font-family: 'Yeseva One';
-    margin-left: 13.28vw;
-    transition: color 0.3s ease;
-    margin-bottom: 1.3vw;
+    width: 15.1vw;
+    padding: 0.52vw;
+    border-radius: 3.12vw;
+    margin-bottom: 0.52vw;
 }
 
-.btn-submit-2 {
-    width: 12.5vw;
+/* ==== Botones búsqueda ==== */
+.botones-accion > div {
+    margin-top: 1vw;
+}
+
+.btn-submit,
+.btn-submit-2,
+.btn-submit-3 {
     background-color: #d4a500;
     color: white;
     padding: 0.52vw 1.04vw;
@@ -85,70 +100,67 @@ main {
     cursor: pointer;
     font-size: 1.46vw;
     font-family: 'Yeseva One';
-    margin-left: 0;
-    margin-top: -2.6vw;
     transition: color 0.3s ease;
+    display: block;
+    margin-bottom: 1vw;
+}
+
+.btn-submit {
+    width: 10.42vw;
+    margin-left: 13.28vw;
 }
 
 .btn-submit-3 {
     width: 19.79vw;
-    background-color: #d4a500;
+    margin-left: 8.5vw;
+}
+
+.btn-submit-4 {
+	background-color: #d4a500;
     color: white;
-    padding: 0.52vw 1.04vw;
+    padding: 0.55vw 1.1vw;
     border: none;
     border-radius: 1.72vw;
     cursor: pointer;
     font-size: 1.46vw;
     font-family: 'Yeseva One';
-    margin-left: 8.5vw;
     transition: color 0.3s ease;
-    margin-bottom: 1.3vw;
+    display: block;
+    width: 15vw;
+}
+
+.btn-submit-2 {
+    width: 12.5vw;
+    margin-left: 0;
+    margin-top: -2.6vw;
 }
 
 .btn-submit:hover,
 .btn-submit-2:hover,
-.btn-submit-3:hover {
+.btn-submit-3:hover,
+.btn-submit-4:hover {
     color: #333;
 }
 
-.contenido-flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 7.81vw;
-    flex-wrap: wrap;
-    margin-top: -0.52vw;
+/* ==== Panel derecho: tabla ==== */
+.panel-derecho {
+    flex: 0 0 56%;
+    max-width: 56vw;
 }
 
 .tabla-container {
     margin-top: 1.04vw;
-    max-width: 47.92vw;
-    padding-right: 10.42vw;
+    padding-right: 2vw;
+    max-width: 53vw;
 }
 
 .tabla-clientes {
-    width: 44.79vw;
+    width: 100%;
     border-collapse: collapse;
     font-size: 0.83vw;
     color: #333;
     transform: scale(0.95);
     transform-origin: top left;
-}
-
-.tabla-clientes-rows {
-    width: 2.6vw;
-    border-collapse: collapse;
-    font-size: 1.04vw;
-    color: #333;
-    font-family: 'Arial';
-}
-
-.tabla-clientes input[type="radio"] {
-    width: 1.82vw;
-    height: 1.82vw;
-    accent-color: #d4a500;
-    display: block;
-    margin: 0 auto;
 }
 
 .tabla-clientes th,
@@ -166,29 +178,72 @@ main {
     font-size: 0.94vw;
 }
 
+.tabla-clientes-rows {
+    font-size: 1.04vw;
+    font-family: 'Arial';
+}
+
+.tabla-clientes input[type="radio"] {
+    width: 1.82vw;
+    height: 1.82vw;
+    accent-color: #d4a500;
+    display: block;
+    margin: 0 auto;
+}
+
+/* ==== Botón "Tomar Pedido" ==== */
 .button-container {
-    margin-top: 1.56vw;
     text-align: left;
+    margin-top: 1.56vw;
 }
 
-.cajon-dorado {
-    background-color: #d4a500;
-    width: 15.1vw;
-    padding: 0.52vw;
-    border-radius: 3.12vw;
-    margin-bottom: 0.52vw;
-}
-
-.grupo-flex {
+/* ==== Modal ==== */
+.modal-pedidos-incompletos {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 999;
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 0.52vw;
 }
 
-.grupo-flex label {
-    width: 7.29vw;
-    margin-right: 2.6vw;
-    font-size: 1.25vw;
-    color: #8d8c8e;
-    white-space: nowrap;
+.modal-pedidos-incompletos-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 6px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
 }
+
+.close-modal-pedidos-incompletos {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.close-modal-pedidos-incompletos:hover {
+    color: #000;
+}
+
+/* ==== Responsive ==== */
+@media (max-width: 768px) {
+    .contenido-principal {
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+
+    .panel-izquierdo,
+    .panel-derecho {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
