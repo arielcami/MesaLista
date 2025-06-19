@@ -8,6 +8,9 @@ public interface PedidoService {
     List<PedidoEntity> findAll();
     
     List<PedidoEntity> findAllByVisible();
+    
+    // Para listar todos los estado = 0 independientemente de todo
+    List<PedidoEntity> obtenerPedidosIncompletos();
 
     List<PedidoEntity> findByEstadoPedido(Byte estadoPedido);
 
@@ -32,5 +35,8 @@ public interface PedidoService {
     void marcarPedidoEstado(Long pedidoId, Byte estado);
     
     void actualizarEstadoSiDeliveryCoincide(Long pedidoId, Long deliveryId, Byte nuevoEstado);
+    
+    void limpiarBasuraPedido(Integer pedidoId);
+
 
 }

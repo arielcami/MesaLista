@@ -30,6 +30,11 @@ public class PedidoServiceImpl implements PedidoService {
 	public List<PedidoEntity> findAllByVisible() {
     	return pedidoRepository.findAllByVisible();
 	}
+    
+    @Override
+    public List<PedidoEntity> obtenerPedidosIncompletos() {
+        return pedidoRepository.findPedidosIncompletos();
+    }    
 
     // Recientemente modificado en el repository para que filtre por paraLlevar = TRUE
     @Override
@@ -125,4 +130,12 @@ public class PedidoServiceImpl implements PedidoService {
     public void actualizarEstadoSiDeliveryCoincide(Long pedidoId, Long deliveryId, Byte nuevoEstado) {
         pedidoRepository.actualizarEstadoSiDeliveryCoincide(pedidoId, deliveryId, nuevoEstado);
     }
+    
+    
+    @Override
+    public void limpiarBasuraPedido(Integer pedidoId) {
+        pedidoRepository.limpiarBasuraPedido(pedidoId);
+    }
+    
+    
 }

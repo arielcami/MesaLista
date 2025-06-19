@@ -276,6 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		})
 		.then(message => {
 			mostrarPopupConfirmacion("success", message, () => {
+				localStorage.clear();
 				window.location.href = "/mesalista";
 			});
 		})

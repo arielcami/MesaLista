@@ -882,6 +882,46 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+DELIMITER $$
+
+DELIMITER $$
+
+USE `mesalista_db`$$
+
+DROP PROCEDURE IF EXISTS `limpiarBasuraPedido`$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `limpiarBasuraPedido`(IN p_pedido_id INT)
+BEGIN
+    DECLARE pedidoExiste INT DEFAULT 0;
+
+    -- Verificar existencia y condiciones del pedido
+    SELECT COUNT(*) INTO pedidoExiste
+    FROM pedidos
+    WHERE id = p_pedido_id
+      AND estado_pedido = 0
+      AND visible = 1;
+
+    IF pedidoExiste = 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'El pedido no existe o no puede ser eliminado (estado ≠ 0 o no visible)';
+    ELSE
+        START TRANSACTION;
+
+        -- Eliminar los detalles asociados al pedido
+        DELETE FROM detalle_pedido
+        WHERE pedido_id = p_pedido_id;
+
+        -- Eliminar el pedido
+        DELETE FROM pedidos
+        WHERE id = p_pedido_id;
+
+        COMMIT;
+    END IF;
+END$$
+
+DELIMITER ;
 /* =============== FIN EVENTS, JOBS y STORED PROCEDURES ================= */
 
 

@@ -43,6 +43,11 @@ public class PedidoRestController {
 	public List<PedidoEntity> findByEstadoPedido(@PathVariable byte estado) {
 		return servicio.findByEstadoPedido(estado);
 	}
+	
+	@GetMapping("/incompletos")
+	public List<PedidoEntity> obtenerPedidosIncompletos() {
+	    return servicio.obtenerPedidosIncompletos();
+	}
 
 	@GetMapping("/cliente/{clienteId}")
 	public List<PedidoEntity> findByClienteId(@PathVariable Long clienteId) {
@@ -122,4 +127,16 @@ public class PedidoRestController {
 	    }
 	}
 
+	// Borrado físico, cuidado
+	@DeleteMapping("/limpiar-basura/{pedidoId}")
+	public ResponseEntity<String> limpiarBasuraPedido(@PathVariable Integer pedidoId) {
+	    try {
+	    	servicio.limpiarBasuraPedido(pedidoId);
+	        return ResponseEntity.ok("Pedido eliminado correctamente.");
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al eliminar el pedido: " + e.getMessage());
+	    }
+	}
+	
+	
 }

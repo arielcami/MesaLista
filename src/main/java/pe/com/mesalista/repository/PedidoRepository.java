@@ -11,10 +11,15 @@ import pe.com.mesalista.entity.PedidoEntity;
 
 public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
 	
+	// Listar todos aquellos pedidos con estado = 0
+	@Query("SELECT p FROM PedidoEntity p WHERE p.estadoPedido = 0 AND p.visible = true")
+	List<PedidoEntity> findPedidosIncompletos();
+	
 	// Listar todos los que esten visibles
 	@Query("SELECT p FROM PedidoEntity p WHERE p.visible = true")
 	List<PedidoEntity> findAllByVisible();
 	
+	// Listar por estado
 	@Query("SELECT p FROM PedidoEntity p WHERE p.estadoPedido = :estadoPedido AND p.paraLlevar = true")
 	List<PedidoEntity> findByEstadoPedido(@Param("estadoPedido") byte estadoPedido);
 
@@ -85,6 +90,9 @@ public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
 	    @Param("deliveryId") Long deliveryId,
 	    @Param("nuevoEstado") Byte nuevoEstado
 	);
-
+	
+	// Borrar fisicamente los productos basura
+	@Procedure(procedureName = "limpiarBasuraPedido")
+	void limpiarBasuraPedido(@Param("p_pedido_id") Integer pedidoId);
 
 }
