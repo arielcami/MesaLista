@@ -1,5 +1,6 @@
 package pe.com.mesalista.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,6 +29,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "detalle_pedido")
 public class DetallePedidoEntity implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id

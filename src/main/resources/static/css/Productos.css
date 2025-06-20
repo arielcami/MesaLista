@@ -1,4 +1,12 @@
+@font-face {
+    font-family: 'Yeseva One';
+    src: url('../fonts/yeseva-one.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
+	font-family: Yeseva One;
 	margin-bottom: 100px;
 }
 main h2 {

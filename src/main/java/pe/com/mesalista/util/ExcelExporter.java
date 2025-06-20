@@ -35,8 +35,8 @@ public class ExcelExporter {
 					Object value = record[colIdx];
 					if (value == null) {
 						cell.setCellValue("");
-					} else if (value instanceof Number) {
-						cell.setCellValue(((Number) value).doubleValue());
+					} else if (value instanceof Number number) {
+						cell.setCellValue(number.doubleValue());
 					} else {
 						cell.setCellValue(value.toString());
 					}

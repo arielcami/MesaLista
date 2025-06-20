@@ -83,8 +83,9 @@ document.addEventListener("DOMContentLoaded", function() {
 			pedidos.forEach(pedido => {
 				const item = document.createElement("div");
 				item.classList.add("item-pedido-incompleto");
+				let totalFormateado = pedido.total.toFixed(2);
 				item.innerHTML = `
-					<span><strong>Pedido ID</strong>: ${pedido.id} - <strong>Cliente:</strong> ${pedido.cliente.nombre} - <strong>Valor:</strong> S/ ${pedido.total}</span>
+					<span><strong>Pedido ID</strong>: ${pedido.id} - <strong>Cliente:</strong> ${pedido.cliente.nombre} - <strong>Valor:</strong> S/ ${totalFormateado}</span>
 					<div>
 						<button class="btn-continuar-pedido" data-pedido-id="${pedido.id}">Continuar Pedido</button>
 						<button class="btn-eliminar-pedido" data-pedido-id="${pedido.id}">Eliminar</button>

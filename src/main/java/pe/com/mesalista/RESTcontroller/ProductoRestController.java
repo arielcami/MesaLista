@@ -3,7 +3,6 @@ package pe.com.mesalista.RESTcontroller;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Comparator;
 import java.util.List;
@@ -43,80 +42,81 @@ public class ProductoRestController {
 		return productoService.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
 	}
 
-	// Guardar nuevo producto, con imagen o no
+	// Crear un producto con imagen o no
 	@PostMapping
 	public ResponseEntity<ProductoEntity> saveConImagen(@RequestPart("producto") ProductoEntity producto,
-			@RequestPart(value = "imagen", required = false) MultipartFile imagen) {
-		try {
-			if (imagen != null && !imagen.isEmpty()) {
-				String nombreArchivo = System.currentTimeMillis() + "_" + imagen.getOriginalFilename();
-				Path rutaImagen = Paths.get("img-realtime", nombreArchivo);
-				Files.createDirectories(rutaImagen.getParent());
-				Files.copy(imagen.getInputStream(), rutaImagen, StandardCopyOption.REPLACE_EXISTING);
-				producto.setImagenUrl("img-realtime/" + nombreArchivo);
-			}
+	        @RequestPart(value = "imagen", required = false) MultipartFile imagen) {
+	    try {
+	        if (imagen != null && !imagen.isEmpty()) {
+	            String nombreArchivo = System.currentTimeMillis() + "_" + imagen.getOriginalFilename();
 
-			ProductoEntity productoGuardado = productoService.save(producto);
-			return ResponseEntity.ok(productoGuardado);
+	            String basePath = System.getProperty("user.dir");
+	            Path rutaImagen = Path.of(basePath, "source-img", "productos", nombreArchivo);
 
-		} catch (IOException e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-		}
+	            Files.createDirectories(rutaImagen.getParent());
+	            Files.copy(imagen.getInputStream(), rutaImagen, StandardCopyOption.REPLACE_EXISTING);
+
+	            producto.setImagenUrl("img/productos/" + nombreArchivo);
+	        }
+
+	        ProductoEntity productoGuardado = productoService.save(producto);
+	        return ResponseEntity.ok(productoGuardado);
+
+	    } catch (IOException e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	    }
 	}
-
+	
+	// Editar un producto existente con imagen o no
 	@PutMapping(value = "/{id}", consumes = { "multipart/form-data" })
 	public ResponseEntity<ProductoEntity> updateConImagen(@PathVariable Long id,
-			@RequestPart("producto") ProductoEntity producto,
-			@RequestPart(value = "imagen", required = false) MultipartFile imagen) {
-		try {
-			// Verificar si el producto existe
-			Optional<ProductoEntity> existenteOpt = productoService.findById(id);
-			if (existenteOpt.isEmpty()) {
-				return ResponseEntity.notFound().build();
-			}
+	        @RequestPart("producto") ProductoEntity producto,
+	        @RequestPart(value = "imagen", required = false) MultipartFile imagen) {
+	    try {
+	        Optional<ProductoEntity> existenteOpt = productoService.findById(id);
+	        if (existenteOpt.isEmpty()) {
+	            return ResponseEntity.notFound().build();
+	        }
 
-			ProductoEntity existente = existenteOpt.get();
+	        ProductoEntity existente = existenteOpt.get();
+	        producto.setId(id);
 
-			// Copiar el ID al nuevo producto
-			producto.setId(id);
+	        String basePath = System.getProperty("user.dir");
+	        Path directorioImagenes = Path.of(basePath, "source-img", "productos");
 
-			// Manejar imagen nueva
-			if (imagen != null && !imagen.isEmpty()) {
+	        if (imagen != null && !imagen.isEmpty()) {
+	            // Eliminar imagen anterior si existe
+	            String imagenAnterior = existente.getImagenUrl();
+	            if (imagenAnterior != null && !imagenAnterior.isBlank()) {
+	                String nombreAnterior = Path.of(imagenAnterior).getFileName().toString();
+	                Path rutaImagenAnterior = directorioImagenes.resolve(nombreAnterior);
+	                try {
+	                    Files.deleteIfExists(rutaImagenAnterior);
+	                } catch (IOException e) {
+	                    System.err.println("No se pudo eliminar la imagen anterior: " + e.getMessage());
+	                }
+	            }
 
-				// Eliminar imagen anterior si existe
-				String imagenAnterior = existente.getImagenUrl();
-				if (imagenAnterior != null && !imagenAnterior.isBlank()) {
-					// Obtener solo el nombre del archivo por seguridad
-					String nombreImagenAnterior = Paths.get(imagenAnterior).getFileName().toString();
-					Path rutaImagenAnterior = Paths.get("img-realtime", nombreImagenAnterior);
-					try {
-						Files.deleteIfExists(rutaImagenAnterior);
-					} catch (IOException e) {
-						System.err.println("No se pudo eliminar la imagen anterior: " + e.getMessage());
-					}
-				}
+	            // Guardar nueva imagen
+	            String nombreArchivo = System.currentTimeMillis() + "_" + imagen.getOriginalFilename();
+	            Path rutaNueva = directorioImagenes.resolve(nombreArchivo);
+	            Files.createDirectories(rutaNueva.getParent());
+	            Files.copy(imagen.getInputStream(), rutaNueva, StandardCopyOption.REPLACE_EXISTING);
 
-				// Guardar nueva imagen
-				String nombreArchivo = System.currentTimeMillis() + "_" + imagen.getOriginalFilename();
-				Path rutaImagen = Paths.get("img-realtime", nombreArchivo);
-				Files.createDirectories(rutaImagen.getParent());
-				Files.copy(imagen.getInputStream(), rutaImagen, StandardCopyOption.REPLACE_EXISTING);
+	            producto.setImagenUrl("img/productos/" + nombreArchivo);
+	        } else {
+	            // No se subió imagen nueva, mantener la anterior
+	            producto.setImagenUrl(existente.getImagenUrl());
+	        }
 
-				// Guardar solo el nombre del archivo
-				producto.setImagenUrl("img-realtime/" + nombreArchivo);
-			} else {
-				// Mantener imagen anterior si no se subió nueva
-				producto.setImagenUrl(existente.getImagenUrl());
-			}
+	        ProductoEntity actualizado = productoService.update(id, producto).orElseThrow();
+	        return ResponseEntity.ok(actualizado);
 
-			// Guardar cambios
-			ProductoEntity actualizado = productoService.update(id, producto).orElseThrow();
-			return ResponseEntity.ok(actualizado);
-
-		} catch (IOException e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
+	    } catch (IOException e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    }
 	}
+
 
 	@PutMapping("/reset-estado")
 	public void resetearEstadoProductos() {

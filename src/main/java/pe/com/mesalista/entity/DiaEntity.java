@@ -1,8 +1,12 @@
 package pe.com.mesalista.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -12,6 +16,7 @@ import lombok.*;
 @Table(name = "dias")
 public class DiaEntity implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id

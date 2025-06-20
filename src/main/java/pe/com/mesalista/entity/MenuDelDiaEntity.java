@@ -1,8 +1,12 @@
 package pe.com.mesalista.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Data
@@ -15,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 				@Index(name = "idx_dia_id", columnList = "dia_id") })
 public class MenuDelDiaEntity implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

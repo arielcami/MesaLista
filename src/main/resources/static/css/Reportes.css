@@ -6,6 +6,10 @@
     font-style: normal;
 }
 
+body {
+	font-family: Yeseva One;
+}
+
 /* Modal de autenticación */
 .modal-auth-block {
     position: fixed;
@@ -166,3 +170,25 @@ canvas {
   outline: none;
   box-shadow: 0 0 0 3px rgba(0,123,255,0.5);
 }
+
+.reporte-backup-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1002;
+}
+
+.reporte-backup-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+

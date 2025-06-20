@@ -1,5 +1,6 @@
 package pe.com.mesalista.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
@@ -21,7 +22,8 @@ import lombok.NoArgsConstructor;
 @PrimaryKeyJoinColumn(name = "id")
 public class DeliveryEntity extends EmpleadoEntity implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
 	@Column(name = "unidad", length = 25, nullable = false)
 	private String unidad;

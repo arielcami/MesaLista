@@ -228,23 +228,20 @@ document.addEventListener("DOMContentLoaded", function() {
 							method: 'PUT',
 							body: formData
 						})
-							.then(response => {
-								if (!response.ok) throw new Error("Error al actualizar producto");
-								return response.json();
-							})
-							.then(() => {
-								popupOverlay.classList.add('hidden');
-								mostrarPopupConfirmacion(
-									"success",
-									"Producto actualizado correctamente.",
-									() => {
-										fetchAndRenderProductos(urlActual);
-									}
-								);
-							})
-							.catch(err => {
-								mostrarPopupConfirmacion("Error", "No se pudo actualizar el producto.");
+						.then(response => {
+							if (!response.ok) throw new Error("Error al actualizar producto");
+							return response.json();
+						})
+						.then(() => {
+							popupOverlay.classList.add('hidden');
+							mostrarPopupConfirmacion("success", "Producto actualizado correctamente.", () => {
+								fetchAndRenderProductos(urlActual);
 							});
+						})
+						.catch(err => {
+							console.log(err);
+							mostrarPopupConfirmacion("Error", "No se pudo actualizar el producto.");
+						});
 					};
 
 					form.addEventListener("submit", submitHandler);
@@ -254,4 +251,5 @@ document.addEventListener("DOMContentLoaded", function() {
 				});
 		});
 	}
+
 });

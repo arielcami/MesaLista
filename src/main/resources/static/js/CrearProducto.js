@@ -54,21 +54,15 @@ document.addEventListener("DOMContentLoaded", () => {
 			})
 			.then(productoCreado => {
 				createPopupOverlay.classList.add('hidden');
-				mostrarPopupConfirmacion(
-					"success",
-					"Producto creado exitosamente: " + productoCreado.nombre,
-					() => {
-						window.location.reload();
-					}
-				);
+				mostrarPopupConfirmacion("success", "Producto creado exitosamente: " + productoCreado.nombre, () => {
+					window.location.reload();
+				});
 			})
 			.catch(err => {
 				createPopupOverlay.classList.add('hidden');
-				mostrarPopupConfirmacion(
-					"error",
-					"No se pudo crear el producto. Verifica los datos.",
-					() => { }
-				);
+				console.log(err.toString());
+				mostrarPopupConfirmacion("error", "No se pudo crear el producto. Verifica los datos.");
 			});
 	});
+
 });
