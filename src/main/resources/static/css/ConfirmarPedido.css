@@ -10,19 +10,10 @@ body {
 }
 
 h2 {
-    font-size: 34px;
+    font-size: 28px;
     text-align: left;
-    margin-top: 10px;
+    margin-top: 0px;
     margin-left: 40px;
-    color: #8d8c8e;
-    font-weight: normal;
-}
-
-h3 {
-    font-size: 22px;
-    text-align: left;
-    margin-top: 10px;
-    margin-left: 60px;
     color: #8d8c8e;
     font-weight: normal;
 }
@@ -44,7 +35,7 @@ h3 {
     font-size: 15px;
     color: black;
     transform-origin: top left;
-    margin: 0 auto;
+    
 }
 
 /* Filas de tabla */
@@ -64,7 +55,6 @@ h3 {
     font-size: 17px;
 }
 
-
 /* Cabecera */
 .tabla-detallepedido th {
     background-color: #d4a500;
@@ -73,8 +63,6 @@ h3 {
     font-family: 'Arial';
     font-size: 20px;
 }
-
-
 
 .button-container {
     margin-top: 30px;
@@ -112,7 +100,6 @@ h3 {
     background-color: #d93025;
 }
 .btn-cancelar:hover {
-
     color: #333;
 }
 
@@ -141,20 +128,17 @@ h3 {
     color: black;
 }
 
-
-
-
 .grupo-formulario {
     margin-bottom: 12px;
-    margin-left: 60px;
 }
 
 .grupo-flexible {
     display: flex;
     flex-direction: column;
     color: #8d8c8e;
-    font-size: 20px;
+    font-size: 18px;
     font-family: 'Yeseva One';
+    min-width: 200px;
 }
 
 .contenedor-input {
@@ -190,12 +174,13 @@ h3 {
 
 .contenedor-centrado-campos {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 30px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 15px;
+    margin-top: 15px;
+    flex-wrap: wrap;
 }
-
-
 
 /* Comentarios por producto en ConfirmarPedido */
 .comentario-cell {

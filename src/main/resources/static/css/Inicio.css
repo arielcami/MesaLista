@@ -40,8 +40,8 @@ h2 {
 
 /* ==== Panel izquierdo: búsqueda ==== */
 .panel-izquierdo {
-    flex: 0 0 42%;
-    max-width: 42vw;
+    flex: 0 0 33%;
+    max-width: 35vw;
 }
 
 .buscar-cliente-form {
@@ -144,14 +144,14 @@ h2 {
 
 /* ==== Panel derecho: tabla ==== */
 .panel-derecho {
-    flex: 0 0 56%;
-    max-width: 56vw;
+    flex: 0 0 65%;
+    max-width: 70vw;
 }
 
 .tabla-container {
     margin-top: 1.04vw;
     padding-right: 2vw;
-    max-width: 53vw;
+    max-width: 60vw;
 }
 
 .tabla-clientes {

@@ -76,7 +76,6 @@ function renderPedidos(pedidos) {
             <p><strong>Dirección:</strong> ${pedido.direccionEntrega ?? 'Consumir aquí'}</p>
             <p><strong>Hora del pedido:</strong> ${formatHora(pedido.fechaPedido)}</p>
             <p><strong>Atendido por:</strong> ${pedido.empleado ? pedido.empleado.nombre : 'No asignado'}</p>
-			<p><strong>Entregado por:</strong> ${pedido.delivery?.nombre ?? 'No asignado'}</p>
 
 			${detallesOrdenados.map(detalle => `
 			                <div class="detalle-item">
@@ -126,8 +125,9 @@ window.addEventListener('keydown', (e) => {
 document.getElementById('btn-listo').addEventListener('click', async () => {
 	const id = modal.dataset.pedidoId;
 	const estadoListo = 2;
-
+		
 	try {
+		// 1. Marcar pedido como "listo"
 		const response = await fetch(`${API_URL}/marcarEstado/${id}?estado=${estadoListo}`, {
 			method: 'PUT'
 		});
@@ -135,6 +135,12 @@ document.getElementById('btn-listo').addEventListener('click', async () => {
 		if (!response.ok) {
 			console.error('Error al actualizar pedido:', response.statusText);
 		} else {
+			// 2. Limpiar productos con cantidad = 0 del pedido
+			await fetch(`/mesalista/api/detallepedido/limpiar-detalle/${id}`, {
+				method: 'DELETE'
+			});
+
+			// 3. Recargar pedidos
 			fetchPedidos();
 		}
 	} catch (error) {

@@ -35,6 +35,7 @@ public interface DetallePedidoService {
 	List<DetallePedidoEntity> findActivosByPedidoId(Long pedidoId);
 	
 	DetallePedidoEntity actualizarComentario(Long detalleId, String nuevoComentario);
-
 	
+	void eliminarProductosInactivosDelPedido(Integer pedidoId);
+
 }

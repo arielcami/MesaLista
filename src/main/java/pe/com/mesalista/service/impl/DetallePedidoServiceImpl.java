@@ -1,12 +1,12 @@
 package pe.com.mesalista.service.impl;
 
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.mesalista.entity.DetallePedidoEntity;
 import pe.com.mesalista.repository.DetallePedidoRepository;
 import pe.com.mesalista.service.DetallePedidoService;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DetallePedidoServiceImpl implements DetallePedidoService {
@@ -75,7 +75,7 @@ public class DetallePedidoServiceImpl implements DetallePedidoService {
 			detallePedidoRepository.save(detallePedido);
 			return detallePedido;
 		}
-		return null; // Si no existe el detalle de pedido, no hacemos nada
+		return null;
 	}
 	
 	@Override
@@ -83,6 +83,9 @@ public class DetallePedidoServiceImpl implements DetallePedidoService {
 		return detallePedidoRepository.findActivosByPedidoId(pedidoId);
 	}
 
-	
+	@Override
+	public void eliminarProductosInactivosDelPedido(Integer pedidoId) {
+		detallePedidoRepository.eliminarProductosInactivosDelPedido(pedidoId);	
+	}
 	
 }

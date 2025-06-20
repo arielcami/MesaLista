@@ -69,7 +69,7 @@ body {
 }
 
 .pedido-container {
-    margin-top: 80px;
+    margin-top: 60px;
     display: flex;
     flex-wrap: wrap; /* Cambiar nowrap a wrap */
     overflow-x: visible; /* o eliminar overflow-x si no lo necesitas */
@@ -83,12 +83,12 @@ body {
     flex: 0 0 auto;
     background-color: #fff;
     border: 1px solid gray;
-    border-radius: 8px;
+    border-radius: 3px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    width: 420px;
+    width: 380px;
     padding: 10px;
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .pedido-card h2 {
