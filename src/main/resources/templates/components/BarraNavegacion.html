@@ -1,8 +1,6 @@
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="barra-nav">
     <nav>
-        <!-- Enlace MesaLista con espacio a la derecha -->
         <a href="/mesalista" class="nav-link nav-inicio">MesaLista</a>
-        
         <a th:href="@{/producto}" class="nav-link">Productos</a>
         <a th:href="@{/cliente}" class="nav-link">Clientes</a>
         <a th:href="@{/empleado}" class="nav-link">Empleados</a>
@@ -10,5 +8,6 @@
         <a th:href="@{/pedido/cocina}" class="nav-link">Cocina</a>
         <a th:href="@{/entregas}" class="nav-link">Entregas</a>
         <a th:href="@{/menudeldia}" class="nav-link">Menú del día</a>
+        <a th:href="@{/pedido/cocina/control}" class="nav-link">Control</a>
     </nav>
 </div>
