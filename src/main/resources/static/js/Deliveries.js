@@ -184,7 +184,7 @@ function asignarCambioEstadoDelivery(btn, habilitar) {
 			})
 			.catch((err) => {
 				console.error(err);
-				alert("Error al cambiar estado del delivery");
+				mostrarPopupConfirmacion("Error", "Error al cambiar estado del delivery");
 			});
 	});
 }
@@ -236,10 +236,16 @@ function asignarEventoEdicionDelivery(btn) {
 					const placa = document.getElementById('edit-placa').value;
 
 					const deliveryActualizado = {
-						unidad,
-						placa,
-						estado: d.estado
-					};
+							nombre: d.nombre,
+							documento: d.documento,
+							direccion: d.direccion,
+							telefono: d.telefono,
+							unidad,
+							placa,
+							//clave: d.clave,
+							nivel: d.nivel,
+							estado: d.estado
+						};
 
 					const endpoint = `/mesalista/api/delivery/${id}`;
 
@@ -252,13 +258,14 @@ function asignarEventoEdicionDelivery(btn) {
 					})
 						.then((res) => {
 							if (!res.ok) throw new Error("Error al actualizar delivery");
-							alert("Delivery actualizado con éxito");
-							cerrarPopup();
-							fetchYRenderDelivery();
+							mostrarPopupConfirmacion("Success", "Delivery actualizado con éxito", () => {
+								cerrarPopup();
+								fetchYRenderDelivery();
+							});
 						})
 						.catch((err) => {
 							console.error(err);
-							alert("Error al actualizar delivery");
+							mostrarPopupConfirmacion("Error", "Error al actualizar delivery");
 						});
 				};
 
@@ -266,53 +273,13 @@ function asignarEventoEdicionDelivery(btn) {
 			})
 			.catch((err) => {
 				console.error(err);
-				alert("Error al cargar datos del delivery");
+				mostrarPopupConfirmacion("Error", "Error al cargar datos del delivery");
 			});
 	});
 }
-
-// Abrir popup creación delivery
-document.getElementById('btn-nuevo-delivery').addEventListener('click', () => {
-	document.getElementById('create-delivery-popup').style.display = 'flex';
-});
-
-// Cerrar popup creación
-document.getElementById('create-delivery-close').addEventListener('click', () => {
-	document.getElementById('create-delivery-popup').style.display = 'none';
-});
 
 // Cerrar popup edición
 document.getElementById('edit-delivery-close').addEventListener('click', () => {
 	document.getElementById('edit-delivery-popup').style.display = 'none';
 });
 
-// Crear delivery
-document.getElementById('create-delivery-form').addEventListener('submit', (e) => {
-	e.preventDefault();
-
-	const nuevoDelivery = {
-		nombre: document.getElementById('create-nombre').value.trim(),
-		documento: document.getElementById('create-documento').value.trim(),
-		telefono: document.getElementById('create-telefono').value.trim(),
-		direccion: document.getElementById('create-direccion').value.trim(),
-		clave: document.getElementById('create-clave').value,
-		nivel: 3 // hardcoded nivel delivery
-	};
-
-	fetch('/mesalista/api/delivery', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(nuevoDelivery),
-	})
-		.then(res => {
-			if (!res.ok) throw new Error("Error al crear delivery");
-			alert("Delivery creado con éxito");
-			document.getElementById('create-delivery-popup').style.display = 'none';
-			e.target.reset();
-			fetchYRenderDelivery();
-		})
-		.catch(err => {
-			console.error(err);
-			alert("Error al crear delivery");
-		});
-});

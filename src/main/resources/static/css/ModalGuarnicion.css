@@ -106,3 +106,47 @@
 .btn-agregar-guarnicion:hover {
 	color: black;
 }
+
+
+
+/* Modal de Marcar como Agotado */
+.modal-pedido-agotado-desplegable {
+    position: absolute;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    width: 190px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    text-align: center;
+}
+
+.modal-pedido-agotado-desplegable ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.modal-pedido-agotado-desplegable li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+.modal-pedido-agotado-desplegable li:last-child {
+    border-bottom: none;
+}
+
+.modal-pedido-agotado-desplegable li:hover {
+    background-color: #f2f2f2;
+}
+
+/* Oculto por defecto */
+.oculto {
+    display: none;
+}
+
+

@@ -167,7 +167,7 @@ public class ProductoRestController {
 		}
 	}
 
-	@PatchMapping("/{id}/estado")
+	@PatchMapping("/{id}/estado") // Concatena de /mesalista/api/producto
 	public ResponseEntity<?> parcharEstadoProducto(@PathVariable Long id, @RequestParam boolean estado) {
 		Optional<ProductoEntity> resultado = productoService.actualizarEstado(id, estado);
 

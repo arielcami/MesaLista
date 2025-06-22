@@ -7,15 +7,19 @@
 
 <title>Delivery - MesaLista v1.0</title>
 
+<link rel="stylesheet" type="text/css" th:href="@{/css/PopupCustom2Options.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}" />
 <link rel="stylesheet" th:href="@{/css/Deliveries.css}" />
+
 </head>
 <body>
+	
+	<div th:replace="~{components/PopupCustom2Options :: popupCustom2Options}"></div>
 
 	<div id="auth-modal-unico" class="modal-auth-block">
 		<div class="modal-auth-content">
 			<h2>Autenticación requerida</h2>
-			<input type="text" id="auth-id" placeholder="ID de delivery" autocomplete="off" /> 
+			<input type="text" id="auth-id" placeholder="ID de empleado" autocomplete="off" /> 
 			<input type="password" id="auth-clave" placeholder="Clave" autocomplete="off" />
 			<a th:href="@{/recuperar}" id="link-olvido-clave" class="link-olvido-clave">Olvidé mi clave...</a>
 			<button id="btn-auth-login">Validar</button>
@@ -28,8 +32,8 @@
 	<div th:replace="~{components/BarraNavegacion :: barra-nav}"></div>
 
 	<!-- Popup de Creación de Delivery -->
-	<div id="create-delivery-popup" class="popup-overlay">
-		<div class="popup-content">
+	<div id="create-delivery-popup" class="create-popup-overlay">
+		<div class="popup-content-creacion">
 			<h3>Nuevo Delivery</h3>
 			<span id="create-delivery-close" class="popup-close">❌</span>
 
@@ -72,8 +76,8 @@
 	</div>
 
 	<!-- Popup de Edición de Delivery -->
-	<div id="edit-delivery-popup" class="popup-overlay">
-		<div class="popup-content">
+	<div id="edit-delivery-popup" class="popup-overlay-edicion">
+		<div class="popup-content-edicion">
 			<h3>Editar Delivery</h3>
 			<span id="edit-delivery-close" class="popup-close">❌</span>
 
@@ -132,8 +136,9 @@
 		</div>
 	</main>
 
-	<script th:src="@{/js/Deliveries.js}" defer></script>
+	<script th:src="@{/js/PopupCustom2Options.js}" defer></script>
 	<script th:src="@{/js/CrearDelivery.js}" defer></script>
-
+	<script th:src="@{/js/Deliveries.js}" defer></script>
+	
 </body>
 </html>

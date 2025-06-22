@@ -1,3 +1,69 @@
+function marcarProductoComoAgotado(productoId) {
+    const url = `/mesalista/api/producto/${productoId}/estado?estado=false`;
+
+    fetch(url, {
+        method: "PATCH"
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Error al actualizar el estado del producto");
+        }
+        return response.json();
+    })
+    .then(data => {
+        mostrarPopupCustom("success", `Producto "${data.nombre}" marcado como agotado`);
+        document.getElementById(`producto-${productoId}`)?.remove();
+        document.getElementById(`guarnicion-${productoId}`)?.remove();
+    })
+    .catch(error => {
+        mostrarPopupCustom("error", error.message);
+    });
+}
+
+function asignarMenuContextual(itemElemento, productoId) {
+    const menu = document.getElementById("modal-pedido-agotado");
+
+    itemElemento.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+
+        // Mostrar el menú contextual en la posición del cursor
+        menu.style.left = `${e.pageX}px`;
+        menu.style.top = `${e.pageY}px`;
+        menu.classList.remove("oculto");
+
+        // Guardar ID del producto seleccionado
+        menu.dataset.productoId = productoId;
+    });
+}
+
+// Escuchar clic en opción "Agotado"
+document.getElementById("opcion-agotar-producto").addEventListener("click", () => {
+    const menu = document.getElementById("modal-pedido-agotado");
+    const productoId = menu.dataset.productoId;
+    if (productoId) {
+        marcarProductoComoAgotado(productoId);
+    }
+    menu.classList.add("oculto");
+});
+
+// Escuchar clic en opción "Cancelar"
+document.getElementById("opcion-cancelar-contextual").addEventListener("click", () => {
+    document.getElementById("modal-pedido-agotado").classList.add("oculto");
+});
+
+// Ocultar menú si se hace clic fuera
+document.addEventListener("click", (e) => {
+    const menu = document.getElementById("modal-pedido-agotado");
+    if (!menu.contains(e.target)) {
+        menu.classList.add("oculto");
+    }
+});
+
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
 	const botonAbrir = document.getElementById("btn-agregar-guarnicion");
 	const modal = document.getElementById("modal-guarnicion");
@@ -130,6 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
 					});
 
 					contenedor.appendChild(item);
+					asignarMenuContextual(item, producto.id);
 				});
 
 				modal.classList.remove("oculto");
@@ -277,6 +344,7 @@ document.addEventListener("DOMContentLoaded", function () {
 					});
 
 					contenedor.appendChild(item);
+					asignarMenuContextual(item, producto.id);
 				});
 
 				modal.classList.remove("oculto");

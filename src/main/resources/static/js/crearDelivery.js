@@ -1,58 +1,97 @@
-// CrearDelivery.js
+// Referencias DOM
+const form = document.getElementById('create-delivery-form');
+const popup = document.getElementById('create-delivery-popup');
+const closeBtn = document.getElementById('create-delivery-close');
 
-// Abrir popup creación delivery
+const inputs = {
+	nombre: document.getElementById('create-nombre'),
+	documento: document.getElementById('create-documento'),
+	telefono: document.getElementById('create-telefono'),
+	direccion: document.getElementById('create-direccion'),
+	unidad: document.getElementById('create-unidad'),
+	placa: document.getElementById('create-placa'),
+	clave: document.getElementById('create-clave'),
+	claveConfirm: document.getElementById('create-confirm-clave'),
+};
+
+// Abrir popup de creación
 document.getElementById('btn-nuevo-delivery').addEventListener('click', () => {
-	document.getElementById('create-delivery-form').reset(); // limpiar form
-	document.getElementById('create-delivery-popup').style.display = 'flex';
+	form.reset();
+	popup.style.display = 'flex';
 });
 
-// Cerrar popup creación
-document.getElementById('create-delivery-close').addEventListener('click', () => {
-	document.getElementById('create-delivery-popup').style.display = 'none';
+// Cerrar popup y limpiar
+closeBtn.addEventListener('click', () => {
+	popup.style.display = 'none';
+	form.reset();
 });
 
-// Crear delivery - enviar formulario
-document.getElementById('create-delivery-form').addEventListener('submit', (e) => {
+// Enviar formulario (con confirmación previa)
+form.addEventListener('submit', async (e) => {
 	e.preventDefault();
 
-	const clave = document.getElementById('create-clave').value;
-	const claveConfirm = document.getElementById('create-confirm-clave').value;
+	// Obtener valores
+	const nombre = inputs.nombre.value.trim();
+	const documento = inputs.documento.value.trim();
+	const telefono = inputs.telefono.value.trim();
+	const direccion = inputs.direccion.value.trim();
+	const unidad = inputs.unidad.value.trim();
+	const placa = inputs.placa.value.trim();
+	const clave = inputs.clave.value;
+	const claveConfirm = inputs.claveConfirm.value;
+
+	// Validaciones
+	if (!nombre || !documento || !telefono || !direccion || !unidad || !placa || !clave || !claveConfirm) {
+		return mostrarPopupConfirmacion("Warning", "Todos los campos son obligatorios.");
+	}
 
 	if (clave !== claveConfirm) {
-		alert("Las contraseñas no coinciden.");
-		return;
+		return mostrarPopupConfirmacion("Warning", "Las contraseñas no coinciden.");
+	}
+
+	if (!/^\d{7,15}$/.test(telefono)) {
+		return mostrarPopupConfirmacion("Warning", "El teléfono debe tener entre 7 y 15 dígitos numéricos.");
 	}
 
 	const nuevoDelivery = {
-		nombre: document.getElementById('create-nombre').value.trim(),
-		documento: document.getElementById('create-documento').value.trim(),
-		telefono: document.getElementById('create-telefono').value.trim(),
-		direccion: document.getElementById('create-direccion').value.trim(),
-		unidad: document.getElementById('create-unidad').value.trim(),
-		placa: document.getElementById('create-placa').value.trim(),
-		clave: clave,
-		nivel: 3, // Nivel Delivery fijo
+		nombre,
+		documento,
+		telefono,
+		direccion,
+		unidad,
+		placa,
+		clave,
+		nivel: 3,
 		estado: true
 	};
 
-	fetch('/mesalista/api/delivery', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(nuevoDelivery),
-	})
-		.then(res => {
-			if (!res.ok) throw new Error("Error al crear delivery");
-			alert("Delivery creado con éxito");
-			document.getElementById('create-delivery-popup').style.display = 'none';
-			e.target.reset();
+	// Confirmación previa
+	mostrarPopupConfirmacion("Question", "¿Deseas registrar este delivery?", async () => {
+		const submitBtn = form.querySelector('button[type="submit"]');
+		submitBtn.disabled = true;
 
-			// Disparar evento opcional para refrescar listado
-			const event = new Event('deliveryCreado');
-			document.dispatchEvent(event);
-		})
-		.catch(err => {
-			//console.error(err);
-			//alert("Error al crear delivery");
-		});
+		try {
+			const res = await fetch('/mesalista/api/delivery', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(nuevoDelivery),
+			});
+
+			if (!res.ok) {
+				const errorText = await res.text();
+				throw new Error(errorText || "Error desconocido al crear delivery");
+			}
+
+			mostrarPopupConfirmacion("Success", "Delivery creado con éxito.");
+			popup.style.display = 'none';
+			form.reset();
+
+			document.dispatchEvent(new Event('deliveryCreado'));
+
+		} catch (err) {
+			mostrarPopupConfirmacion("Error", "Error al crear delivery: " + err.message);
+		} finally {
+			submitBtn.disabled = false;
+		}
+	});
 });
-

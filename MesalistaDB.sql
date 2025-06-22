@@ -682,7 +682,11 @@ DELIMITER ;
 -- Cambiar clave de usuario
 DELIMITER $$
 
-CREATE PROCEDURE sp_restablecer_clave (
+USE `mesalista_db`$$
+
+DROP PROCEDURE IF EXISTS `sp_restablecer_clave`$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_restablecer_clave`(
     IN p_id_empleado INT UNSIGNED,
     IN p_nombre VARCHAR(100),
     IN p_telefono VARCHAR(16),
@@ -692,11 +696,8 @@ CREATE PROCEDURE sp_restablecer_clave (
     OUT p_mensaje VARCHAR(255)
 )
 BEGIN
-    DECLARE v_salt VARCHAR(64);
-    DECLARE v_clave_hash VARCHAR(64);
     DECLARE v_existe INT DEFAULT 0;
 
-    -- Verificar si el empleado existe y los datos coinciden
     SELECT COUNT(*) INTO v_existe
     FROM empleados
     WHERE id = p_id_empleado
@@ -705,18 +706,11 @@ BEGIN
       AND documento = p_documento;
 
     IF v_existe = 0 THEN
-        -- Datos incorrectos
         SET p_exito = FALSE;
         SET p_mensaje = 'Los datos ingresados no coinciden con ningún empleado.';
     ELSE
-        -- Generar salt y hash de nueva clave
-        SET v_salt = SUBSTRING(MD5(RAND()), 1, 16);
-        SET v_clave_hash = SHA2(CONCAT(p_nueva_clave, v_salt), 256);
-        
-        -- Actualizar clave y salt
         UPDATE empleados
-        SET clave = v_clave_hash,
-            salt = v_salt
+        SET clave = p_nueva_clave -- el TRIGGER encripta
         WHERE id = p_id_empleado;
 
         SET p_exito = TRUE;

@@ -5,7 +5,7 @@
     font-style: normal;
 }
 
-.popup-overlay {
+.popup-overlay-2options {
   position: fixed;
   top: 0; left: 0;
   width: 100vw;
@@ -21,7 +21,7 @@
     display: none !important;
 }
 
-.popup-content {
+.popup-content-2options {
   background-color: white;
   padding: 20px 30px;
   border-radius: 6px;

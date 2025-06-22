@@ -6,6 +6,7 @@
 }
 
 body {
+	font-family: 'Yeseva One';
     margin-top: -70px;
     margin-bottom: 100px;
 }
@@ -257,6 +258,20 @@ main h2 {
     color: red;
 }
 
+.popup-overlay-edicion {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.4);
+	display: none;
+	justify-content: center;
+	align-items: center;
+	z-index: 10000;
+}
+
+
 .btn-editar {
     padding: 5px 12px;
     font-size: 14px;
@@ -272,19 +287,21 @@ main h2 {
     background-color: #0056b3;
 }
 
-/* Popup overlay y contenido */
-.popup-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
 
-.popup-content {
+/* Popup overlay y contenido */
+.create-popup-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: none;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+.popup-content-creacion {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
@@ -293,11 +310,8 @@ main h2 {
     box-sizing: border-box;
     position: relative;
 }
-
-
-
-.popup-content input,
-.popup-content select {
+.popup-content-creacion input,
+.popup-content-creacion select {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
@@ -308,7 +322,7 @@ main h2 {
     font-size: 18px;
 }
 
-.popup-content button {
+.popup-content-creacion button {
     padding: 10px;
     background-color: #007bff;
     color: white;
@@ -320,6 +334,66 @@ main h2 {
     margin-top: 10px;
 }
 
+/* Edición */
+.popup-overlay-edicion {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: none;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+.popup-content-edicion {
+	background-color: white;
+	padding: 30px 40px;
+	border-radius: 8px;
+	width: 400px;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+}
+
+.popup-content-edicion input,
+.popup-content-edicion select {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-sizing: border-box;
+	font-family: 'Consolas';
+	font-size: 16px;
+}
+
+/* Botón alineado */
+.popup-content-edicion button {
+	padding: 12px;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.popup-content-edicion form {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+
+
+
+
 .popup-close {
     font-size: 20px;
     color: red;
@@ -329,7 +403,6 @@ main h2 {
     top: 10px;
     right: 10px;
 }
-
 .popup-close:hover {
     color: darkred;
 }
