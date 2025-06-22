@@ -31,17 +31,17 @@ public class ClienteRestController {
 				cliente.getDireccion());
 	}
 
-	@GetMapping("buscar-documento")
+	@GetMapping("buscar-documento/{documento}")
 	public ClienteEntity findByDocumento(@PathVariable String documento) {
 		return servicio.findByDocumento(documento);
 	}
 
-	@GetMapping("buscar")
+	@GetMapping("buscar") // concatena de /api
 	public List<ClienteEntity> findByDocumentoContainingIgnoreCase(@PathVariable String documento) {
 		return servicio.findByDocumentoContainingIgnoreCase(documento);
 	}
 
-	@GetMapping("/nombre/{nombre}")
+	@GetMapping("/nombre/{nombre}") // concatena de /api/cliente
 	public List<ClienteEntity> findByNombre(@PathVariable String nombre) {
 		return servicio.findByNombreContainingIgnoreCase(nombre);
 	}

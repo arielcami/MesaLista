@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			const tr = document.createElement("tr");
 
 			tr.innerHTML = `
-				<td><input type="text" value="${producto.id}" disabled class="input-id" /></td>
+				<td><input type="text" id="producto-id-${producto.id}" name="id" value="${producto.id}" disabled class="input-id" /></td>
 				<td class="nombre">${producto.nombre}</td>
 				<td class="tipo">${getTipoProductoTexto(producto.tipoProducto)}</td>
 				<td class="precio">${producto.precio.toFixed(2)}</td>

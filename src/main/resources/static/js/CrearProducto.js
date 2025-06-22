@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Abrir popup
 	createBtn.addEventListener("click", () => {
 		createPopupOverlay.classList.remove('hidden');
+		// console.log("Botón 'Agregar Producto Nuevo' clickeado");
 	});
 
 	// Cerrar popup

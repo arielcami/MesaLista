@@ -60,13 +60,12 @@ function renderPedidos(pedidos) {
 	pedidos.forEach(pedido => {
 		const prioridad = [2, 1, 3, 4];
 		const detallesOrdenados = pedido.detalles
+			.filter(detalle => detalle.cantidad > 0) // ← Agregado: solo incluir cantidades mayores a 0
 			.sort((a, b) => prioridad.indexOf(a.producto.tipoProducto) - prioridad.indexOf(b.producto.tipoProducto));
 
 		const card = document.createElement('div');
 		card.className = 'pedido-card';
 		card.dataset.pedidoId = pedido.id;
-
-		//console.log(pedido);
 
 		card.innerHTML = `
             <h2>Pedido #${pedido.id} - ${estadoPedidoTexto(pedido.estadoPedido)}</h2>
@@ -78,11 +77,11 @@ function renderPedidos(pedidos) {
             <p><strong>Atendido por:</strong> ${pedido.empleado ? pedido.empleado.nombre : 'No asignado'}</p>
 
 			${detallesOrdenados.map(detalle => `
-			                <div class="detalle-item">
-			                    <p>${detalle.cantidad} × ${detalle.producto.nombre}${detalle.comentario ? `  (${detalle.comentario})` : ''}</p>
-			                </div>
-			            `).join('')}
-			        `;
+				<div class="detalle-item">
+				    <p>${detalle.cantidad} × ${detalle.producto.nombre}${detalle.comentario ? `  (${detalle.comentario})` : ''}</p>
+				</div>
+			`).join('')}
+		`;
 
 		card.addEventListener('click', () => {
 			mostrarModal(pedido);
@@ -91,6 +90,7 @@ function renderPedidos(pedidos) {
 		container.appendChild(card);
 	});
 }
+
 
 /* === MODAL === */
 const modal = document.getElementById('modal-acciones');

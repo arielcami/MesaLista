@@ -83,25 +83,3 @@
 	color: black;
 }
 
-
-/* Botón principal de pedidos incompletos */
-#btnPedidosIncompletos {
-	font-family: Yeseva One;
-	font-weight: normal;
-    background-color: #d4a500;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 25px;
-    transition: color 0.3s ease;
-    display: block;
-    margin-left: 204px;
-    margin-top: 10px;
-    white-space: nowrap;
-}
-
-#btnPedidosIncompletos:hover {
-    color: #333;
-}

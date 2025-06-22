@@ -1,3 +1,4 @@
+// PopupCustom2Options.js
 function mostrarPopupConfirmacion(tipo, mensaje, onConfirm, onCancel) {
 	const modal = document.getElementById('popup-custom-modal');
 	const mensajeElem = document.getElementById('popup-message');

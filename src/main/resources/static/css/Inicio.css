@@ -116,7 +116,7 @@ h2 {
 }
 
 .btn-submit-4 {
-	background-color: #d4a500;
+    background-color: #d4a500;
     color: white;
     padding: 0.55vw 1.1vw;
     border: none;
@@ -126,8 +126,13 @@ h2 {
     font-family: 'Yeseva One';
     transition: color 0.3s ease;
     display: block;
-    width: 15vw;
+    width: 18vw;
+    margin-left: 9.3vw;
+    margin-right: auto;
+    margin-top: 1vw;
+    white-space: nowrap;
 }
+
 
 .btn-submit-2 {
     width: 12.5vw;
@@ -247,3 +252,10 @@ h2 {
     }
 }
 
+@media (max-width: 768px) {
+    .btn-submit-4 {
+        width: 80vw;
+        font-size: 4vw;
+        padding: 2vw;
+    }
+}

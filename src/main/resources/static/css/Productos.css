@@ -74,7 +74,7 @@ main h2 {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -128,7 +128,6 @@ main h2 {
 .popup-content button[type="button"] {
     background-color: #dc3545;
 }
-
 
 .popup-close {
     font-size: 20px;
@@ -193,7 +192,6 @@ main h2 {
     font-weight: bold;
     margin-right: 8px;
 }
-
 
 .filtro-botones {
     display: flex;
@@ -319,5 +317,3 @@ main h2 {
 .btn-ver-imagen:hover {
 	background-color: #1a7414;
 }
-
-

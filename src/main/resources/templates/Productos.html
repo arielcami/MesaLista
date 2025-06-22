@@ -35,26 +35,26 @@
 	        <span id="create-close-btn" class="popup-close">❌</span>
 	
 	        <form id="create-product-form">
-	            <label for="create-nombre">Nombre:</label>
-	            <input class="entradadetexto" type="text" id="create-nombre" required />
-	
-	            <label for="create-precio">Precio S/:</label>
-	            <input class="entradadetexto" type="number" id="create-precio" name="precio" step="0.01" required />
-	
-	            <label for="create-tipo">Tipo de Producto:</label>
-	            <select class="entradadetexto" id="create-tipo" required>
-	                <option value="1">Entrada</option>
-	                <option value="2">Segundo</option>
-	                <option value="3">Bebida</option>
-	                <option value="4">Postre</option>
-	                <option value="5">Guarnición</option>
-	            </select>
-	            
-	            <label for="create-imagen">Imagen del Producto:</label>
-				<input type="file" id="create-imagen" accept="image/*" />
-	            
-	            <button type="submit">Crear Producto</button>
-	        </form>
+			    <label for="create-nombre">Nombre:</label>
+			    <input class="entradadetexto" type="text" id="create-nombre" name="nombre" required />
+			
+			    <label for="create-precio">Precio S/:</label>
+			    <input class="entradadetexto" type="number" id="create-precio" name="precio" step="0.01" required />
+			
+			    <label for="create-tipo">Tipo de Producto:</label>
+			    <select class="entradadetexto" id="create-tipo" name="tipoProducto" required>
+			        <option value="1">Entrada</option>
+			        <option value="2">Segundo</option>
+			        <option value="3">Bebida</option>
+			        <option value="4">Postre</option>
+			        <option value="5">Guarnición</option>
+			    </select>
+			    
+			    <label for="create-imagen">Imagen del Producto:</label>
+			    <input type="file" id="create-imagen" name="imagen" accept="image/*" />
+			
+			    <button type="submit">Crear Producto</button>
+			</form>
 	    </div>
 	</div>
 	
@@ -65,30 +65,23 @@
 
 			<h3>Editar Producto</h3>
 			<span id="edit-close-btn" class="popup-close">❌</span>
-			
-			<form id="edit-product-form">
-				
-				<label for="edit-nombre">Nombre:</label> 
-				<input class="entradadetexto" type="text" id="edit-nombre" required /> 
-				
-				<label for="edit-precio">Precio	S/:</label> 
-				<input class="entradadetexto" type="number" id="edit-precio" name="precio" step="0.01"	required> 
-				
-				<label for="edit-tipo">Tipo de Producto:</label>
-				<select class="entradadetexto" id="edit-tipo" required>
-					<option value="1">Entrada</option>
-					<option value="2">Segundo</option>
-					<option value="3">Bebida</option>
-					<option value="4">Postre</option>
-				</select>
-				
-				<label for="edit-estado">Estado:</label>
-				<input type="text" id="edit-estado" class="estado-texto" disabled />
-				
-				<label for="edit-imagen">Imagen del producto:</label>
-				<input type="file" id="edit-imagen" name="imagen" accept="image/*">
-
-				<button type="submit">Guardar cambios</button>
+				<form id="edit-product-form">
+			    <label for="edit-nombre">Nombre:</label> 
+			    <input class="entradadetexto" type="text" id="edit-nombre" name="nombre" required /> 
+			    <label for="edit-precio">Precio S/:</label> 
+			    <input class="entradadetexto" type="number" id="edit-precio" name="precio" step="0.01" required /> 
+			    <label for="edit-tipo">Tipo de Producto:</label>
+			    <select class="entradadetexto" id="edit-tipo" name="tipoProducto" required>
+			        <option value="1">Entrada</option>
+			        <option value="2">Segundo</option>
+			        <option value="3">Bebida</option>
+			        <option value="4">Postre</option>
+			    </select>	
+			    <label for="edit-estado">Estado:</label>
+			    <input type="text" id="edit-estado" name="estadoTexto" class="estado-texto" disabled />
+			    <label for="edit-imagen">Imagen del producto:</label>
+			    <input type="file" id="edit-imagen" name="imagen" accept="image/*" />
+			    <button type="submit">Guardar cambios</button>
 			</form>
 		</div>
 	</div>
