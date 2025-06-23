@@ -9,7 +9,6 @@ import jakarta.persistence.StoredProcedureQuery;
 import pe.com.mesalista.entity.EmpleadoEntity;
 import pe.com.mesalista.repository.EmpleadoRepository;
 import pe.com.mesalista.service.EmpleadoService;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +73,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 	@Override
 	public EmpleadoEntity delete(Long id) {
 		empleadoRepository.findById(id).ifPresent(usuario -> {
-			usuario.setEstado(false); // Cambiar estado a false (equivalente a deshabilitar)
+			usuario.setEstado(false); 
 			empleadoRepository.save(usuario);
 		});
 		return null;

@@ -1,4 +1,4 @@
-
+// ConfirmarPedido.js
 function getNombreTipoProducto(tipoProducto) {
 	switch (tipoProducto) {
 		case 1: return "Entrada";
@@ -9,7 +9,6 @@ function getNombreTipoProducto(tipoProducto) {
 		default: return "Desconocido";
 	}
 }
-
 
 document.addEventListener("DOMContentLoaded", () => {
 	const params = new URLSearchParams(window.location.search);
@@ -41,21 +40,21 @@ document.addEventListener("DOMContentLoaded", () => {
 					const comentarioTexto = detalle.comentario || "";
 
 					const comentarioHTML = comentarioTexto
-						? `<span>${escapeHtml(comentarioTexto)}</span> 
-               <a href="#" class="editar-comentario" data-id="${detalle.id}" style="margin-left: 5px;">✏️</a> 
-               <a href="#" class="eliminar-comentario" data-id="${detalle.id}" style="color:red; margin-left: 5px;">❌</a>`
+						? `<span class="comentario-texto">${escapeHtml(comentarioTexto)}</span> 
+                           <a href="#" class="editar-comentario" data-id="${detalle.id}" style="margin-left: 5px;">✏️</a> 
+                           <a href="#" class="eliminar-comentario" data-id="${detalle.id}" style="color:red; margin-left: 5px;">❌</a>`
 						: `<button type="button" class="agregar-comentario" data-id="${detalle.id}">+</button>`;
 
 					fila.innerHTML = `
-					<td style="font-size: 15px;">${getNombreTipoProducto(detalle.producto.tipoProducto)}</td>
-		            <td style="width: 55px;">${detalle.cantidad}</td>
-		            <td>${escapeHtml(detalle.producto.nombre)}</td>
-		            <td>S/ ${detalle.precioUnitario.toFixed(2)}</td>
-		            <td>S/ ${subtotal.toFixed(2)}</td>
-		            <td class="comentario-cell" data-id="${detalle.id}">
-		                ${comentarioHTML}
-		            </td>
-		          `;
+                        <td style="font-size: 15px;">${getNombreTipoProducto(detalle.producto.tipoProducto)}</td>
+                        <td style="width: 55px;">${detalle.cantidad}</td>
+                        <td>${escapeHtml(detalle.producto.nombre)}</td>
+                        <td>S/ ${detalle.precioUnitario.toFixed(2)}</td>
+                        <td>S/ ${subtotal.toFixed(2)}</td>
+                        <td class="comentario-cell" style="padding: 3px;" data-id="${detalle.id}">
+                            ${comentarioHTML}
+                        </td>
+                    `;
 					tbody.appendChild(fila);
 				});
 
@@ -85,7 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		mostrarPopupConfirmacion("warning", "No se encontró el ID del pedido en la URL", null);
 	}
 
-	// Función para escapar texto y prevenir inyección HTML
 	function escapeHtml(text) {
 		return text.replace(/[&<>"']/g, function(m) {
 			return ({
@@ -98,27 +96,23 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	// Función para actualizar el contenido de la celda de comentario
 	function actualizarCeldaComentario(cell, detalleId, comentarioTexto) {
 		if (comentarioTexto) {
 			cell.innerHTML = `
-        <span>${escapeHtml(comentarioTexto)}</span> 
-        <a href="#" class="editar-comentario" data-id="${detalleId}" style="margin-left: 5px;">✏️</a> 
-        <a href="#" class="eliminar-comentario" data-id="${detalleId}" style="color:red; margin-left: 5px;">❌</a>
-      `;
+                <span class="comentario-texto">${escapeHtml(comentarioTexto)}</span> 
+                <a href="#" class="editar-comentario" data-id="${detalleId}">✏️</a> 
+                <a href="#" class="eliminar-comentario" data-id="${detalleId}" style="color:red;">❌</a>
+            `;
 		} else {
 			cell.innerHTML = `<button type="button" class="agregar-comentario" data-id="${detalleId}">+</button>`;
 		}
 	}
 
-	// Variable para controlar estado de edición y evitar cierres prematuros
 	let peticionEnCurso = false;
 
-	// Manejador de clicks para comentarios
 	document.addEventListener("click", function(event) {
 		const target = event.target;
 
-		// Evitar acción si hay petición en curso para evitar conflictos UI
 		if (peticionEnCurso) return;
 
 		// Eliminar comentario
@@ -147,98 +141,111 @@ document.addEventListener("DOMContentLoaded", () => {
 				});
 		}
 
-		// Agregar o editar comentario
+
 		if (target.classList.contains("agregar-comentario") || target.classList.contains("editar-comentario")) {
 			event.preventDefault();
+
 			const detalleId = target.dataset.id;
 			const cell = target.closest(".comentario-cell");
 
-			// Obtener texto actual del comentario si existe
-			const span = cell.querySelector("span");
-			let valorActual = span ? span.textContent : "";
+			// Bloquear nuevas peticiones durante la edición
+			if (cell.classList.contains('editando')) return;
+			cell.classList.add('editando');
 
-			// Mostrar input con contador
+			// Obtener comentario actual
+			const comentarioActual = cell.querySelector(".comentario-texto")?.textContent || "";
+			let nuevoComentario = comentarioActual;
+
+			// Crear campo de edición
 			cell.innerHTML = `
-        <input type="text" class="comentario-input" maxlength="60" value="${escapeHtml(valorActual)}" autofocus />
-        <button class="comentario-ok">Ok</button>
-        <small class="comentario-contador" style="display:block;font-size:12px;color:gray;margin-top:3px;">
-          ${60 - valorActual.length} caracteres restantes
-        </small>
-      `;
+		        <input type="text" class="comentario-input" maxlength="60" 
+		               value="${escapeHtml(comentarioActual)}" />
+		        <button class="comentario-ok">✔</button>
+		        <small class="comentario-contador">
+		            ${60 - comentarioActual.length} caracteres restantes
+		        </small>
+		    `;
 
 			const input = cell.querySelector(".comentario-input");
 			const okBtn = cell.querySelector(".comentario-ok");
 			const contador = cell.querySelector(".comentario-contador");
 
-			// Actualizar contador en tiempo real
-			input.addEventListener("input", () => {
-				const restante = 60 - input.value.length;
-				contador.textContent = `${restante} caracteres restantes`;
-			});
+			// Enfocar el campo de texto automáticamente
+			input.focus();
 
-			// Función para cerrar el campo de edición
-			const cerrarCampo = (comentarioTexto) => {
-				actualizarCeldaComentario(cell, detalleId, comentarioTexto);
+			// Actualizar contador
+			const actualizarContador = () => {
+				contador.textContent = `${60 - input.value.length} caracteres restantes`;
+			};
+			input.addEventListener('input', actualizarContador);
+
+			// Función para finalizar edición
+			const finalizarEdicion = (comentario) => {
+				cell.classList.remove('editando');
+				actualizarCeldaComentario(cell, detalleId, comentario);
+				document.removeEventListener('click', clickFueraHandler);
 			};
 
-			// Guardar comentario al hacer click en Ok
-			okBtn.addEventListener("click", () => {
-				const nuevoComentario = input.value.trim().substring(0, 60);
+			// Función para cancelar edición
+			const cancelarEdicion = () => {
+				finalizarEdicion(comentarioActual);
+			};
+
+			// Función para confirmar edición
+			const confirmarEdicion = async () => {
+				nuevoComentario = input.value.trim();
 				peticionEnCurso = true;
-				okBtn.disabled = true;
-				input.disabled = true;
 
-				fetch(`/mesalista/api/detallepedido/comentario/${detalleId}`, {
-					method: "PATCH",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ comentario: nuevoComentario })
-				})
-					.then(res => {
-						if (!res.ok) throw new Error("Error al guardar comentario");
-						return res.json();
-					})
-					.then(data => {
-						valorActual = data.comentario || "";
-						cerrarCampo(valorActual);
-					})
-					.catch(err => {
-						mostrarPopupConfirmacion("error", err.message, null);
-						cerrarCampo(valorActual); // cerramos con valor previo para evitar bloqueos UI
-					})
-					.finally(() => {
-						peticionEnCurso = false;
-						okBtn.disabled = false;
-						input.disabled = false;
+				try {
+					const response = await fetch(`/mesalista/api/detallepedido/comentario/${detalleId}`, {
+						method: "PATCH",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ comentario: nuevoComentario })
 					});
-			});
 
-			// Manejar Enter y Escape en input
-			input.addEventListener("keydown", (e) => {
-				if (e.key === "Enter") {
-					e.preventDefault();
-					okBtn.click();
-				} else if (e.key === "Escape") {
-					e.preventDefault();
-					cerrarCampo(valorActual);
-				}
-			});
+					if (!response.ok) throw new Error("Error al guardar comentario");
+					const data = await response.json();
 
-			// Listener para cerrar el campo al hacer click afuera, con debounce para evitar cierre prematuro
-			const clickFueraHandler = (e) => {
-				if (peticionEnCurso) return;
+					// Actualizar UI con la respuesta del servidor
+					finalizarEdicion(data.comentario || "");
 
-				if (!cell.contains(e.target)) {
-					document.removeEventListener("click", clickFueraHandler);
-					cerrarCampo(valorActual);
+				} catch (error) {
+					console.error("Error al guardar comentario:", error);
+					mostrarPopupConfirmacion("error", error.message, null);
+					cancelarEdicion();
+				} finally {
+					peticionEnCurso = false;
 				}
 			};
-			setTimeout(() => {
-				document.addEventListener("click", clickFueraHandler);
-			}, 150);
+
+			// Eventos
+			okBtn.addEventListener('click', confirmarEdicion);
+
+			input.addEventListener('keydown', (e) => {
+				if (e.key === 'Enter') confirmarEdicion();
+				if (e.key === 'Escape') cancelarEdicion();
+			});
+
+			// Manejador de clic fuera (mejorado)
+			const clickFueraHandler = (e) => {
+				if (!cell.contains(e.target) && !peticionEnCurso) {
+					confirmarEdicion(); // Confirmar cambios en lugar de cancelar
+				}
+			};
+
+			setTimeout(() => document.addEventListener('click', clickFueraHandler), 100);
 		}
+
+
+
+
+
+
+
+
+
 	});
 
-	// Confirmar pedido
 	document.getElementById("btn-confirmar-final").addEventListener("click", () => {
 		const empleadoId = empleadoIdInput.value;
 		const claveEmpleado = claveEmpleadoInput.value;
@@ -267,26 +274,25 @@ document.addEventListener("DOMContentLoaded", () => {
 			},
 			body: formData.toString()
 		})
-		.then(async response => {
-			if (!response.ok) {
-				const errorText = await response.text();
-				throw new Error(errorText);
-			}
-			return response.text();
-		})
-		.then(message => {
-			mostrarPopupConfirmacion("success", message, () => {
-				localStorage.clear();
-				window.location.href = "/mesalista";
+			.then(async response => {
+				if (!response.ok) {
+					const errorText = await response.text();
+					throw new Error(errorText);
+				}
+				return response.text();
+			})
+			.then(message => {
+				mostrarPopupConfirmacion("success", message, () => {
+					localStorage.clear();
+					window.location.href = "/mesalista";
+				});
+			})
+			.catch(err => {
+				mostrarPopupConfirmacion("error", "Error: " + err.message, null);
 			});
-		})
-		.catch(err => {
-			mostrarPopupConfirmacion("error", "Error: " + err.message, null);
-		});
 	});
 });
 
-// Botón regresar
 document.getElementById("btn-regresar").addEventListener("click", function() {
 	window.history.back();
 });

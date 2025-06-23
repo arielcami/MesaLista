@@ -1,3 +1,4 @@
+// Agotar producto
 function marcarProductoComoAgotado(productoId) {
     const url = `/mesalista/api/producto/${productoId}/estado?estado=false`;
 
@@ -20,6 +21,7 @@ function marcarProductoComoAgotado(productoId) {
     });
 }
 
+// Asignar click derecho a tarjeta de producto
 function asignarMenuContextual(itemElemento, productoId) {
     const menu = document.getElementById("modal-pedido-agotado");
 
@@ -60,10 +62,6 @@ document.addEventListener("click", (e) => {
 });
 
 
-
-
-
-
 document.addEventListener("DOMContentLoaded", function () {
 	const botonAbrir = document.getElementById("btn-agregar-guarnicion");
 	const modal = document.getElementById("modal-guarnicion");
@@ -80,6 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		modal.classList.remove("activo");
 	});
 
+	// Orden de mostrar categorías
 	const categoriasOrden = [
 		{ tipo: 1, nombre: "Entradas" },
 		{ tipo: 2, nombre: "Segundos" },

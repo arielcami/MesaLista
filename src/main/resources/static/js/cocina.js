@@ -1,5 +1,5 @@
-const API_URL = '/mesalista/api/pedido/cocina'; // Ajusta la URL de tu API aquí
-const REFRESH_INTERVAL_MS = 2000; // 2 segundos
+const API_URL = '/mesalista/api/pedido/cocina';
+const REFRESH_INTERVAL_MS = 2000;
 
 function formatHora(fechaISO) {
     const fecha = new Date(fechaISO);
@@ -114,7 +114,6 @@ actualizarReloj(); // llamada inicial
 // Inicializa primera carga y refresca cada intervalo
 fetchPedidos();
 setInterval(fetchPedidos, REFRESH_INTERVAL_MS)
-
 
 
 document.getElementById('btn-sonido').addEventListener('click', () => {

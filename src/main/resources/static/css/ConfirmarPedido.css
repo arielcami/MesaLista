@@ -279,10 +279,6 @@ button.agregar-comentario:active {
 
 
 
-
-
-
-
 /* Estilo base para el contenedor del checkbox */
 .contenedor-input-checkbox {
 	display: flex;
@@ -306,12 +302,7 @@ button.agregar-comentario:active {
 	user-select: none;
 }
 
-
-
-
-
-
-
-
-
-
+.comentario-contador {
+	display: flex;
+	margin-left: 4vw;
+}
