@@ -234,3 +234,27 @@ body {
   outline: none;
 }
 
+
+
+.boton-refresh {
+	font-family: 'Yeseva One';
+	background-color: #d4a500;
+	font-size: 24px;
+	padding: 5px;
+	width: 150px;
+	font-weight: normal;
+	border-radius: 25px;
+	border: none;
+	color: white;
+	transition: color 0.2s ease;
+	display: flex;
+	justify-content: center;
+	
+
+}
+.boton-refresh:hover {
+	color: #333;
+	cursor: pointer;
+}
+
+

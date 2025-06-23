@@ -177,6 +177,28 @@ document.getElementById('btn-eliminar').addEventListener('click', async () => {
 	modal.classList.add('hidden');
 });
 
+
+document.getElementById('btn-boton-refresh').addEventListener('click', async () => {
+    try {
+        // Mostrar estado de carga (opcional)
+        const refreshButton = document.getElementById('btn-boton-refresh');
+        refreshButton.disabled = true;
+        refreshButton.textContent = 'Cargando...';
+
+        await fetchPedidos();
+        // Mostrar mensaje de éxito (opcional)
+        console.log('Pedidos actualizados correctamente');
+    } catch (error) {
+        console.error('Error al actualizar pedidos:', error);
+    } finally {
+        // Restaurar el estado del botón
+        const refreshButton = document.getElementById('btn-boton-refresh');
+        refreshButton.disabled = false;
+        refreshButton.textContent = 'Actualizar';
+    }
+});
+
+
 // Carga inicial
 fetchPedidos();
 
@@ -184,3 +206,21 @@ fetchPedidos();
 document.addEventListener('pedidoEditado', () => {
 	fetchPedidos(); // Se ejecuta en el contexto correcto y refresca todo
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

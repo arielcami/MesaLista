@@ -20,7 +20,6 @@
 		<h1>Control de pedidos</h1>
 	</nav>
 
-
 	
 	<!-- Modal de acciones para pedidos en preparación -->
 	<div id="modal-acciones" class="modal-acciones hidden">
@@ -41,7 +40,12 @@
 	    <div id="filtro-empleado-container" class="filtro-bloque"></div>
 	    <div id="filtro-delivery-container" class="filtro-bloque"></div>
 	    <div id="filtro-fecha-container" class="filtro-bloque"></div>
+	    <div class="boton-refresh-container">
+			<button id="btn-boton-refresh" class="boton-refresh">Actualizar</button>
+		</div>
 	</div>
+	
+	
 
 	<!-- Tarjeta que mostrará los pedidos -->
 	<div class="pedido-container">
@@ -60,7 +64,7 @@
         </div>
     </div>
     
-	<!-- Modal para editar pedido AQUI VAMOS A TRABAJAR -->
+	<!-- Modal para editar pedido -->
 	<div id="modal-editar-pedido" class="modal-editar hidden">
 	    <div class="modal-editar-contenido">
 	        <div class="modal-editar-header">

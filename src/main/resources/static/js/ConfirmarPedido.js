@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <td>${escapeHtml(detalle.producto.nombre)}</td>
                         <td>S/ ${detalle.precioUnitario.toFixed(2)}</td>
                         <td>S/ ${subtotal.toFixed(2)}</td>
-                        <td class="comentario-cell" style="padding: 3px;" data-id="${detalle.id}">
+                        <td class="comentario-cell" data-id="${detalle.id}">
                             ${comentarioHTML}
                         </td>
                     `;

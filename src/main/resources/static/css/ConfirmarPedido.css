@@ -53,6 +53,7 @@ h2 {
     border: 1px solid #ccc;
     font-family: 'Arial';
     font-size: 17px;
+    height: 26px
 }
 
 /* Cabecera */
@@ -254,8 +255,8 @@ button.agregar-comentario {
 	color: white;
 	border: none;
 	border-radius: 50%;
-	width: 28px;
-	height: 28px;
+	width: 25px;
+	height: 25px;
 	font-size: 20px;
 	line-height: 15px;
 	text-align: center;
