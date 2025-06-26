@@ -45,13 +45,23 @@ async function fetchPedidos() {
 			console.error('Error al obtener pedidos:', response.statusText);
 			return;
 		}
+
 		const pedidos = await response.json();
+
+		// Ordenar por fecha más antigua (usando fechaPedido si está confirmada, creadoEn si no)
+		pedidos.sort((a, b) => {
+			const fechaA = a.fechaPedido ? new Date(a.fechaPedido) : new Date(a.creadoEn);
+			const fechaB = b.fechaPedido ? new Date(b.fechaPedido) : new Date(b.creadoEn);
+			return fechaA - fechaB; // Más antiguos primero
+		});
+
 		renderPedidos(pedidos);
 		inicializarFiltroPedidos(pedidos, renderPedidos);
 	} catch (error) {
 		console.error('Error de red o inesperado:', error);
 	}
 }
+
 
 function renderPedidos(pedidos) {
 	const container = document.querySelector('.pedido-container');
@@ -125,7 +135,7 @@ window.addEventListener('keydown', (e) => {
 document.getElementById('btn-listo').addEventListener('click', async () => {
 	const id = modal.dataset.pedidoId;
 	const estadoListo = 2;
-		
+
 	try {
 		// 1. Marcar pedido como "listo"
 		const response = await fetch(`${API_URL}/marcarEstado/${id}?estado=${estadoListo}`, {
@@ -179,23 +189,23 @@ document.getElementById('btn-eliminar').addEventListener('click', async () => {
 
 
 document.getElementById('btn-boton-refresh').addEventListener('click', async () => {
-    try {
-        // Mostrar estado de carga (opcional)
-        const refreshButton = document.getElementById('btn-boton-refresh');
-        refreshButton.disabled = true;
-        refreshButton.textContent = 'Cargando...';
+	try {
+		// Mostrar estado de carga (opcional)
+		const refreshButton = document.getElementById('btn-boton-refresh');
+		refreshButton.disabled = true;
+		refreshButton.textContent = 'Cargando...';
 
-        await fetchPedidos();
-        // Mostrar mensaje de éxito (opcional)
-        console.log('Pedidos actualizados correctamente');
-    } catch (error) {
-        console.error('Error al actualizar pedidos:', error);
-    } finally {
-        // Restaurar el estado del botón
-        const refreshButton = document.getElementById('btn-boton-refresh');
-        refreshButton.disabled = false;
-        refreshButton.textContent = 'Actualizar';
-    }
+		await fetchPedidos();
+		// Mostrar mensaje de éxito (opcional)
+		console.log('Pedidos actualizados correctamente');
+	} catch (error) {
+		console.error('Error al actualizar pedidos:', error);
+	} finally {
+		// Restaurar el estado del botón
+		const refreshButton = document.getElementById('btn-boton-refresh');
+		refreshButton.disabled = false;
+		refreshButton.textContent = 'Actualizar';
+	}
 });
 
 
@@ -206,21 +216,4 @@ fetchPedidos();
 document.addEventListener('pedidoEditado', () => {
 	fetchPedidos(); // Se ejecuta en el contexto correcto y refresca todo
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

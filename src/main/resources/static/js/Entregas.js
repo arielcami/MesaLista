@@ -31,6 +31,7 @@ function estadoPedidoTexto(codigo) {
 }
 
 function actualizarBotonEntrega() {
+	
 	let boton = document.getElementById('btn-empezar-entrega');
 
 	if (pedidosSeleccionados.size > 0) {
@@ -78,6 +79,14 @@ function actualizarBotonEntrega() {
 }
 
 function renderizarTarjetasPedido(pedidos) {
+
+	// Ordenar por fecha más antigua primero (fechaPedido si existe, sino creadoEn)
+	pedidos.sort((a, b) => {
+		const fechaA = a.fechaPedido ? new Date(a.fechaPedido) : new Date(a.creadoEn);
+		const fechaB = b.fechaPedido ? new Date(b.fechaPedido) : new Date(b.creadoEn);
+		return fechaA - fechaB; // Más antiguos primero
+	});
+
 	const contenedor = document.getElementById('bloque-pedidos-entrega');
 	contenedor.innerHTML = '';
 
@@ -100,7 +109,7 @@ function renderizarTarjetasPedido(pedidos) {
 		    </div>
 		`;
 
-		// Eventos de los enlaces
+		// Enlaces y clics para ver rutas o detalles
 		tarjeta.querySelector('.btn-ver-ruta').addEventListener('click', e => {
 			e.stopPropagation();
 			e.preventDefault();
@@ -119,18 +128,16 @@ function renderizarTarjetasPedido(pedidos) {
 			}
 		});
 
-		// En vez de botón, el click en toda la tarjeta abre el modal (solo para estado 3)
+		// Modal para pedidos en tránsito
 		if (pedido.estadoPedido === 3) {
 			tarjeta.style.cursor = 'pointer';
 			tarjeta.addEventListener('click', () => {
 				const deliveryId = localStorage.getItem('id_de_empleado_delivery');
-				// console.log(`[Pedido ${pedido.id}] Se abre el modal de acciones finales`);
 				MostrarModalAccionesPedidoDelivery(pedido.id, deliveryId);
 			});
 		}
 
-
-		// Selección para estado 2, si quieres dejarlo, sino elimina este bloque
+		// Selección múltiple para pedidos listos
 		if (pedido.estadoPedido === 2) {
 			tarjeta.addEventListener('click', () => {
 				if (pedidosSeleccionados.has(pedido.id)) {
@@ -147,6 +154,7 @@ function renderizarTarjetasPedido(pedidos) {
 		contenedor.appendChild(tarjeta);
 	});
 }
+
 
 async function cargarPedidosPorEstado(estado) {
 	try {
@@ -203,6 +211,7 @@ function autenticarEmpleado() {
 }
 
 async function cargarPedidosPorDeliveryYEstado(deliveryId, estado) {
+	
 	try {
 		const response = await fetch(`/mesalista/api/pedido/buscarPorDeliveryCustom/${deliveryId}/${estado}`);
 		if (!response.ok) throw new Error('Error al cargar pedidos');

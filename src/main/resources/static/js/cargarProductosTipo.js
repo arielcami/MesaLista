@@ -67,11 +67,12 @@ document.addEventListener("DOMContentLoaded", function () {
 	const modal = document.getElementById("modal-guarnicion");
 	const cerrar = document.getElementById("cerrar-modal-guarnicion");
 
-	// Abrir modal
+	/* Abrir modal
 	botonAbrir.addEventListener("click", () => {
 		modal.classList.add("activo");
 		cargarModalGuarnicion();
 	});
+	*/
 
 	// Cerrar modal
 	cerrar.addEventListener("click", () => {

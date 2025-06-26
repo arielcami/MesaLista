@@ -1,5 +1,5 @@
 const API_URL = '/mesalista/api/pedido/cocina';
-const REFRESH_INTERVAL_MS = 2000;
+const REFRESH_INTERVAL_MS = 500;
 
 function formatHora(fechaISO) {
     const fecha = new Date(fechaISO);
