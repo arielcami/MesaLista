@@ -980,7 +980,7 @@ INSERT INTO productos (nombre, tipo_producto, precio, estado, imagen_url) VALUES
 ('Crema Volteada', 4, 3.50, 1, 'img/productos/1749844751199_cremavolteada.png'), 
 ('Aeropuerto', 2, 9.50, 1, 'img/productos/1749819717960_aeropuerto.png'), 
 ('Mazamorra de Durazno', 4, 2.80, 1, 'img/productos/1749844843607_mazamorraduraaz.png'), 
-('Leche de tigre', 1, 3.00, 1, 'img/productos/1749818888036_lechedetigre.png'), 
+('Leche de tigre', 1, 3.00, 1, 'img/productos/1750047824808_leche.jpg'), 
 ('Rocoto Relleno', 2, 9.00, 1, 'img/productos/1749819930172_rocoto.png'), 
 ('Refresco de Chirimoya', 3, 4.00, 1, 'img/productos/1749820951367_chirimoya.png'), 
 ('Tequeños con guacamole', 1, 3.00, 1, 'img/productos/1749819000079_tequenos.png'), 

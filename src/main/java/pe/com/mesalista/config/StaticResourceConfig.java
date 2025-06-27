@@ -13,7 +13,7 @@ public class StaticResourceConfig implements WebMvcConfigurer {
         String location = "file:" + basePath + "/source-img/productos/";
 
         registry.addResourceHandler("/img/productos/**")
-                .addResourceLocations(location)
-                .setCachePeriod(0);
+	        .addResourceLocations(location)
+	        .setCachePeriod(2592000);
     }
 }
