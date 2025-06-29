@@ -1,39 +1,46 @@
 package pe.com.mesalista.service.impl;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.ParameterMode;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.StoredProcedureQuery;
 import pe.com.mesalista.entity.ClienteEntity;
 import pe.com.mesalista.repository.ClienteRepository;
 import pe.com.mesalista.service.ClienteService;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import jakarta.persistence.PersistenceContext;
+import pe.com.mesalista.util.SystemStatusVerifier;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+    
+    @Autowired
+    private SystemStatusVerifier sys;
 
     @Override
     public List<ClienteEntity> findAll() {
+    	sys.checkSystemActiveOrThrow();
         return clienteRepository.findAll();
     }
 
     @Override
     public List<ClienteEntity> findByNombreContainingIgnoreCase(String nombre) {
+    	sys.checkSystemActiveOrThrow();
         return clienteRepository.findByNombreContainingIgnoreCase(nombre);
     }
     
     
     @Override
     public List<ClienteEntity> findByDocumentoContainingIgnoreCase(String nombre) {
+    	sys.checkSystemActiveOrThrow();
         return clienteRepository.findByDocumentoContainingIgnoreCase(nombre);
     }
 
@@ -43,6 +50,7 @@ public class ClienteServiceImpl implements ClienteService {
     // SP
     @Override
     public Map<String, Object> addClienteSP(String nombre, String telefono, String documento, String direccion) {
+    	sys.checkSystemActiveOrThrow();
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("addCliente");
 
         // Registrar parámetros
@@ -73,17 +81,20 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteEntity findById(Long id) {
+    	sys.checkSystemActiveOrThrow();
         Optional<ClienteEntity> clienteOpt = clienteRepository.findById(id);
         return clienteOpt.orElse(null);
     }
 
     @Override
     public ClienteEntity save(ClienteEntity cliente) {
+    	sys.checkSystemActiveOrThrow();
         return clienteRepository.save(cliente);
     }
 
     @Override
     public ClienteEntity update(ClienteEntity cliente, Long id) {
+    	sys.checkSystemActiveOrThrow();
         if (clienteRepository.existsById(id)) {
             cliente.setId(id);
             return clienteRepository.save(cliente);
@@ -93,16 +104,19 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteEntity findByDocumento(String documento) {
+    	sys.checkSystemActiveOrThrow();
         return clienteRepository.findByDocumento(documento);
     }
 
     @Override
     public Page<ClienteEntity> findAllPaginado(Pageable pageable) {
+    	sys.checkSystemActiveOrThrow();
         return clienteRepository.findAll(pageable);
     }
 
     @Override
     public Page<ClienteEntity> findByNombreContainingIgnoreCase(String nombre, Pageable pageable) {
+    	sys.checkSystemActiveOrThrow();
         return clienteRepository.findByNombreContainingIgnoreCase(nombre, pageable);
     }
    

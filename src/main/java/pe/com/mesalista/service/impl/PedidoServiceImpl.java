@@ -8,6 +8,7 @@ import pe.com.mesalista.entity.PedidoEntity;
 import pe.com.mesalista.repository.DeliveryRepository;
 import pe.com.mesalista.repository.PedidoRepository;
 import pe.com.mesalista.service.PedidoService;
+import pe.com.mesalista.util.SystemStatusVerifier;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,51 +21,62 @@ public class PedidoServiceImpl implements PedidoService {
     @Autowired
     private DeliveryRepository deliveryRepository;
 
+    @Autowired
+    private SystemStatusVerifier sys;
+
+    
     
     @Override
     public List<PedidoEntity> findAll() {
+    	sys.checkSystemActiveOrThrow();
         return pedidoRepository.findAll();
     }
     
     @Override
 	public List<PedidoEntity> findAllByVisible() {
+    	sys.checkSystemActiveOrThrow();
     	return pedidoRepository.findAllByVisible();
 	}
     
     @Override
     public List<PedidoEntity> obtenerPedidosIncompletos() {
+    	sys.checkSystemActiveOrThrow();
         return pedidoRepository.findPedidosIncompletos();
     }    
 
-    // Recientemente modificado en el repository para que filtre por paraLlevar = TRUE
     @Override
     public List<PedidoEntity> findByEstadoPedido(Byte estadoPedido) {
+    	sys.checkSystemActiveOrThrow();
         return pedidoRepository.findByEstadoPedido(estadoPedido);
     }
 
     @Override
     public List<PedidoEntity> findByClienteId(Long clienteId) {
+    	sys.checkSystemActiveOrThrow();
         return pedidoRepository.findByCliente_Id(clienteId);
     }
     
     @Override
     public List<PedidoEntity> obtenerPedidosPorDeliveryYEstado(Long deliveryId, Byte estadoPedido) {
+    	sys.checkSystemActiveOrThrow();
         return pedidoRepository.buscarPorDeliveryYEstado(deliveryId, estadoPedido);
     }
 
     @Override
     public PedidoEntity findById(Long id) {
+    	sys.checkSystemActiveOrThrow();
         Optional<PedidoEntity> pedidoOpt = pedidoRepository.findById(id);
         return pedidoOpt.orElse(null);
     }
 
-    @Override
     public PedidoEntity save(PedidoEntity pedido) {
+        sys.checkSystemActiveOrThrow();
         return pedidoRepository.save(pedido);
     }
 
     @Override
     public PedidoEntity update(PedidoEntity pedido, Long id) {
+        sys.checkSystemActiveOrThrow();
         if (pedidoRepository.existsById(id)) {
             pedido.setId(id);
             return pedidoRepository.save(pedido);
@@ -82,6 +94,7 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public PedidoEntity asignarDelivery(Long pedidoId, Long deliveryId) {
+    	sys.checkSystemActiveOrThrow();
         PedidoEntity pedido = pedidoRepository.findById(pedidoId).orElseThrow();
         DeliveryEntity delivery = deliveryRepository.findById(deliveryId).orElseThrow();
         pedido.setDelivery(delivery);
@@ -91,6 +104,7 @@ public class PedidoServiceImpl implements PedidoService {
     // SP
     @Override
     public void confirmarPedido(Long pedidoId, Long empleadoId, String clave, String direccionEntrega, boolean paraLlevar) {
+        sys.checkSystemActiveOrThrow();
         if (direccionEntrega == null || direccionEntrega.trim().isEmpty()) {
             direccionEntrega = null;
         }
@@ -100,12 +114,15 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public List<PedidoEntity> findPedidosParaCocina() {
+    	sys.checkSystemActiveOrThrow();
         return pedidoRepository.findPedidosParaCocina();
     }
     
     @Override
     @Transactional
     public void marcarPedidoEstado(Long pedidoId, Byte estado) {
+    	sys.checkSystemActiveOrThrow();
+    	
         PedidoEntity pedido = pedidoRepository.findById(pedidoId)
             .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
@@ -128,12 +145,14 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     @Transactional
     public void actualizarEstadoSiDeliveryCoincide(Long pedidoId, Long deliveryId, Byte nuevoEstado) {
+    	sys.checkSystemActiveOrThrow();
         pedidoRepository.actualizarEstadoSiDeliveryCoincide(pedidoId, deliveryId, nuevoEstado);
     }
     
     
     @Override
     public void limpiarBasuraPedido(Integer pedidoId) {
+    	sys.checkSystemActiveOrThrow();
         pedidoRepository.limpiarBasuraPedido(pedidoId);
     }
     
