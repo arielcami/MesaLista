@@ -288,7 +288,6 @@ DELIMITER ;
 
 
 
-
 DELIMITER $$
 
 USE `mesalista_db`$$
@@ -312,12 +311,12 @@ BEGIN
     DECLARE v_salt VARCHAR(64);
     DECLARE v_hash_clave VARCHAR(64);
     DECLARE v_clave_almacenada VARCHAR(64);
-
+    
     -- Verificar si el pedido existe
     IF NOT EXISTS (SELECT 1 FROM pedidos WHERE id = p_pedido_id) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El pedido no existe';
     END IF;
-
+    
     -- Verificar si el empleado existe
     SELECT COUNT(1) INTO v_empleado_existente
     FROM empleados
@@ -325,34 +324,34 @@ BEGIN
     IF v_empleado_existente = 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El empleado no existe';
     END IF;
-
+    
     -- Obtener estado, nivel, salt y clave
     SELECT estado, nivel, salt, clave
     INTO v_estado, v_empleado_nivel, v_salt, v_clave_almacenada
     FROM empleados
     WHERE id = p_empleado_id;
-
+    
     -- Validar estado del empleado
     IF v_estado <> 1 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Empleado restringido';
     END IF;
-
+    
     -- Validar nivel del empleado
     IF v_empleado_nivel = 3 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El personal de delivery no puede confirmar pedidos';
     END IF;
-
+    
     -- Validar clave
     SET v_hash_clave = SHA2(CONCAT(p_clave, v_salt), 256);
     IF v_hash_clave <> v_clave_almacenada THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Credenciales inválidas';
     END IF;
-
+    
     -- Obtener cliente del pedido
     SELECT cliente_id INTO v_cliente_id
     FROM pedidos
     WHERE id = p_pedido_id;
-
+    
     -- Validar cliente
     SELECT COUNT(1) INTO v_cliente_existente
     FROM clientes
@@ -360,7 +359,7 @@ BEGIN
     IF v_cliente_existente = 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El cliente no existe';
     END IF;
-
+    
     -- Obtener direccion del cliente si no se proporciono
     IF p_direccion_entrega IS NULL OR p_direccion_entrega = '' THEN
         SELECT direccion INTO v_direccion_cliente
@@ -369,12 +368,12 @@ BEGIN
     ELSE
         SET v_direccion_cliente = p_direccion_entrega;
     END IF;
-
+    
     -- Verificar si ya fue confirmado
     IF EXISTS (SELECT 1 FROM pedidos WHERE id = p_pedido_id AND estado_pedido = 1) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El pedido ya ha sido confirmado';
     END IF;
-
+    
     -- Confirmar pedido con logica para llevar / local
     IF p_para_llevar THEN
         -- Para llevar
@@ -383,7 +382,8 @@ BEGIN
             empleado_id = p_empleado_id,
             direccion_entrega = v_direccion_cliente,
             estado_pedido = 1,
-            para_llevar = b'1'
+            para_llevar = b'1',
+            fecha_pedido = NOW()  -- Actualizar fecha_pedido a la fecha actual
         WHERE id = p_pedido_id;
     ELSE
         -- Para consumir en local
@@ -392,10 +392,11 @@ BEGIN
             empleado_id = p_empleado_id,
             direccion_entrega = NULL,
             estado_pedido = 1,
-            para_llevar = b'0'
+            para_llevar = b'0',
+            fecha_pedido = NOW()  -- Actualizar fecha_pedido a la fecha actual
         WHERE id = p_pedido_id;
     END IF;
-
+    
     COMMIT;
 END$$
 
@@ -784,15 +785,32 @@ BEGIN
   DECLARE prod_id INT;
   DECLARE has_deliveries INT;
   DECLARE has_products INT;
-
+  DECLARE random_days INT;
+  DECLARE random_date DATETIME;
+  
   -- Contar registros existentes
   SELECT COUNT(*) INTO has_deliveries FROM deliveries;
-  SELECT COUNT(*) INTO has_products   FROM productos;
-
+  SELECT COUNT(*) INTO has_products FROM productos;
+  
   WHILE i <= 30 DO
+    -- Generar fecha aleatoria en los últimos 30 días
+    SET random_days = FLOOR(RAND() * 30); -- 0 a 29 días atrás
+    SET random_date = DATE_SUB(NOW(), INTERVAL random_days DAY);
+    
+    -- Ajustar para incluir horas, minutos y segundos aleatorios
+    SET random_date = DATE_ADD(
+      DATE(random_date),
+      INTERVAL FLOOR(RAND() * 86400) SECOND
+    );
+    
     -- Cliente aleatorio 1–87
     SET cid = FLOOR(1 + RAND() * 87);
-
+    
+    -- Obtener la dirección del cliente
+    SELECT direccion INTO address
+    FROM clientes
+    WHERE id = cid;
+    
     -- DESPACHADOR: siempre uno de {3,5,11,13,15,17,19}
     SELECT id INTO emp_id
       FROM (
@@ -806,11 +824,10 @@ BEGIN
       ) AS disp
       ORDER BY RAND()
       LIMIT 1;
-
+    
     -- DECIDIR SI ES DELIVERY (30% prob.), sólo si hay repartidores cargados
     IF has_deliveries > 0 AND RAND() < 0.3 THEN
       SET pl = b'1';
-      SET address = CONCAT('Av. Falsa ', FLOOR(1 + RAND() * 100), ' #', FLOOR(1 + RAND() * 1000));
       -- Repartidor: aleatorio de {4,6,9,13}
       SELECT id INTO did
         FROM (
@@ -823,34 +840,32 @@ BEGIN
         LIMIT 1;
     ELSE
       SET pl = b'0';
-      SET address = NULL;
       SET did = NULL;
     END IF;
-
+    
     -- Estado: 85% = 4 (Entregado); resto uniformemente en {5,6,7}
     SET st = IF(RAND() < 0.85,
                4,
                ELT(FLOOR(1 + RAND() * 3), 5, 6, 7)
              );
-
+    
     -- Cantidad de ítems: 4–6
     SET num_items = FLOOR(4 + RAND() * 3);
-
-    -- Insertar pedido con total temporal = 0
+    
+    -- Insertar pedido con total temporal = 0 y fecha aleatoria
     INSERT INTO pedidos
-      (cliente_id, total, empleado_id, estado_pedido, direccion_entrega, para_llevar, delivery_id)
+      (cliente_id, total, empleado_id, estado_pedido, direccion_entrega, para_llevar, delivery_id, fecha_pedido)
     VALUES
-      (cid, 0.00, emp_id, st, address, pl, did);
-
+      (cid, 0.00, emp_id, st, address, pl, did, random_date);
+    
     SET pid = LAST_INSERT_ID();
     SET total = 0.00;
-
+    
     -- Detalles de pedido
     SET j = 1;
     WHILE j <= num_items DO
       SET qty   = FLOOR(1 + RAND() * 3);
       SET price = ROUND(RAND() * 45 + 5, 2);
-
       IF has_products > 0 THEN
         SELECT id INTO prod_id
           FROM productos
@@ -859,7 +874,6 @@ BEGIN
       ELSE
         SET prod_id = NULL;
       END IF;
-
       IF prod_id IS NOT NULL THEN
         INSERT INTO detalle_pedido
           (pedido_id, producto_id, cantidad, precio_unitario)
@@ -867,23 +881,20 @@ BEGIN
           (pid, prod_id, qty, price);
         SET total = total + (qty * price);
       END IF;
-
       SET j = j + 1;
     END WHILE;
-
+    
     -- Actualizar total real
     UPDATE pedidos
       SET total = ROUND(total, 2)
     WHERE id = pid;
-
+    
     SET i = i + 1;
   END WHILE;
 END$$
 
 DELIMITER ;
 
-
-DELIMITER $$
 
 DELIMITER $$
 
