@@ -121,6 +121,11 @@ CREATE TABLE incidentes (
 	FOREIGN KEY (pedido_id) REFERENCES pedidos (id)
 );
 
+CREATE TABLE wmwfh_230_w45k_nfas (
+    id INT NOT NULL AUTO_INCREMENT, 
+    epqmg TINYINT(1) DEFAULT '0', 
+    PRIMARY KEY (id)
+);
 /* ========================= FIN ESTRUCTURA =========================== */
 
 
@@ -920,6 +925,8 @@ DELIMITER ;
 
 
 /* =============  DATA DE MUESTRA =============== */
+INSERT INTO wmwfh_230_w45k_nfas (epqmg) VALUES (FALSE);
+
 INSERT INTO dias (id, nombre) VALUES 
 (1, 'Lunes'),
 (2, 'Martes'),
