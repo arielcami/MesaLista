@@ -29,6 +29,9 @@ public interface EmpleadoService {
 	Map<String, Object> validarDeliveryCredenciales(int id, String clave);
 	
 	Map<String, Object> restablecerClave(int id, String nombre, String telefono, String documento, String nuevaClave);
+	
+	Map<String, Object> validarMeseroCredenciales(int id, String clave);
+
 
 
 }

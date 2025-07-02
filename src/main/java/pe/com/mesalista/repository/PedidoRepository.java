@@ -35,7 +35,6 @@ public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
 	);
 
 	
-	
 	// Método para ejecutar el SP 'addProducto'
 	@Procedure(procedureName = "addProducto")
 	Long agregarProducto(
@@ -64,17 +63,16 @@ public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
 	    @Param("p_empleado_id") Long empleadoId,
 	    @Param("p_clave") String claveEmpleado,
 	    @Param("p_direccion_entrega") String direccionEntrega,
-	    @Param("p_para_llevar") Boolean paraLlevar
+	    @Param("p_para_llevar") Boolean paraLlevar,
+	    @Param("p_mesa_id") Integer mesaId
 	);
-
 	
 	
 	// Obtener los pedidos para mostrar en front de Cocina
 	// SI SE REQUIERE LISTAR TODOS INCLUYENDO ANTIGUOS, ELIMINAR "AND p.visible = TRUE"
 	@Query("SELECT DISTINCT p FROM PedidoEntity p LEFT JOIN FETCH p.detalles WHERE p.estadoPedido = 1 AND p.visible = TRUE ORDER BY p.fechaPedido ASC")
 	List<PedidoEntity> findPedidosParaCocina();
-
-		
+	
 	
 	@Transactional
 	@Modifying

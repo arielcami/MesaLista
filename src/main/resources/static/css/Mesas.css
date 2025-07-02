@@ -1,0 +1,507 @@
+@font-face {
+    font-family: 'Yeseva One';
+    src: url('/mesalista/fonts/yeseva-one.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+section {
+	font-family: Yeseva One;
+	font-size: 1.1vw;
+	max-width: 1400px;
+	margin: auto;
+	background-color: white;
+	margin-top: 2.5vw;
+}
+
+h2 {
+	font-family: Yeseva One;
+	font-weight: normal;
+	color: gray;
+}
+
+:root {
+    --disponible: #bfbfbf;
+    --ocupada: #d4a500;
+    --desuso: #c73838;
+    --hover: #ECEFF1;
+}
+
+.mesas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+}
+
+.mesas-status-legend {
+	font-family: Arial;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: normal;
+}
+
+.legend-color {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+}
+
+.legend-color.disponible { background-color: var(--disponible); }
+.legend-color.ocupada { background-color: var(--ocupada); }
+.legend-color.desuso { background-color: var(--desuso); }
+
+.mesas-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.mesa {
+	user-select: none;
+    height: 150px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-family: 'Consolas';
+    font-weight: normal;
+    font-size: 25px;
+}
+
+.mesa:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.8);
+}
+
+.mesa.disponible { background-color: var(--disponible); color: white; }
+.mesa.ocupada { background-color: var(--ocupada); color: white; }
+.mesa.desuso { background-color: var(--desuso); color: white; }
+
+.mesa-numero {
+	font-family: Consolas;
+    font-size: 1.5rem;
+}
+
+.mesa-cliente {
+	text-align: center;
+	font-family: Arial;
+    font-size: 0.9rem;
+    font-weight: normal;
+    margin-top: 0.5rem;
+    padding: 4px;
+}
+
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+	font-family: Arial, sans-serif;
+}
+
+.modal-content {
+	background-color: #fff;
+	padding: 20px 30px;
+	border-radius: 8px;
+	width: 90%;
+	max-width: 500px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+	position: relative;
+	animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-close {
+	position: absolute;
+	top: 10px;
+	right: 15px;
+	font-size: 24px;
+	cursor: pointer;
+	color: #888;
+	transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+	color: #000;
+}
+
+#modal-body p {
+	margin: 10px 0;
+}
+
+#modal-body h4 {
+	margin-top: 20px;
+	margin-bottom: 10px;
+	color: #333;
+}
+
+#modal-productos-list {
+	list-style: none;
+	padding-left: 0;
+}
+
+#modal-productos-list li {
+	padding: 6px 0;
+	border-bottom: 1px solid #eee;
+	font-size: 15px;
+	color: #444;
+}
+
+/* Optional animation */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: scale(0.95);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+.context-menu {
+	position: absolute;
+	background-color: white;
+	border: 1px solid #ccc;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+	z-index: 10000;
+	padding: 5px 0;
+	border-radius: 5px;
+	width: 180px;
+	font-family: Arial, sans-serif;
+}
+
+.context-menu-item {
+	padding: 8px 16px;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+.context-menu-item:hover {
+	background-color: #f0f0f0;
+}
+
+
+.popup-search-item {
+	padding: 8px 10px;
+	cursor: pointer;
+	border-bottom: 1px solid #eee;
+	transition: background-color 0.2s;
+}
+
+.popup-search-item:hover {
+	background-color: #f0f0f0;
+}
+
+.popup-search-results {
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: #fff;
+	margin-top: 5px;
+}
+
+
+/* Modal exclusivo para asignar cliente */
+.cliente-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.4);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1050;
+	font-family: Arial, sans-serif;
+}
+
+/* Contenido del modal */
+.cliente-modal-content {
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	width: 90%;
+	max-width: 400px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+	position: relative;
+	animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Botón de cierre */
+.cliente-modal-close {
+	position: absolute;
+	top: 8px;
+	right: 12px;
+	font-size: 20px;
+	cursor: pointer;
+	color: #666;
+}
+
+.cliente-modal-close:hover {
+	color: #000;
+}
+
+/* Campo de búsqueda */
+.cliente-modal input[type="text"] {
+	width: 100%;
+	padding: 8px;
+	margin-bottom: 12px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 14px;
+	box-sizing: border-box;
+}
+
+/* Resultados de búsqueda */
+.cliente-search-results {
+	max-height: 200px;
+	overflow-y: auto;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: #fafafa;
+}
+
+.cliente-search-item {
+	padding: 8px 10px;
+	cursor: pointer;
+	border-bottom: 1px solid #eee;
+	transition: background-color 0.2s;
+}
+
+.cliente-search-item:last-child {
+	border-bottom: none;
+}
+
+.cliente-search-item:hover {
+	background-color: #f0f0f0;
+}
+
+
+
+/* Modal crear mesa */
+.btn-crear-nueva-mesa {
+	margin-left: 0.9vw;
+	background-color: #d4a500;
+	border: none;
+	padding: 0.4vw 0.7vw;
+	color: white;
+	font-family: Yeseva One;
+	font-size: 1.1vw;
+	transition: color 0.2s ease;
+	margin-top: -1vw;
+	border-radius: 25px;
+	
+}
+
+.btn-crear-nueva-mesa:hover {
+	color: #333;
+}
+
+.crear-mesa-nueva-modal {
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.5);
+	text-align: center;
+}
+
+.modal-contenido {
+	font-family: Arial;
+	background-color: #fff;
+	margin: 10% auto;
+	padding: 20px;
+	border-radius: 8px;
+	width: 90%;
+	max-width: 400px;
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+	animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+	from { opacity: 0; transform: translateY(-20px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+.cerrar-modal {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.cerrar-modal:hover {
+	color: #000;
+}
+
+#formCrearMesa {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	align-items: center;
+}
+
+#formCrearMesa input,
+#formCrearMesa textarea {
+	width: 95%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	font-size: 20px;
+	transition: border 0.2s;
+	font-family: Consolas;
+}
+
+#formCrearMesa button {
+	background-color: #d4a500;
+	border: none;
+	padding: 0.5vw 0.9vw;
+	color: white;
+	font-family: Yeseva One;
+	font-size: 1vw;
+	transition: color 0.2s ease;
+	border-radius: 25px;
+	max-width: 9vw;
+}
+
+#formCrearMesa button:hover {
+	color: #333;
+}
+
+
+.verificacion-empleado-modal.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.4);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+	font-family: 'Arial', sans-serif;
+}
+
+.verificacion-empleado-modal .modal-content {
+	background-color: #fff;
+	padding: 30px 35px;
+	border-radius: 12px;
+	width: 90%;
+	max-width: 420px;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+	position: relative;
+	animation: fadeInModal 0.25s ease-in-out;
+	text-align: center;
+}
+
+.verificacion-empleado-modal .modal-close {
+	position: absolute;
+	top: 10px;
+	right: 15px;
+	font-size: 28px;
+	color: #888;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.verificacion-empleado-modal .modal-close:hover {
+	color: #333;
+}
+
+.verificacion-empleado-modal h3 {
+	margin-bottom: 10px;
+	font-size: 20px;
+	font-weight: bold;
+	color: #333;
+}
+
+.verificacion-empleado-modal p {
+	font-size: 14px;
+	margin-bottom: 20px;
+	color: #555;
+}
+
+.verificacion-empleado-modal label {
+	display: block;
+	text-align: left;
+	font-size: 14px;
+	margin: 12px 0 4px;
+	color: #444;
+}
+
+.verificacion-empleado-modal input {
+	width: 95%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	font-size: 20px;
+	transition: border 0.2s;
+	font-family: Consolas;
+}
+
+.verificacion-empleado-modal input:focus {
+	border-color: #d4a500;
+	outline: none;
+}
+
+.verificacion-empleado-modal button {
+	width: 65%;
+	padding: 8px;
+	margin-top: 20px;
+	background-color: #d4a500;
+	color: white;
+	border: none;
+	border-radius: 25px;
+	cursor: pointer;
+	font-family: Yeseva One;
+	font-size: 1.2vw;
+	letter-spacing: 0.5px;
+	transition: background-color 0.2s;
+}
+
+.verificacion-empleado-modal button:hover {
+	background-color: #b89300;
+}
+
+
+@keyframes fadeInModal {
+	from {
+		opacity: 0;
+		transform: translateY(-15px) scale(0.98);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+.popup-message {
+	font-family: Yeseva One;
+	font-size: 26px;
+}

@@ -55,27 +55,48 @@ CREATE TABLE deliveries (
 	CONSTRAINT fk_delivery_empleado FOREIGN KEY (id) REFERENCES empleados (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-CREATE TABLE pedidos (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	cliente_id INT UNSIGNED NOT NULL,
-	total DECIMAL(10,2) NOT NULL,
-	empleado_id INT UNSIGNED NULL, -- Puede ser NULL al principio
-	estado_pedido TINYINT UNSIGNED NOT NULL,
-    para_llevar BIT(1) NOT NULL DEFAULT b'0',
-	direccion_entrega VARCHAR(200) NULL, -- Puede ser NULL al principio
-    delivery_id INT UNSIGNED DEFAULT NULL,
-	fecha_pedido TIMESTAMP NULL DEFAULT NULL, -- Se agrega al momento de confirmación
-	creado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-	actualizado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    visible TINYINT(1) NOT NULL DEFAULT '1',
-	PRIMARY KEY (id),
-	KEY cliente_id (cliente_id),
-	KEY empleado_id (empleado_id),
-	KEY fk_pedidos_delivery (delivery_id),
-	CONSTRAINT fk_pedidos_delivery FOREIGN KEY (delivery_id) REFERENCES deliveries (id) ON DELETE SET NULL ON UPDATE CASCADE,
-	CONSTRAINT pedidos_ibfk_1 FOREIGN KEY (cliente_id) REFERENCES clientes (id),
-	CONSTRAINT pedidos_ibfk_2 FOREIGN KEY (empleado_id) REFERENCES empleados (id)
+CREATE TABLE mesas (
+    id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    mesa VARCHAR(10) NOT NULL,
+    estado TINYINT UNSIGNED DEFAULT 1,
+    cliente INT UNSIGNED DEFAULT NULL,
+    pedido_id INT UNSIGNED DEFAULT NULL,
+    empleado_id INT UNSIGNED DEFAULT NULL,
+    hora_asignacion DATETIME DEFAULT NULL,
+    PRIMARY KEY (id),
+    KEY cliente (cliente),
+    KEY pedido_id (pedido_id),
+    KEY empleado_id (empleado_id),
+    CONSTRAINT mesas_ibfk_1 FOREIGN KEY (cliente) REFERENCES clientes(id),
+    CONSTRAINT mesas_ibfk_3 FOREIGN KEY (empleado_id) REFERENCES empleados(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+CREATE TABLE pedidos (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    cliente_id INT UNSIGNED NOT NULL,
+    total DECIMAL(10,2) NOT NULL,
+    empleado_id INT UNSIGNED DEFAULT NULL,
+    estado_pedido TINYINT UNSIGNED NOT NULL,
+    mesa_id SMALLINT UNSIGNED DEFAULT NULL,
+    para_llevar BIT(1) NOT NULL DEFAULT b'0',
+    direccion_entrega VARCHAR(200) DEFAULT NULL,
+    delivery_id INT UNSIGNED DEFAULT NULL,
+    fecha_pedido TIMESTAMP NULL DEFAULT NULL,
+    creado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    visible TINYINT(1) NOT NULL DEFAULT '1',
+    PRIMARY KEY (id),
+    KEY cliente_id (cliente_id),
+    KEY empleado_id (empleado_id),
+    KEY fk_pedidos_mesa (mesa_id),
+    KEY fk_pedidos_delivery (delivery_id),
+    CONSTRAINT fk_pedidos_delivery FOREIGN KEY (delivery_id) REFERENCES deliveries(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT fk_pedidos_mesa FOREIGN KEY (mesa_id) REFERENCES mesas(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT pedidos_ibfk_1 FOREIGN KEY (cliente_id) REFERENCES clientes(id),
+    CONSTRAINT pedidos_ibfk_2 FOREIGN KEY (empleado_id) REFERENCES empleados(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+ALTER TABLE mesas ADD CONSTRAINT mesas_ibfk_2 FOREIGN KEY (pedido_id) REFERENCES pedidos(id);
 
 CREATE TABLE detalle_pedido (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -287,7 +308,6 @@ END$$
 DELIMITER ;
 
 
-
 DELIMITER $$
 
 USE `mesalista_db`$$
@@ -299,7 +319,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `confirmarPedido`(
     IN p_empleado_id INT,
     IN p_clave VARCHAR(100),
     IN p_direccion_entrega VARCHAR(200),
-    IN p_para_llevar BOOLEAN
+    IN p_para_llevar BOOLEAN,
+    IN p_mesa_id INT
 )
 BEGIN
     DECLARE v_cliente_id INT;
@@ -311,56 +332,57 @@ BEGIN
     DECLARE v_salt VARCHAR(64);
     DECLARE v_hash_clave VARCHAR(64);
     DECLARE v_clave_almacenada VARCHAR(64);
-    
-    -- Verificar si el pedido existe
+    DECLARE v_mesa_estado TINYINT;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Se produjo un error inesperado durante la confirmación del pedido.';
+    END;
+
+    -- Verificaciones previas
     IF NOT EXISTS (SELECT 1 FROM pedidos WHERE id = p_pedido_id) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El pedido no existe';
     END IF;
-    
-    -- Verificar si el empleado existe
+
     SELECT COUNT(1) INTO v_empleado_existente
     FROM empleados
     WHERE id = p_empleado_id;
+
     IF v_empleado_existente = 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El empleado no existe';
     END IF;
-    
-    -- Obtener estado, nivel, salt y clave
+
     SELECT estado, nivel, salt, clave
     INTO v_estado, v_empleado_nivel, v_salt, v_clave_almacenada
     FROM empleados
     WHERE id = p_empleado_id;
-    
-    -- Validar estado del empleado
+
     IF v_estado <> 1 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Empleado restringido';
     END IF;
-    
-    -- Validar nivel del empleado
+
     IF v_empleado_nivel = 3 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El personal de delivery no puede confirmar pedidos';
     END IF;
-    
-    -- Validar clave
+
     SET v_hash_clave = SHA2(CONCAT(p_clave, v_salt), 256);
     IF v_hash_clave <> v_clave_almacenada THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Credenciales inválidas';
     END IF;
-    
-    -- Obtener cliente del pedido
+
     SELECT cliente_id INTO v_cliente_id
     FROM pedidos
     WHERE id = p_pedido_id;
-    
-    -- Validar cliente
+
     SELECT COUNT(1) INTO v_cliente_existente
     FROM clientes
     WHERE id = v_cliente_id;
+
     IF v_cliente_existente = 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El cliente no existe';
     END IF;
-    
-    -- Obtener direccion del cliente si no se proporciono
+
     IF p_direccion_entrega IS NULL OR p_direccion_entrega = '' THEN
         SELECT direccion INTO v_direccion_cliente
         FROM clientes
@@ -368,40 +390,61 @@ BEGIN
     ELSE
         SET v_direccion_cliente = p_direccion_entrega;
     END IF;
-    
-    -- Verificar si ya fue confirmado
+
     IF EXISTS (SELECT 1 FROM pedidos WHERE id = p_pedido_id AND estado_pedido = 1) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El pedido ya ha sido confirmado';
     END IF;
-    
-    -- Confirmar pedido con logica para llevar / local
-    IF p_para_llevar THEN
-        -- Para llevar
-        UPDATE pedidos
-        SET
-            empleado_id = p_empleado_id,
-            direccion_entrega = v_direccion_cliente,
-            estado_pedido = 1,
-            para_llevar = b'1',
-            fecha_pedido = NOW()  -- Actualizar fecha_pedido a la fecha actual
-        WHERE id = p_pedido_id;
-    ELSE
-        -- Para consumir en local
-        UPDATE pedidos
-        SET
-            empleado_id = p_empleado_id,
-            direccion_entrega = NULL,
-            estado_pedido = 1,
-            para_llevar = b'0',
-            fecha_pedido = NOW()  -- Actualizar fecha_pedido a la fecha actual
-        WHERE id = p_pedido_id;
+
+    -- Validaciones de mesa si no es para llevar
+    IF NOT p_para_llevar THEN
+        IF p_mesa_id IS NULL OR p_mesa_id = 0 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Debe proporcionar una mesa válida para consumir en local';
+        END IF;
+
+        SELECT estado INTO v_mesa_estado
+        FROM mesas
+        WHERE id = p_mesa_id;
+
+        IF v_mesa_estado IS NULL THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La mesa indicada no existe';
+        END IF;
+
+        IF v_mesa_estado <> 1 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La mesa está ocupada o inhabilitada';
+        END IF;
     END IF;
-    
+
+    -- INICIO TRANSACCIÓN
+    START TRANSACTION;
+
+    -- Actualizar pedido
+    UPDATE pedidos
+    SET
+        empleado_id = p_empleado_id,
+        direccion_entrega = CASE WHEN p_para_llevar THEN v_direccion_cliente ELSE NULL END,
+        estado_pedido = 1,
+        para_llevar = p_para_llevar,
+        fecha_pedido = NOW(),
+        mesa_id = CASE WHEN p_para_llevar THEN NULL ELSE p_mesa_id END
+    WHERE id = p_pedido_id;
+
+    -- Actualizar mesa si no es para llevar
+    IF NOT p_para_llevar THEN
+        UPDATE mesas
+        SET
+            cliente = v_cliente_id,
+            pedido_id = p_pedido_id,
+            empleado_id = p_empleado_id,
+            estado = 2,
+            hora_asignacion = NOW()
+        WHERE id = p_mesa_id;
+    END IF;
+
+    -- FIN TRANSACCIÓN
     COMMIT;
 END$$
 
 DELIMITER ;
-
 
 
 
@@ -514,6 +557,63 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+
+DELIMITER $$
+
+USE `mesalista_db`$$
+
+DROP PROCEDURE IF EXISTS `sp_validar_mesero`$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_validar_mesero`(
+    IN p_id INT,
+    IN p_clave VARCHAR(100),
+    OUT p_es_valido BOOLEAN,
+    OUT p_mensaje VARCHAR(100)
+)
+BEGIN
+    DECLARE v_nivel INT;
+    DECLARE v_estado TINYINT;
+    DECLARE v_salt VARCHAR(64);
+    DECLARE v_contador INT DEFAULT 0;
+    DECLARE v_hash_clave VARCHAR(64);
+
+    -- Intentamos obtener estado, nivel y salt del empleado
+    SELECT estado, nivel, salt
+    INTO v_estado, v_nivel, v_salt
+    FROM empleados
+    WHERE id = p_id;
+
+    -- Validaciones
+    IF v_estado IS NULL THEN
+        SET p_es_valido = FALSE;
+        SET p_mensaje = 'Empleado no encontrado';
+    ELSEIF v_estado <> 1 THEN
+        SET p_es_valido = FALSE;
+        SET p_mensaje = 'Empleado restringido';
+    ELSEIF v_nivel > 2 THEN  -- ACEPTAMOS nivel 0 (admin), 1 (gerente), 2 (mesero)
+        SET p_es_valido = FALSE;
+        SET p_mensaje = 'Nivel insuficiente para esta operación';
+    ELSE
+        -- Validar clave con hash
+        SET v_hash_clave = SHA2(CONCAT(p_clave, v_salt), 256);
+        SELECT COUNT(*) INTO v_contador 
+        FROM empleados 
+        WHERE id = p_id AND clave = v_hash_clave;
+
+        IF v_contador = 0 THEN
+            SET p_es_valido = FALSE;
+            SET p_mensaje = 'Credenciales inválidas';
+        ELSE
+            SET p_es_valido = TRUE;
+            SET p_mensaje = 'Autenticación exitosa';
+        END IF;
+    END IF;
+END$$
+
+DELIMITER ;
+
 
 
 DELIMITER $$
@@ -1152,3 +1252,8 @@ INSERT INTO menu_del_dia (producto_id, dia_id) VALUES
 (58, 2), (58, 3), (58, 4), (58, 5), (58, 6), (58, 7), (59, 1), (59, 2), (59, 3), (59, 4), (59, 5), (59, 6), (59, 7), (60, 1), (60, 5), (60, 6), (60, 7), (61, 3), 
 (61, 4), (61, 5), (61, 7), (62, 2), (62, 3), (62, 6), (62, 7), (64, 1), (64, 3), (64, 5), (64, 6), (64, 7), (65, 3), (66, 2), (66, 4), (66, 6), (67, 1), (67, 2), 
 (67, 5), (67, 7), (68, 2), (68, 4), (68, 5), (69, 4), (69, 7), (69, 1), (69, 3), (69, 6);
+
+INSERT INTO mesas (mesa, estado) VALUES
+('1-01', 1), ('1-02', 1), ('1-03', 1), ('1-04', 1), ('1-05', 1),('1-06', 1), ('1-07', 1), ('1-08', 1), ('1-09', 1), ('1-10', 1),
+('1-11', 1), ('1-12', 1), ('1-13', 1), ('1-14', 1), ('1-15', 1),('2-01', 1), ('2-02', 1), ('2-03', 1), ('2-04', 1), ('2-05', 1),
+('2-06', 1), ('2-07', 1), ('2-08', 1), ('2-09', 1), ('2-10', 1),('2-11', 1), ('2-12', 1), ('2-13', 1), ('2-14', 1), ('2-15', 1);

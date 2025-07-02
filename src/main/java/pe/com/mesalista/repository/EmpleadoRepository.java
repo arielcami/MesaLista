@@ -19,11 +19,12 @@ public interface EmpleadoRepository extends JpaRepository<EmpleadoEntity, Long> 
 
 	List<EmpleadoEntity> findByNivel(int nivel);
 
-	// Estos son 2 procedimientos almacenados hermanos, importante es saber que
-	// Delivery hereda de Empleado
+
+	// Da acceso a niveles 1 y 2
 	@Procedure(procedureName = "sp_validar_empleado")
 	Map<String, Object> spValidarEmpleado(@Param("p_id") int p_id, @Param("p_clave") String p_clave);
 
+	// Da acceso a nivel 4 solamente
 	@Procedure(procedureName = "sp_validar_delivery")
 	Map<String, Object> spValidarDelivery(@Param("p_id") int p_id, @Param("p_clave") String p_clave);
 

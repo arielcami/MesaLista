@@ -26,12 +26,14 @@ public class PedidoRestController {
 	public void marcarEstado(@PathVariable Long pedidoId, @RequestParam Byte estado) {
 		servicio.marcarPedidoEstado(pedidoId, estado);
 	}
-	
-	// Actualizar estado_pedido dependiendo del pedido_id y delivery_id - Vista Entregas
+
+	// Actualizar estado_pedido dependiendo del pedido_id y delivery_id - Vista
+	// Entregas
 	@PutMapping("/actualizarEstadoEnTransito/{pedidoId}/{deliveryId}/{nuevoEstado}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void marcarEstado(@PathVariable Long pedidoId, @PathVariable Long deliveryId,  @PathVariable Byte nuevoEstado) {
-	    servicio.actualizarEstadoSiDeliveryCoincide(pedidoId, deliveryId, nuevoEstado);
+	public void marcarEstado(@PathVariable Long pedidoId, @PathVariable Long deliveryId,
+			@PathVariable Byte nuevoEstado) {
+		servicio.actualizarEstadoSiDeliveryCoincide(pedidoId, deliveryId, nuevoEstado);
 	}
 
 	@GetMapping("/cocina")
@@ -43,10 +45,10 @@ public class PedidoRestController {
 	public List<PedidoEntity> findByEstadoPedido(@PathVariable byte estado) {
 		return servicio.findByEstadoPedido(estado);
 	}
-	
+
 	@GetMapping("/incompletos")
 	public List<PedidoEntity> obtenerPedidosIncompletos() {
-	    return servicio.obtenerPedidosIncompletos();
+		return servicio.obtenerPedidosIncompletos();
 	}
 
 	@GetMapping("/cliente/{clienteId}")
@@ -89,24 +91,24 @@ public class PedidoRestController {
 		servicio.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-
-	// Stored Procedure
+	
+	// Stored Porcedure confirmarPedido()
 	@PostMapping("/confirmar")
 	public ResponseEntity<String> confirmarPedido(
 	        @RequestParam Long pedidoId,
 	        @RequestParam Long empleadoId,
 	        @RequestParam String clave,
 	        @RequestParam(required = false) String direccionEntrega,
-	        @RequestParam boolean paraLlevar) {
-
+	        @RequestParam boolean paraLlevar,
+	        @RequestParam(required = false) Integer mesaId
+	) {
 	    try {
-	        servicio.confirmarPedido(pedidoId, empleadoId, clave, direccionEntrega, paraLlevar);
+	        servicio.confirmarPedido(pedidoId, empleadoId, clave, direccionEntrega, paraLlevar, mesaId);
 	        return ResponseEntity.ok("Pedido confirmado correctamente.");
 	    } catch (Exception e) {
 	        String mensajeLimpio = "Error al confirmar el pedido.";
 	        String sqlState = null;
 
-	        // Buscar si hay una SQLException en la causa
 	        Throwable causa = e;
 	        while (causa != null) {
 	            if (causa instanceof SQLException sqlEx) {
@@ -117,26 +119,24 @@ public class PedidoRestController {
 	            causa = causa.getCause();
 	        }
 
-	        // Si es un error esperado (SIGNAL SQLSTATE '45000'), devolver 400 (Bad Request)
 	        if ("45000".equals(sqlState)) {
 	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensajeLimpio);
 	        }
 
-	        // Si es otro tipo de error, devolver 500
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mensajeLimpio);
 	    }
 	}
 
+
 	// Borrado físico, cuidado
 	@DeleteMapping("/limpiar-basura/{pedidoId}")
 	public ResponseEntity<String> limpiarBasuraPedido(@PathVariable Integer pedidoId) {
-	    try {
-	    	servicio.limpiarBasuraPedido(pedidoId);
-	        return ResponseEntity.ok("Pedido eliminado correctamente.");
-	    } catch (Exception e) {
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al eliminar el pedido: " + e.getMessage());
-	    }
+		try {
+			servicio.limpiarBasuraPedido(pedidoId);
+			return ResponseEntity.ok("Pedido eliminado correctamente.");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al eliminar el pedido: " + e.getMessage());
+		}
 	}
-	
-	
+
 }

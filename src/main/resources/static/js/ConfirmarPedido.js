@@ -16,8 +16,54 @@ document.addEventListener("DOMContentLoaded", () => {
 	const empleadoIdInput = document.getElementById("empleado-id");
 	const claveEmpleadoInput = document.getElementById("empleado-clave");
 	const direccionEntregaInput = document.getElementById("direccion-entrega");
+	const mesaSelect = document.getElementById("mesaSelect");
 
 	const API_URL_CONFIRMAR = "/mesalista/api/pedido/confirmar";
+	const API_MESA = "/mesalista/api/mesa?estado=";
+
+	var cliente_id = null;
+
+	fetch(API_MESA + "1")
+		.then(response => {
+			if (!response.ok) {
+				throw new Error("Error al obtener las mesas");
+			}
+			return response.json();
+		})
+		.then(mesas => {
+			// Limpiar cualquier opción previa
+			mesaSelect.innerHTML = "";
+
+			if (mesas.length === 0) {
+				const option = document.createElement("option");
+				option.textContent = "-No hay mesas disponibles-";
+				option.disabled = true;
+				option.selected = true;
+				mesaSelect.appendChild(option);
+
+				mesaSelect.disabled = true;
+			} else {
+				mesaSelect.disabled = false;
+
+				const placeholder = document.createElement("option");
+				placeholder.textContent = "Selecciona una mesa";
+				placeholder.value = "";
+				placeholder.selected = true;
+				placeholder.disabled = true;
+				mesaSelect.appendChild(placeholder);
+
+				mesas.forEach(mesa => {
+					const option = document.createElement("option");
+					option.value = mesa.id;
+					option.textContent = mesa.mesa;
+					mesaSelect.appendChild(option);
+				});
+			}
+		})
+		.catch(error => {
+			console.error("Error al cargar las mesas:", error);
+		});
+
 
 	if (pedidoId) {
 		const detalleUrl = `/mesalista/api/detallepedido/buscaractivo/${pedidoId}`;
@@ -31,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				let total = 0;
 
 				data.forEach(detalle => {
+					//console.log(detalle)
 					if (detalle.cantidad <= 0) return;
 
 					const fila = document.createElement("tr");
@@ -68,6 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			.then(res => res.json())
 			.then(pedido => {
 				const clienteId = pedido.cliente?.id;
+				cliente_id = clienteId;
 				if (clienteId) {
 					fetch(`/mesalista/api/cliente/${clienteId}`)
 						.then(res => res.json())
@@ -236,14 +284,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			setTimeout(() => document.addEventListener('click', clickFueraHandler), 100);
 		}
 
-
-
-
-
-
-
-
-
 	});
 
 	document.getElementById("btn-confirmar-final").addEventListener("click", () => {
@@ -251,6 +291,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		const claveEmpleado = claveEmpleadoInput.value;
 		const direccionEntrega = direccionEntregaInput.value || "";
 		const paraLlevar = document.getElementById("modoCheckbox").checked;
+		const mesaSelect = document.getElementById("mesaSelect");
+		const mesaId = mesaSelect.value;
 
 		if (!pedidoId || !empleadoId || !claveEmpleado) {
 			mostrarPopupConfirmacion("warning", "Faltan datos necesarios: Pedido, Empleado o Clave.", null);
@@ -265,6 +307,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		if (direccionEntrega.trim()) {
 			formData.append("direccionEntrega", direccionEntrega);
+		}
+
+		// Solo enviar mesaId si no es para llevar y hay una mesa válida seleccionada
+		if (!paraLlevar && mesaId && mesaId !== "0") {
+			formData.append("mesaId", mesaId);
 		}
 
 		fetch(API_URL_CONFIRMAR, {
@@ -291,8 +338,31 @@ document.addEventListener("DOMContentLoaded", () => {
 				mostrarPopupConfirmacion("error", "Error: " + err.message, null);
 			});
 	});
+
 });
 
 document.getElementById("btn-regresar").addEventListener("click", function() {
 	window.history.back();
 });
+
+
+document.getElementById("modoCheckbox").addEventListener("change", (event) => {
+	const mesaSelect = document.getElementById("mesaSelect");
+
+	if (event.target.checked) {
+		mesaSelect.selectedIndex = 0;
+	}
+});
+
+document.getElementById("mesaSelect").addEventListener("change", (event) => {
+	const modoCheckbox = document.getElementById("modoCheckbox");
+
+	if (event.target.selectedIndex > 0) {
+		modoCheckbox.checked = false;
+	}
+});
+
+
+
+
+

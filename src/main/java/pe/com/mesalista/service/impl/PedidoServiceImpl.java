@@ -103,12 +103,12 @@ public class PedidoServiceImpl implements PedidoService {
     	
     // SP
     @Override
-    public void confirmarPedido(Long pedidoId, Long empleadoId, String clave, String direccionEntrega, boolean paraLlevar) {
+    public void confirmarPedido(Long pedidoId, Long empleadoId, String clave, String direccionEntrega, boolean paraLlevar, Integer mesaId) {
         sys.checkSystemActiveOrThrow();
         if (direccionEntrega == null || direccionEntrega.trim().isEmpty()) {
             direccionEntrega = null;
         }
-        pedidoRepository.confirmarPedido(pedidoId, empleadoId, clave, direccionEntrega, paraLlevar);
+        pedidoRepository.confirmarPedido(pedidoId, empleadoId, clave, direccionEntrega, paraLlevar, mesaId);
     }
 
 

@@ -1,5 +1,5 @@
 const API_URL = '/mesalista/api/pedido/cocina';
-const REFRESH_INTERVAL_MS = 500;
+const REFRESH_INTERVAL_MS = 2000;
 
 function formatHora(fechaISO) {
     const fecha = new Date(fechaISO);
@@ -57,7 +57,6 @@ async function fetchPedidos() {
     }
 }
 
-
 function renderPedidos(pedidos) {
     const container = document.querySelector('.pedido-container');
     container.innerHTML = ''; // limpia contenido actual
@@ -73,9 +72,13 @@ function renderPedidos(pedidos) {
 
         const card = document.createElement('div');
         card.className = 'pedido-card';
+		
+		const mesa = pedido.mesa.nombre ? '<br>Mesa '+ pedido.mesa.nombre : ''; 
+		
+		console.log(pedido)
 
         card.innerHTML = `
-            <h2>Pedido #${pedido.id} - ${pedido.paraLlevar ? 'Para llevar' : 'Consumir aquí'}</h2>
+            <h2>Pedido #${pedido.id} - ${pedido.paraLlevar ? 'Para llevar' : 'Consumir aquí'}${mesa}</h2>
             <p><strong>Cliente:</strong> ${pedido.cliente?.nombre ?? 'Sin nombre'} - ${pedido.cliente?.documento ?? 'Sin documento'}</p>
             <p><strong>Teléfono:</strong> ${formatTelefono(pedido.cliente.telefono)}</p>
             <p><strong>Dirección:</strong> ${pedido.direccionEntrega ? pedido.direccionEntrega : 'Consumir aquí'}</p>

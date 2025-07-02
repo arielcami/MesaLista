@@ -307,3 +307,20 @@ button.agregar-comentario:active {
 	display: flex;
 	margin-left: 4vw;
 }
+
+
+
+/* Seleccionar mesa */
+.mesa-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.campo-select-mesa {
+  width: 200px;
+  padding: 5px;
+  font-size: 16px;
+}
+
+

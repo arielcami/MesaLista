@@ -7,11 +7,13 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -59,6 +61,11 @@ public class PedidoEntity implements Serializable {
 	
 	@Column(name = "para_llevar")
 	private boolean paraLlevar;
+	
+	@ManyToOne
+	@JoinColumn(name = "mesa_id", foreignKey = @ForeignKey(name = "fk_pedidos_mesa"))
+	@JsonIgnoreProperties({"pedido", "cliente", "empleado"}) // Evita referencia circular
+	private MesaEntity mesa;
 
 	@Column(name = "direccion_entrega", length = 200, nullable = false)
 	private String direccionEntrega;

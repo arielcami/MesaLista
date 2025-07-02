@@ -73,7 +73,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 	@Override
 	public EmpleadoEntity delete(Long id) {
 		empleadoRepository.findById(id).ifPresent(usuario -> {
-			usuario.setEstado(false); 
+			usuario.setEstado(false);
 			empleadoRepository.save(usuario);
 		});
 		return null;
@@ -148,7 +148,8 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 	}
 
 	@Override
-	public Map<String, Object> restablecerClave(int id, String nombre, String telefono, String documento, String nuevaClave) {
+	public Map<String, Object> restablecerClave(int id, String nombre, String telefono, String documento,
+			String nuevaClave) {
 		StoredProcedureQuery query = entityManager.createStoredProcedureQuery("sp_restablecer_clave");
 
 		// Registrar parámetros de entrada
@@ -178,6 +179,34 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 
 		Map<String, Object> resultado = new HashMap<>();
 		resultado.put("p_exito", exito != null ? exito : false);
+		resultado.put("p_mensaje", mensaje != null ? mensaje : "Error desconocido");
+
+		return resultado;
+	}
+
+	@Override
+	public Map<String, Object> validarMeseroCredenciales(int id, String clave) {
+		StoredProcedureQuery query = entityManager.createStoredProcedureQuery("sp_validar_mesero");
+
+		// Registrar parámetros
+		query.registerStoredProcedureParameter("p_id", Integer.class, ParameterMode.IN);
+		query.registerStoredProcedureParameter("p_clave", String.class, ParameterMode.IN);
+		query.registerStoredProcedureParameter("p_es_valido", Boolean.class, ParameterMode.OUT);
+		query.registerStoredProcedureParameter("p_mensaje", String.class, ParameterMode.OUT);
+
+		// Asignar entrada
+		query.setParameter("p_id", id);
+		query.setParameter("p_clave", clave);
+
+		// Ejecutar
+		query.execute();
+
+		// Extraer resultados
+		Boolean esValido = (Boolean) query.getOutputParameterValue("p_es_valido");
+		String mensaje = (String) query.getOutputParameterValue("p_mensaje");
+
+		Map<String, Object> resultado = new HashMap<>();
+		resultado.put("p_es_valido", esValido != null ? esValido : false);
 		resultado.put("p_mensaje", mensaje != null ? mensaje : "Error desconocido");
 
 		return resultado;

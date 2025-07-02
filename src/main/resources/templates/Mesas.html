@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mesas - MesaLista v1.0</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/img/fav.png}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/BarraNavegacion.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/PopupCustom2Options.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/Mesas.css}"/>
+</head>
+<body>
+	<div th:replace="~{components/BarraNavegacion :: barra-nav}"></div>
+    <div th:replace="~{components/PopupCustom2Options :: popupCustom2Options}"></div>
+	
+	<section>
+		
+		<div class="mesas-header">
+	        <h2>Mesas</h2>
+	        <div class="mesas-status-legend">
+	            <div class="legend-item"><span class="legend-color disponible"></span>Vacía</div>
+	            <div class="legend-item"><span class="legend-color ocupada"></span>Ocupada</div>
+	            <div class="legend-item"><span class="legend-color desuso"></span>Cerrada</div>
+	        </div>
+	    </div>
+	    
+	    <button id="agregar-mesa-btn" class="btn-crear-nueva-mesa">Crear nueva mesa</button>
+	    
+	    <!-- Contenedor para la grilla de mesas -->
+	    <div id="mesas-container" class="mesas-container">
+	        <div class="mesa" th:each="mesa : ${mesas}" 
+	             th:class="${mesa.estado == 1 ? 'disponible' : (mesa.estado == 2 ? 'ocupada' : 'desuso')}"
+	             th:data-id="${mesa.id}" 
+	             th:data-cliente="${mesa.cliente != null ? mesa.cliente.id : ''}"
+	             th:attr="data-estado=${mesa.estado}">
+	            <span class="mesa-numero" th:text="${mesa.nombre}"></span>
+	            <span class="mesa-cliente" th:if="${mesa.estado == 2}" th:text="${mesa.cliente != null ? mesa.cliente.nombre : ''}"></span>
+	        </div>    
+	    </div>
+	</section>
+	
+	<!-- Modal Detalle de Pedido -->
+	<div id="pedido-modal" class="modal" style="display:none;">
+		<div class="modal-content">
+			<span id="modal-close" class="modal-close">&times;</span>
+			<h3>Detalle del Pedido</h3>
+			<div id="modal-body">
+				<p><strong>Cliente:</strong> <span id="modal-cliente-nombre"></span></p>
+				<p><strong>Mesero asignado:</strong> <span id="modal-empleado-nombre"></span></p>
+				<p><strong>Hora:</strong> <span id="modal-fecha"></span></p>
+				<h4>Productos</h4>
+				<ul id="modal-productos-list"></ul>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Contextual Menu -->
+	<div id="estado-context-menu" class="context-menu" style="display: none;"></div>
+	
+	
+	<!-- Modal para asignar cliente -->
+	<div id="cliente-modal" class="cliente-modal" style="display: none;">
+		<div class="cliente-modal-content">
+			<span id="cliente-modal-close" class="cliente-modal-close">&times;</span>
+			<h3>Asignar Cliente</h3>
+			
+			<input type="text" id="cliente-busqueda" placeholder="Buscar cliente por nombre o documento..." />
+			
+			<div id="cliente-resultados" class="cliente-search-results"></div>
+		</div>
+	</div>
+	
+	<!-- Modal de verificación de empleado -->
+	<div id="verificacion-empleado-modal" class="verificacion-empleado-modal modal" style="display: none;">
+		<div class="modal-content">
+			<span id="verificacion-empleado-close" class="modal-close">&times;</span>
+			<h3>Verificar Empleado</h3>
+			<p>Por favor, ingresa tus credenciales para asignar el cliente.</p>
+			<label>ID del empleado:</label>
+			<input type="number" id="empleado-id-input" placeholder="ID" />
+			<label>Clave:</label>
+			<input type="password" id="empleado-clave-input" placeholder="Clave" />
+			<button id="verificar-empleado-btn">Asignar cliente</button>
+		</div>
+	</div>
+	
+	<!-- Modal de creación de mesas -->
+	<div class="crear-mesa-nueva-modal" id="crearMesaModal">
+		<div class="modal-contenido">
+			<span class="cerrar-modal" id="cerrarCrearMesa">&times;</span>
+			<h2>Agregar nueva mesa</h2>
+			<form id="formCrearMesa">
+				<label for="nombreMesa">Nombre de la mesa:</label>
+				<input type="text" id="nombreMesa" name="nombreMesa" maxlength="10" required>
+				<button type="submit">Guardar mesa</button>
+			</form>
+		</div>
+	</div>
+		
+<script th:src="@{/js/PopupCustom2Options.js}"></script>
+<script th:src="@{/js/Mesas.js}" defer></script>
+</body>
+</html>

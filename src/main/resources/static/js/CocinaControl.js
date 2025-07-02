@@ -62,23 +62,24 @@ async function fetchPedidos() {
 	}
 }
 
-
 function renderPedidos(pedidos) {
 	const container = document.querySelector('.pedido-container');
 	container.innerHTML = '';
 
 	pedidos.forEach(pedido => {
-		const prioridad = [2, 1, 3, 4];
+		const prioridad = [2, 1, 3, 4, 5];
 		const detallesOrdenados = pedido.detalles
-			.filter(detalle => detalle.cantidad > 0) // ← Agregado: solo incluir cantidades mayores a 0
+			.filter(detalle => detalle.cantidad > 0)
 			.sort((a, b) => prioridad.indexOf(a.producto.tipoProducto) - prioridad.indexOf(b.producto.tipoProducto));
 
 		const card = document.createElement('div');
 		card.className = 'pedido-card';
 		card.dataset.pedidoId = pedido.id;
+		
+		const mesa = pedido.mesa.nombre ? '<br>Mesa '+ pedido.mesa.nombre : ''; 
 
 		card.innerHTML = `
-            <h2>Pedido #${pedido.id} - ${estadoPedidoTexto(pedido.estadoPedido)}</h2>
+            <h2>Pedido #${pedido.id} - ${estadoPedidoTexto(pedido.estadoPedido)}${mesa}</h2>
 			<p><strong>Modo:</strong> ${pedido.paraLlevar ? 'Para llevar' : 'Consumir aquí'}</p>
             <p><strong>Cliente:</strong> ${pedido.cliente.nombre} - ${pedido.cliente.documento}</p>
             <p><strong>Teléfono:</strong> ${formatTelefono(pedido.cliente.telefono)}</p>

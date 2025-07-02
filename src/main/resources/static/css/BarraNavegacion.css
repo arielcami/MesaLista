@@ -24,7 +24,7 @@ nav {
     color: white;
     margin-right: clamp(8px, 1.5vw, 20px);
     text-decoration: none;
-    font-size: clamp(18px, 2vw, 30px);
+    font-size: clamp(17px, 1.9vw, 29px);
     transition: color 0.3s ease;
 }
 
