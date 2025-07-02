@@ -27,5 +27,7 @@ public interface MesaService {
 	MesaEntity crearMesa(MesaEntity mesa);
 
 	void eliminarMesaPorId(Integer idMesa);
+	
+	void moverClienteDeMesa(Integer mesaOrigenId, Integer clienteId, Integer mesaDestinoId);
 
 }

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
 import pe.com.mesalista.entity.ClienteEntity;
 import pe.com.mesalista.entity.MesaEntity;
 import pe.com.mesalista.repository.MesaRepository;
@@ -125,5 +127,12 @@ public class MesaServiceImpl implements MesaService {
 		sys.checkSystemActiveOrThrow();
 		mesaRepository.aperturarMesaPorId(mesaId);
 	}
+
+	@Override
+    @Transactional
+    public void moverClienteDeMesa(Integer mesaOrigenId, Integer clienteId, Integer mesaDestinoId) {
+		sys.checkSystemActiveOrThrow();
+        mesaRepository.moverClienteDeMesa(mesaOrigenId, clienteId, mesaDestinoId);
+    }
 
 }

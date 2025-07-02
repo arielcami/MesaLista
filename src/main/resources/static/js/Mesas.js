@@ -65,6 +65,21 @@ function showEstadoMenu({ x, y, currentEstado, mesaId }) {
 			}
 		},
 		{
+			label: 'Mover cliente',
+			visible: currentEstado === 2,
+			action: () => {
+				const mesaEl = document.querySelector(`.mesa[data-id="${mesaId}"]`);
+				const clienteId = mesaEl?.getAttribute('data-cliente');
+
+				if (!clienteId) {
+					mostrarPopupConfirmacion('Error', 'No se pudo obtener el cliente de esta mesa.');
+					return;
+				}
+
+				moverCliente(parseInt(clienteId), mesaId);
+			}
+		},
+		{
 			label: 'Clausurar',
 			visible: currentEstado === 1,
 			action: () => {
@@ -155,7 +170,7 @@ function showClienteSearchModal(mesaId) {
 }
 
 function asignarClienteAMesa(mesaId, clienteId) {
-	
+
 	const mesaDiv = document.querySelector(`.mesa[data-id="${mesaId}"]`);
 	if (!mesaDiv) {
 		console.error('No se encontró la mesa en el DOM');
@@ -243,6 +258,77 @@ document.addEventListener('DOMContentLoaded', function() {
 		document.getElementById('pedido-modal').style.display = 'none';
 	});
 });
+
+
+function confirmarMovimiento() {
+	const mesaDestinoId = document.getElementById('select-mesa-destino').value;
+	enviarMovimientoCliente(mesaDestinoId);
+	cerrarModalMoverCliente();
+}
+
+function enviarMovimientoCliente(mesaDestinoId) {
+	if (!clienteAMoverId || !mesaOrigenAMoverId) {
+		mostrarPopupConfirmacion('Error', 'Faltan datos para mover al cliente.');
+		return;
+	}
+
+	const body = {
+		mesaOrigenId: parseInt(mesaOrigenAMoverId),
+		clienteId: parseInt(clienteAMoverId),
+		mesaDestinoId: parseInt(mesaDestinoId)
+	};
+
+	fetch('/mesalista/api/mesa/movercliente', {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(body)
+	})
+		.then(res => {
+			if (!res.ok) throw new Error('No se pudo mover el cliente.');
+			return res.text();
+		})
+		.then(() => {
+			location.reload();
+		})
+		.catch(err => {
+			mostrarPopupConfirmacion('Error', 'Error al intentar mover al cliente: ' + err.message);
+		});
+}
+
+function cerrarModalMoverCliente() {
+	document.getElementById('modal-mover-cliente').style.display = 'none';
+}
+
+let clienteAMoverId = null;
+let mesaOrigenAMoverId = null;
+
+function moverCliente(clienteId, mesaOrigenId) {
+	clienteAMoverId = clienteId;
+	mesaOrigenAMoverId = mesaOrigenId;
+
+	const select = document.getElementById('select-mesa-destino');
+	select.innerHTML = '';
+
+	const mesas = document.querySelectorAll('.mesa');
+
+	mesas.forEach(mesa => {
+		//console.log(mesa);
+		const estado = mesa.getAttribute('data-estado');
+		const id = mesa.getAttribute('data-id');
+		const nombre = mesa.querySelector('.mesa-nombre')?.innerText.trim() || `Mesa ${id}`;
+
+		if (estado === '1') {
+			const option = document.createElement('option');
+			option.value = id;
+			option.textContent = nombre;
+			select.appendChild(option);
+		}
+	});
+
+	document.getElementById('modal-mover-cliente').style.display = 'block';
+}
 
 
 function desalojarMesa(mesaId) {

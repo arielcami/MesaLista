@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pe.com.mesalista.dto.AsignacionRequest;
+import pe.com.mesalista.dto.MovimientoMesaRequest;
 import pe.com.mesalista.entity.MesaEntity;
 import pe.com.mesalista.service.EmpleadoService;
 import pe.com.mesalista.service.MesaService;
@@ -40,7 +41,7 @@ public class MesaRestController {
 		MesaEntity creada = mesaService.crearMesa(nuevaMesa);
 		return ResponseEntity.status(HttpStatus.CREATED).body(creada);
 	}
-	
+
 	@GetMapping
 	public List<MesaEntity> listarMesasPorEstado(@RequestParam int estado) {
 		return mesaService.listarMesasPorEstado(estado);
@@ -79,13 +80,13 @@ public class MesaRestController {
 		mesaService.desalojarMesa(mesaId);
 		return ResponseEntity.ok("Mesa desalojada correctamente");
 	}
-	
+
 	@PatchMapping("/cerrar/{mesaId}")
 	public ResponseEntity<String> cerrarMesa(@PathVariable Integer mesaId) {
 		mesaService.clausurarMesa(mesaId);
 		return ResponseEntity.ok("Mesa cerrada correctamente");
 	}
-	
+
 	@PatchMapping("/aperturar/{mesaId}")
 	public ResponseEntity<String> habilitarMesa(@PathVariable Integer mesaId) {
 		mesaService.habilitarMesa(mesaId);
@@ -102,5 +103,16 @@ public class MesaRestController {
 		}
 	}
 
-	
+	@PatchMapping("/movercliente")
+	public ResponseEntity<String> moverClienteDeMesa(@RequestBody MovimientoMesaRequest request) {
+		try {
+			mesaService.moverClienteDeMesa(request.getMesaOrigenId(), request.getClienteId(),
+					request.getMesaDestinoId());
+			return ResponseEntity.ok("Cliente movido exitosamente.");
+		} catch (Exception ex) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body("Error al mover cliente de mesa: " + ex.getMessage());
+		}
+	}
+
 }

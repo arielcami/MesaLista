@@ -95,6 +95,20 @@
 			</form>
 		</div>
 	</div>
+	
+	<!-- Modal de mover cliente de mesa -->
+	<div id="modal-mover-cliente" class="modal-mover-cliente-de-mesa" style="display:none;">
+		<div class="modal-contenido">
+			<h3>Mover Cliente</h3>
+			<label for="select-mesa-destino">Selecciona la nueva mesa:</label>
+			<select id="select-mesa-destino"></select>
+			<div class="modal-actions">
+				<button class="btn-confirmar-cambio-mesa" onclick="confirmarMovimiento()">Confirmar</button>
+				<button class="btn-cerrar-cambio-mesa" onclick="cerrarModalMoverCliente()">Cancelar</button>
+			</div>
+		</div>
+	</div>
+	
 		
 <script th:src="@{/js/PopupCustom2Options.js}"></script>
 <script th:src="@{/js/Mesas.js}" defer></script>

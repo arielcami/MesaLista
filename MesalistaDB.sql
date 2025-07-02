@@ -666,6 +666,87 @@ DELIMITER ;
 
 
 
+DELIMITER $$
+
+USE `mesalista_db`$$
+
+DROP PROCEDURE IF EXISTS `mover_cliente_mesa`$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `mover_cliente_mesa`(
+    IN p_mesa_origen_id SMALLINT UNSIGNED,
+    IN p_cliente_id INT UNSIGNED,
+    IN p_mesa_destino_id SMALLINT UNSIGNED
+)
+BEGIN
+    DECLARE v_pedido_id INT UNSIGNED;
+    DECLARE v_empleado_id INT UNSIGNED;
+    DECLARE v_hora_asignacion DATETIME;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error durante la transacción.';
+    END;
+
+    START TRANSACTION;
+
+    -- Verificar existencia de mesas y cliente
+    IF NOT EXISTS (SELECT 1 FROM mesas WHERE id = p_mesa_origen_id) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La mesa origen no existe.';
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM mesas WHERE id = p_mesa_destino_id) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La mesa destino no existe.';
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM mesas
+        WHERE id = p_mesa_origen_id AND cliente = p_cliente_id
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La mesa origen no tiene al cliente especificado.';
+    END IF;
+
+    IF EXISTS (
+        SELECT 1 FROM mesas
+        WHERE id = p_mesa_destino_id AND estado = 2
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La mesa destino está ocupada.';
+    END IF;
+
+    -- Guardar los campos antes de limpiar
+    SELECT pedido_id, empleado_id, hora_asignacion
+    INTO v_pedido_id, v_empleado_id, v_hora_asignacion
+    FROM mesas
+    WHERE id = p_mesa_origen_id;
+
+    -- Limpiar la mesa origen
+    UPDATE mesas
+    SET 
+        cliente = NULL,
+        pedido_id = NULL,
+        empleado_id = NULL,
+        hora_asignacion = NULL,
+        estado = 1
+    WHERE id = p_mesa_origen_id;
+
+    -- Asignar todos los campos a la mesa destino
+    UPDATE mesas
+    SET 
+        cliente = p_cliente_id,
+        pedido_id = v_pedido_id,
+        empleado_id = v_empleado_id,
+        hora_asignacion = v_hora_asignacion,
+        estado = 2
+    WHERE id = p_mesa_destino_id;
+
+    COMMIT;
+END$$
+
+DELIMITER ;
+
+
+
+
 DELIMITER ;;
 
 CREATE DEFINER = root @localhost PROCEDURE adjustCantidadProducto (

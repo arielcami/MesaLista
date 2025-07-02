@@ -39,11 +39,21 @@ public interface MesaRepository extends JpaRepository<MesaEntity, Integer> {
 	@Query("UPDATE MesaEntity m SET m.estado = 0, m.cliente = NULL, m.pedido = NULL, m.empleado = NULL, m.horaAsignacion = NULL WHERE m.id = :mesaId")
 	int clausurarMesaPorId(@Param("mesaId") Integer mesaId);
 
-	// Abrir la mesa.
+	// Aperturar la mesa.
 	@Modifying
 	@Transactional
 	@Query("UPDATE MesaEntity m SET m.estado = 1, m.cliente = NULL, m.pedido = NULL, m.empleado = NULL, m.horaAsignacion = NULL WHERE m.id = :mesaId")
 	int aperturarMesaPorId(@Param("mesaId") Integer mesaId);
+	
+	// Mover un cliente de una mesa a otra
+	@Modifying
+    @Transactional
+    @Query(value = "CALL mover_cliente_mesa(:mesaOrigenId, :clienteId, :mesaDestinoId)", nativeQuery = true)
+    void moverClienteDeMesa(
+        @Param("mesaOrigenId") Integer mesaOrigenId,
+        @Param("clienteId") Integer clienteId,
+        @Param("mesaDestinoId") Integer mesaDestinoId
+    );
 	
 	
 }
