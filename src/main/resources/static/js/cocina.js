@@ -73,10 +73,8 @@ function renderPedidos(pedidos) {
         const card = document.createElement('div');
         card.className = 'pedido-card';
 		
-		const mesa = pedido.mesa.nombre ? '<br>Mesa '+ pedido.mesa.nombre : ''; 
+		const mesa = pedido.mesa && pedido.mesa.nombre ? `<br>Mesa ${pedido.mesa.nombre}` : '';
 		
-		console.log(pedido)
-
         card.innerHTML = `
             <h2>Pedido #${pedido.id} - ${pedido.paraLlevar ? 'Para llevar' : 'Consumir aquí'}${mesa}</h2>
             <p><strong>Cliente:</strong> ${pedido.cliente?.nombre ?? 'Sin nombre'} - ${pedido.cliente?.documento ?? 'Sin documento'}</p>

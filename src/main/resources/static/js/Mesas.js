@@ -155,6 +155,7 @@ function showClienteSearchModal(mesaId) {
 }
 
 function asignarClienteAMesa(mesaId, clienteId) {
+	
 	const mesaDiv = document.querySelector(`.mesa[data-id="${mesaId}"]`);
 	if (!mesaDiv) {
 		console.error('No se encontró la mesa en el DOM');
@@ -168,7 +169,6 @@ function asignarClienteAMesa(mesaId, clienteId) {
 		return;
 	}
 
-
 	const empleadoId = mesa.pedido.empleado.id;
 
 	fetch(`/mesalista/api/mesa/asignar?mesaId=${mesaId}&clienteId=${clienteId}&empleadoId=${empleadoId}`, {
@@ -176,14 +176,14 @@ function asignarClienteAMesa(mesaId, clienteId) {
 	})
 		.then(res => {
 			if (!res.ok) throw new Error('Error asignando cliente');
-			return res.text(); // O .json() si prefieres
+			return res.text();
 		})
 		.then(() => {
-			location.reload(); // Refresca para reflejar el cambio
+			location.reload();
 		})
 		.catch(err => {
 			console.error('Error al asignar cliente:', err);
-			mostrarPopupConfirmacion('Error', 'No se pudo asignar el cliente');
+			mostrarPopupConfirmacion('Error', 'No se pudo asignar el cliente, puede que se esté duplicando');
 		});
 
 }
@@ -435,7 +435,7 @@ function asignarClienteConfirmado(mesaId, clienteId, empleadoId, claveEmpleado) 
 		})
 		.catch(err => {
 			console.error('Error asignando cliente:', err);
-			mostrarPopupConfirmacion('Error', 'No se pudo asignar el cliente');
+			mostrarPopupConfirmacion('Error', 'No se pudo asignar el cliente, puede que se esté duplicando');
 		});
 }
 
@@ -472,7 +472,7 @@ document.getElementById('formCrearMesa').addEventListener('submit', function(e) 
 				body: JSON.stringify({ nombre: nombre })
 			})
 				.then(res => {
-					if (!res.ok) throw new Error('Error al crear mesa');
+					if (!res.ok) throw new Error('Error al crear mesa, puede que se esté duplicando');
 					return res.json();
 				})
 				.then(nuevaMesa => {
@@ -483,7 +483,7 @@ document.getElementById('formCrearMesa').addEventListener('submit', function(e) 
 				})
 				.catch(err => {
 					console.error('Error:', err);
-					mostrarPopupConfirmacion('Error', 'Error al crear la mesa');
+					mostrarPopupConfirmacion('Error', 'Error al crear mesa, puede que se esté duplicando');
 				});
 		}
 	);

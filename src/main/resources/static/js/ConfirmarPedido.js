@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				mesaSelect.disabled = false;
 
 				const placeholder = document.createElement("option");
-				placeholder.textContent = "Selecciona una mesa";
+				placeholder.textContent = "Mesa:";
 				placeholder.value = "";
 				placeholder.selected = true;
 				placeholder.disabled = true;
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				mesas.forEach(mesa => {
 					const option = document.createElement("option");
 					option.value = mesa.id;
-					option.textContent = mesa.mesa;
+					option.textContent = mesa.nombre;
 					mesaSelect.appendChild(option);
 				});
 			}

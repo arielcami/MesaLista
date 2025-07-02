@@ -27,10 +27,18 @@ public class MesaServiceImpl implements MesaService {
     
     @Override
     public MesaEntity crearMesa(MesaEntity mesa) {
-    	sys.checkSystemActiveOrThrow();
-    	mesa.setEstado(1);
-    	return mesaRepository.save(mesa);
+        sys.checkSystemActiveOrThrow();
+
+        // Verificar si ya existe una mesa con ese nombre
+        Optional<MesaEntity> existente = mesaRepository.findByNombre(mesa.getNombre());
+        if (existente.isPresent()) {
+            throw new IllegalArgumentException("Ya existe una mesa con el nombre: " + mesa.getNombre());
+        }
+
+        mesa.setEstado(1);
+        return mesaRepository.save(mesa);
     }
+
     
     @Override
     public void eliminarMesaPorId(Integer idMesa) {
@@ -48,8 +56,16 @@ public class MesaServiceImpl implements MesaService {
     
     @Override
     public void asignarClienteYEmpleado(Integer mesaId, Integer clienteId, Integer empleadoId) {
+    	sys.checkSystemActiveOrThrow();
+        Optional<MesaEntity> mesaExistente = mesaRepository.findByClienteId(clienteId);
+
+        if (mesaExistente.isPresent()) {
+            throw new IllegalStateException("Este cliente ya está asignado a otra mesa (ID: " + mesaExistente.get().getId() + ")");
+        }
+
         mesaRepository.asignarClienteYEmpleado(mesaId, clienteId, empleadoId);
-    }    
+    }
+   
     
     @Override
     public List<MesaEntity> listarMesasPorEstado(int estado) {

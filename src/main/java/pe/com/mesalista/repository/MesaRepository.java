@@ -13,6 +13,8 @@ import pe.com.mesalista.entity.MesaEntity;
 @Repository
 public interface MesaRepository extends JpaRepository<MesaEntity, Integer> {
 	
+	Optional<MesaEntity> findByNombre(String nombre);
+	
 	List<MesaEntity> findByEstado(Integer estado);
 
 	Optional<MesaEntity> findByClienteId(Integer clienteId);
@@ -44,5 +46,4 @@ public interface MesaRepository extends JpaRepository<MesaEntity, Integer> {
 	int aperturarMesaPorId(@Param("mesaId") Integer mesaId);
 	
 	
-
 }

@@ -40,7 +40,6 @@ public class MesaRestController {
 		MesaEntity creada = mesaService.crearMesa(nuevaMesa);
 		return ResponseEntity.status(HttpStatus.CREATED).body(creada);
 	}
-
 	
 	@GetMapping
 	public List<MesaEntity> listarMesasPorEstado(@RequestParam int estado) {

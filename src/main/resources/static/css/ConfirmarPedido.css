@@ -318,9 +318,11 @@ button.agregar-comentario:active {
 }
 
 .campo-select-mesa {
-  width: 200px;
-  padding: 5px;
-  font-size: 16px;
+	margin-top: 25px;
+	width: 150px;
+	padding: 4px;
+	font-size: 18px;
 }
+
 
 

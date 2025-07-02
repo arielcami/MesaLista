@@ -26,15 +26,16 @@ public class MesaEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "mesa", nullable = false, length = 10)
+	@Column(name = "nombre", nullable = false, length = 10, unique = true)
 	private String nombre;
+
 
 	// 0: desuso, 1: disponible, 2: ocupada
 	@Column(name = "estado", columnDefinition = "TINYINT UNSIGNED")
 	private Integer estado;
 
 	@ManyToOne
-	@JoinColumn(name = "cliente", referencedColumnName = "id", foreignKey = @ForeignKey(name = "mesas_ibfk_1"))
+	@JoinColumn(name = "cliente", referencedColumnName = "id", foreignKey = @ForeignKey(name = "mesas_ibfk_1"), unique = true)
 	private ClienteEntity cliente;
 
 	@ManyToOne
