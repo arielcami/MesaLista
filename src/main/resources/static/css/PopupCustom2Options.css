@@ -1,38 +1,66 @@
 @font-face {
-    font-family: 'Yeseva One';
-    src: url('../fonts/yeseva-one.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Yeseva One';
+  src: url('../fonts/yeseva-one.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
-.popup-overlay-2options {
+/* Animaciones */
+@keyframes ppp-modal2opt-fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes ppp-modal2opt-fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+.ppp-modal2opt-overlay {
   position: fixed;
   top: 0; left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10000; /* arriba de todo */
+  z-index: 10000;
 }
 
 .hidden {
-    display: none !important;
+  display: none !important;
 }
 
-.popup-content-2options {
+.ppp-modal2opt-content {
   background-color: white;
   padding: 20px 30px;
-  border-radius: 6px;
+  border-radius: 12px;
   max-width: 400px;
   width: 100%;
-  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   text-align: center;
   border: 3px solid #b3970b;
+  animation: ppp-modal2opt-fadeIn 0.3s ease forwards;
 }
 
-.popup-icon {
+.ppp-modal2opt-overlay.ppp-modal2opt-closing .ppp-modal2opt-content {
+  animation: ppp-modal2opt-fadeOut 0.25s ease forwards;
+}
+
+.ppp-modal2opt-icon {
   width: 70px;
   height: 70px;
   background-size: contain;
@@ -40,22 +68,20 @@
   margin: 0 auto;
 }
 
-.popup-message {
+.ppp-modal2opt-message {
   margin-top: 15px;
   font-size: 24px;
   color: #8d8c8e;
 }
 
-/* Contenedor para los dos botones */
-.popup-buttons {
+.ppp-modal2opt-buttons {
   margin-top: 25px;
   display: flex;
   justify-content: center;
-  gap: 15px; /* espacio entre botones */
+  gap: 15px;
 }
 
-/* Botones */
-.popup-button {
+.ppp-modal2opt-btn {
   padding: 8px 25px;
   font-size: 18px;
   border: none;
@@ -66,22 +92,18 @@
   transition: background-color 0.3s ease;
 }
 
-/* Botón Confirmar (OK) */
-.popup-button.confirm {
+.ppp-modal2opt-confirm {
   background-color: #b3970b;
   color: white;
 }
-
-.popup-button.confirm:hover {
+.ppp-modal2opt-confirm:hover {
   background-color: #8c6c09;
 }
 
-/* Botón Cancelar */
-.popup-button.cancel {
+.ppp-modal2opt-cancel {
   background-color: #d9534f;
   color: white;
 }
-
-.popup-button.cancel:hover {
+.ppp-modal2opt-cancel:hover {
   background-color: #b52b27;
 }

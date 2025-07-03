@@ -1,4 +1,3 @@
-// PopupCustom2Options.js
 function mostrarPopupConfirmacion(tipo, mensaje, onConfirm, onCancel) {
 	const modal = document.getElementById('popup-custom-modal');
 	const mensajeElem = document.getElementById('popup-message');
@@ -8,7 +7,6 @@ function mostrarPopupConfirmacion(tipo, mensaje, onConfirm, onCancel) {
 
 	mensajeElem.textContent = mensaje;
 
-	// Normaliza el tipo y usa 'Warning' si no es uno conocido
 	const tiposValidos = ['Success', 'Error', 'Warning', 'Question'];
 	const tipoNormalizado = tipo.charAt(0).toUpperCase() + tipo.slice(1).toLowerCase();
 	const tipoFinal = tiposValidos.includes(tipoNormalizado) ? tipoNormalizado : 'Warning';
@@ -24,12 +22,41 @@ function mostrarPopupConfirmacion(tipo, mensaje, onConfirm, onCancel) {
 	btnCancelar.parentNode.replaceChild(nuevoCancelar, btnCancelar);
 
 	nuevoConfirmar.addEventListener('click', function() {
-		modal.classList.add('hidden');
-		if (typeof onConfirm === 'function') onConfirm();
+		cerrarPopup(() => {
+			if (typeof onConfirm === 'function') onConfirm();
+		});
 	});
 
 	nuevoCancelar.addEventListener('click', function() {
-		modal.classList.add('hidden');
-		if (typeof onCancel === 'function') onCancel();
+		cerrarPopup(() => {
+			if (typeof onCancel === 'function') onCancel();
+		});
 	});
+
+	document.addEventListener('keydown', function handler(e) {
+		if (e.key === 'Escape') {
+			cerrarPopup();
+			document.removeEventListener('keydown', handler);
+		}
+	});
+
+	modal.addEventListener('click', function(e) {
+		if (e.target === modal) cerrarPopup();
+	});
+}
+
+function cerrarPopup(callback) {
+	const modal = document.getElementById('popup-custom-modal');
+	modal.classList.add('ppp-modal2opt-closing');
+
+	const content = modal.querySelector('.ppp-modal2opt-content');
+	content.addEventListener(
+		'animationend',
+		() => {
+			modal.classList.remove('ppp-modal2opt-closing');
+			modal.classList.add('hidden');
+			if (typeof callback === 'function') callback();
+		},
+		{ once: true }
+	);
 }

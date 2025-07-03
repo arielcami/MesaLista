@@ -1203,7 +1203,10 @@ INSERT INTO productos (nombre, tipo_producto, precio, estado, imagen_url) VALUES
 ('Ensalada de palta', 5, 5.00, 1, 'img/productos/1750136196333_ensapalta.jpg'),
 ('Ensalada César', 5, 4.50, 1, 'img/productos/1750136276038_cesar.jpg'),
 ('Pico de gallo', 5, 4.50, 1, 'img/productos/1750136444178_picodegallo.jpg'),
-('Nuggets de pollo', 5, 6.00, 1, 'img/productos/1750136551107_nuggets.jpg');
+('Nuggets de pollo', 5, 6.00, 1, 'img/productos/1750136551107_nuggets.jpg'),
+('Jarra de maracuyá', 3, 9.00, 1, 'img/productos/1751573333149_jarrademaracuya.jpg'), 
+('Jarra de chicha morada', 3, 9.00, 1, 'img/productos/1751573411024_jarradechicha.jpg');
+
 
 INSERT INTO clientes (nombre, telefono, documento, direccion) VALUES 
 ('Pedro Sánchez Haylas', '970555444', '55667788', 'Jr. Lima 234 Surco'), 
