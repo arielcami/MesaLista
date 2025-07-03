@@ -19,9 +19,8 @@ body {
     padding: 13px 0;
     z-index: 1000;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-
-    position: relative;   /* importante para que el <a> se posicione dentro */
-    text-align: center;   /* centra el h1 */
+    position: relative;
+    text-align: center;
 }
 
 
@@ -129,6 +128,7 @@ body {
     padding: 5px;
     z-index: 999;
     transition: background-color 0.3s ease;
+    user-select: none;
 }
 
 .boton-sonido:hover {
@@ -140,4 +140,3 @@ body {
     height: 100%;
     object-fit: contain;
 }
-

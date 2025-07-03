@@ -335,7 +335,8 @@ document.addEventListener("DOMContentLoaded", () => {
 				});
 			})
 			.catch(err => {
-				mostrarPopupConfirmacion("error", "Error: " + err.message, null);
+				mostrarPopupConfirmacion("error", "¡Credenciales incorrectas!");
+				console.log(err.message);
 			});
 	});
 
