@@ -76,7 +76,7 @@ function renderPedidos(pedidos) {
 		card.className = 'pedido-card';
 		card.dataset.pedidoId = pedido.id;
 		
-		const mesa = pedido.mesa.nombre ? '<br>Mesa '+ pedido.mesa.nombre : ''; 
+		const mesa = pedido.mesa && pedido.mesa.nombre ? `<br>Mesa ${pedido.mesa.nombre}` : '';
 
 		card.innerHTML = `
             <h2>Pedido #${pedido.id} - ${estadoPedidoTexto(pedido.estadoPedido)}${mesa}</h2>

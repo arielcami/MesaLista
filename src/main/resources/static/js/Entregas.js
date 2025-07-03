@@ -31,7 +31,7 @@ function estadoPedidoTexto(codigo) {
 }
 
 function actualizarBotonEntrega() {
-	
+
 	let boton = document.getElementById('btn-empezar-entrega');
 
 	if (pedidosSeleccionados.size > 0) {
@@ -93,6 +93,7 @@ function renderizarTarjetasPedido(pedidos) {
 	pedidos.forEach(pedido => {
 		const tarjeta = document.createElement('div');
 		tarjeta.className = 'entregas-pedido-tarjeta';
+		tarjeta.classList.add(`estado-${pedido.estadoPedido}`); // Clase para color según estado
 
 		tarjeta.innerHTML = `
 		    <div class="lado-izquierdo">
@@ -156,6 +157,7 @@ function renderizarTarjetasPedido(pedidos) {
 }
 
 
+
 async function cargarPedidosPorEstado(estado) {
 	try {
 		const response = await fetch(`/mesalista/api/pedido/estado/${estado}`);
@@ -211,7 +213,7 @@ function autenticarEmpleado() {
 }
 
 async function cargarPedidosPorDeliveryYEstado(deliveryId, estado) {
-	
+
 	try {
 		const response = await fetch(`/mesalista/api/pedido/buscarPorDeliveryCustom/${deliveryId}/${estado}`);
 		if (!response.ok) throw new Error('Error al cargar pedidos');

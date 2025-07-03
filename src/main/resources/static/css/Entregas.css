@@ -273,3 +273,30 @@ body {
   color: #0056b3;      /* azul más oscuro al pasar el mouse */
   text-decoration: none;
 }
+
+
+.entregas-pedido-tarjeta.estado-3 {
+	background-color: #d4edda; 
+	border: 2px solid #00c900;
+}
+
+.entregas-pedido-tarjeta.estado-4 {
+	background-color: #addaff;
+	border: 2px solid #1294ff;
+}
+
+.entregas-pedido-tarjeta.estado-5 {
+	background-color: #ffdede;
+	border: 2px solid #ff4040;
+}
+
+.entregas-pedido-tarjeta.estado-6 {
+	background-color: #ebd3f5;
+	border: 2px solid #9c30c9;
+}
+
+.entregas-pedido-tarjeta.estado-7 {
+	background-color: #eeeeee;
+	border: 2px solid #757575;
+}
+

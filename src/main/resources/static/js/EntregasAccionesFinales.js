@@ -3,7 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
 	const btnPedidoEntregadoPagado = document.getElementById('btn-pedido-entregado-pagado');
 	const btnPedidoNoEntregado = document.getElementById('btn-pedido-no-entregado');
 	const btnReportarIncidente = document.getElementById('btn-reportar-incidente-pedido');
+	const btnDevolverPedido = document.getElementById('btn-pedido-devolver');
 	const btnCerrarModalAcciones = document.getElementById('btn-cerrar-modal-acciones-pedido');
+	
+	btnDevolverPedido.addEventListener('click', async () => {
+		if (confirm('¿Deseas marcar este pedido como Devuelto?')) {
+			await actualizarEstadoPedido(7);
+			cargarPedidosPorDeliveryYEstado(deliveryActualId, 7);
+		}
+	})
+	
 
 	let pedidoActualId = null;
 	let deliveryActualId = null;
