@@ -44,19 +44,24 @@ java -jar MesalistaZeroTier.jar
 
 ## Funcionalidades Principales
 
-- ✔️ Gestión completa de:
-  - Clientes
+- ✔️ Mesalista ofrece:
+  - CRUD de Clientes
+  - CRUD de Productos
+  - CRUD de Empleados (y Deliveries)
   - Pedidos (con trazabilidad y control fino)
-  - Entregas y Deliverys
-  - Empleados (administrativos y operativos)
-  - Incidentes internos
-  - Menús diarios/semanales con activación por botón
-
-- 📱 Vista móvil para personal de entrega
-- 📍 Integración con Google Maps para rutas de delivery
-- 📊 Reportes, exportación a Excel y CSV, e impresión
-- 🧠 Control de flujo de pedidos: agregar, modificar, cancelar, continuar pedidos truncados
-- 🗂️ Soporte para auditoría a nivel de base de datos
+  - Entregas con trazabilidad
+  - Control de mesas en el restaurante
+  - Módulo de incidentes para reportar problemas
+  - Menús complamente personalizados y rotativos
+  - Reportes para toma de decisiones estratégicas
+  - Imprimir reportes
+  - Exportar PDF
+  - Exportar CSV
+  - Exportar Backup de la Base de Datos + opción de limpieza posterior
+  - Vista móvil para personal de entrega
+  - Integración con Google Maps para rutas de delivery
+  - Control de ciclo de vida de pedidos: agregar, modificar, cancelar, continuar pedidos incompletos
+  - Soporte para auditoría a nivel de base de datos
 
 ---
 
@@ -66,16 +71,15 @@ java -jar MesalistaZeroTier.jar
 |----------|--------------------------------------------------------------------------|
 | Admin    | Acceso total al sistema                                                  |
 | Gerente  | Acceso total al sistema                                                  |
-| Mesero   | Tomar y confirmar pedidos. Sin acceso a entregas, empleados ni reportes |
-| Delivery | Solo entrega de pedidos                                                  |
-| Cocina   | Confirmar pedidos. Sin acceso a reportes, empleados ni entregas         |
+| Mesero   | Tomar y confirmar pedidos. Sin acceso a entregas, empleados ni reportes  |
+| Delivery | Solo visualiza pedidos para entregar                                     |
+| Cocina   | Confirmar pedidos. Sin acceso a reportes, empleados ni entregas          |
 
 ---
 
 ## Consideraciones
 
-- Este software **no está pensado para uso público.**
-- Ideal para ser implementado en redes internas de restaurantes mediante **ZeroTier**.
+- Este software **está diseñado para uso exclusivo del personal del restaurante.**
 
 ---
 
