@@ -245,8 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			.slice(0, 15); // tomar los 15 primeros
 
 		const labels = topClientes.map(d => d[0]); // nombre cliente
-		const compras = topClientes.map(d => d[1]);
-		const gastado = topClientes.map(d => d[2]);
+		const gastado = topClientes.map(d => d[2]); // solo total gastado
 
 		const ctx = crearCanvas("clientesFrecuentes").getContext("2d");
 		new Chart(ctx, {
@@ -254,11 +253,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			data: {
 				labels,
 				datasets: [
-					{
-						label: "Cantidad de Compras",
-						data: compras,
-						backgroundColor: "rgba(255, 99, 132, 0.7)",
-					},
 					{
 						label: "Total Gastado",
 						data: gastado,

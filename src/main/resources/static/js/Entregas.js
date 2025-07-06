@@ -156,8 +156,6 @@ function renderizarTarjetasPedido(pedidos) {
 	});
 }
 
-
-
 async function cargarPedidosPorEstado(estado) {
 	try {
 		const response = await fetch(`/mesalista/api/pedido/estado/${estado}`);
